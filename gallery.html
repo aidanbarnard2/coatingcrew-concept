@@ -17,8 +17,8 @@
 <div style="background:#121212;color:#FFFFFF;text-align:center;font-weight:700;font-size:18px;line-height:1.4;padding:10px 16px">Concept preview by Aidan Barnard · Not the live website</div>
 <div class="util">
   <div class="wrap">
-    <span class="hrs">Family owned since 1999 · Mon–Fri 7am–6pm</span>
-    <nav aria-label="More pages"><a href="reviews.html">Reviews</a><a href="worry-free-guarantee.html">Guarantee</a><a href="certified-professionals.html">Certified installers</a><a href="trailers.html">Storage</a></nav>
+    <span class="hrs">Mon–Fri 7am–6pm</span>
+    <nav aria-label="More pages"><a href="about-us.html">About</a><a href="reviews.html">Reviews</a><a href="worry-free-guarantee.html">Guarantee</a><a href="certified-professionals.html">Certified installers</a><a href="trailers.html">Storage</a><button type="button" class="slink" data-search-open>Search</button></nav>
     <a class="ph" href="tel:+16512638557">Call (651) 263-8557</a>
   </div>
 </div>
@@ -35,6 +35,7 @@
       <a class="navlink" href="contact-us.html">Contact</a>
     </nav>
     <div class="hdr-cta">
+      <button class="search-btn" type="button" data-search-open aria-label="Search the site" title="Search (press /)"><svg viewBox="0 0 24 24" stroke-linecap="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5 21 21"/></svg></button>
       <a class="btn btn-orange" href="./#estimate">Get a Price</a>
       <button class="menu-btn" id="menuBtn" type="button" aria-expanded="false" aria-controls="mobileMenu" aria-label="Open menu">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
@@ -50,8 +51,10 @@
       <a href="colors.html">Colors</a>
       <a href="gallery.html">Gallery</a>
       <a href="reviews.html">Reviews</a>
+      <a href="about-us.html">About us</a>
       <a href="worry-free-guarantee.html">Worry-free guarantee</a>
       <a href="trailers.html">On-site storage</a>
+      <a href="search.html">Search</a>
       <a href="contact-us.html">Contact us</a>
       <a href="./#estimate">Get a Price</a>
       <p style="font-weight:800;font-size:20px">Call (651) 263-8557</p>
@@ -66,11 +69,11 @@
 </div>
 <main>
 <section class="phero" aria-labelledby="pageTitle">
-  <div class="bg" style="background-image:url(img/work/job-7.jpg)" aria-hidden="true"></div>
+  <div class="bg" style="background-image:url(img/photos/job-garage-3.jpg)" aria-hidden="true"></div>
   <div class="wrap">
     <p class="crumbs"><a href="./">Home</a> / Gallery</p>
     <h1 id="pageTitle">Real floors by our crew</h1>
-    <p class="intro">Floors from our own jobs across the Minneapolis / Saint Paul area. Tap any photo to see it up close.</p>
+    <p class="intro">Every photo from our current website, from garages and basements to kitchens and warehouses. Tap any photo to see it up close.</p>
     
     <div style="display:flex;flex-wrap:wrap;gap:12px"><a class="btn btn-orange" href="./#estimate">Get My Free Estimate</a><a class="btn btn-ghost" href="tel:+16512638557"><span class="gt">Call (651) 263-8557</span></a></div>
   </div>
@@ -80,16 +83,30 @@
   <button type="button" class="fbtn" aria-pressed="false" data-f="Garage">Garages</button>
   <button type="button" class="fbtn" aria-pressed="false" data-f="Basement">Basements</button>
   <button type="button" class="fbtn" aria-pressed="false" data-f="Patio">Patios</button>
+  <button type="button" class="fbtn" aria-pressed="false" data-f="Commercial">Commercial</button>
+  <button type="button" class="fbtn" aria-pressed="false" data-f="Industrial">Industrial</button>
 </div>
-<div class="gallery" id="gallery"><button type="button" class="gitem big" data-cat="Basement" aria-label="Open photo: Basement · chip floor"><img src="img/work/job-1.jpg" alt="Basement · chip floor by The Coating Crew" loading="lazy"><span>Basement</span></button>
-<button type="button" class="gitem" data-cat="Garage" aria-label="Open photo: Garage · chip floor"><img src="img/work/job-2.jpg" alt="Garage · chip floor by The Coating Crew" loading="lazy"><span>Garage</span></button>
-<button type="button" class="gitem big" data-cat="Patio" aria-label="Open photo: Patio · chip floor"><img src="img/work/job-3.jpg" alt="Patio · chip floor by The Coating Crew" loading="lazy"><span>Patio</span></button>
-<button type="button" class="gitem" data-cat="Garage" aria-label="Open photo: Garage · solid color"><img src="img/work/job-4.jpg" alt="Garage · solid color by The Coating Crew" loading="lazy"><span>Garage</span></button>
-<button type="button" class="gitem" data-cat="Garage" aria-label="Open photo: Garage · chip floor"><img src="img/work/job-5.jpg" alt="Garage · chip floor by The Coating Crew" loading="lazy"><span>Garage</span></button>
-<button type="button" class="gitem" data-cat="Garage" aria-label="Open photo: Garage · dark chip"><img src="img/work/job-6.jpg" alt="Garage · dark chip by The Coating Crew" loading="lazy"><span>Garage</span></button>
-<button type="button" class="gitem" data-cat="Garage" aria-label="Open photo: Garage · blue chip"><img src="img/work/job-7.jpg" alt="Garage · blue chip by The Coating Crew" loading="lazy"><span>Garage</span></button>
-<button type="button" class="gitem" data-cat="Garage" aria-label="Open photo: Garage · tan chip"><img src="img/work/job-8.jpg" alt="Garage · tan chip by The Coating Crew" loading="lazy"><span>Garage</span></button></div>
-<p class="note">These are the job photos from your current gallery page. At launch we add every before and after you have, tagged by city for local search.</p></div></section>
+<div class="gallery" id="gallery"><button type="button" class="gitem big" id="p-job-basement-1" data-cat="Basement" aria-label="Open photo: Basement · chip floor"><img src="img/photos/job-basement-1.jpg" alt="Basement · chip floor" loading="lazy"><span>Basement</span></button>
+<button type="button" class="gitem" id="p-job-garage-1" data-cat="Garage" aria-label="Open photo: Garage · chip floor"><img src="img/photos/job-garage-1.jpg" alt="Garage · chip floor" loading="lazy"><span>Garage</span></button>
+<button type="button" class="gitem big" id="p-job-patio-1" data-cat="Patio" aria-label="Open photo: Patio · chip floor"><img src="img/photos/job-patio-1.jpg" alt="Patio · chip floor" loading="lazy"><span>Patio</span></button>
+<button type="button" class="gitem" id="p-job-garage-5" data-cat="Garage" aria-label="Open photo: Garage · tan chip"><img src="img/photos/job-garage-5.jpg" alt="Garage · tan chip" loading="lazy"><span>Garage</span></button>
+<button type="button" class="gitem" id="p-job-garage-2" data-cat="Garage" aria-label="Open photo: Garage · chip floor"><img src="img/photos/job-garage-2.jpg" alt="Garage · chip floor" loading="lazy"><span>Garage</span></button>
+<button type="button" class="gitem" id="p-job-basement-2" data-cat="Basement" aria-label="Open photo: Basement · dark chip"><img src="img/photos/job-basement-2.jpg" alt="Basement · dark chip" loading="lazy"><span>Basement</span></button>
+<button type="button" class="gitem" id="p-job-garage-3" data-cat="Garage" aria-label="Open photo: Garage · blue chip"><img src="img/photos/job-garage-3.jpg" alt="Garage · blue chip" loading="lazy"><span>Garage</span></button>
+<button type="button" class="gitem" id="p-job-garage-4" data-cat="Garage" aria-label="Open photo: Garage · light chip"><img src="img/photos/job-garage-4.jpg" alt="Garage · light chip" loading="lazy"><span>Garage</span></button>
+<button type="button" class="gitem" id="p-space-garage-solid" data-cat="Garage" aria-label="Open photo: Garage · solid color"><img src="img/photos/space-garage-solid.jpg" alt="Garage · solid color" loading="lazy"><span>Garage</span></button>
+<button type="button" class="gitem big" id="p-space-showroom" data-cat="Commercial" aria-label="Open photo: Showroom"><img src="img/photos/space-showroom.jpg" alt="Showroom" loading="lazy"><span>Commercial</span></button>
+<button type="button" class="gitem" id="p-space-retail" data-cat="Commercial" aria-label="Open photo: Retail store"><img src="img/photos/space-retail.jpg" alt="Retail store" loading="lazy"><span>Commercial</span></button>
+<button type="button" class="gitem" id="p-space-kitchen" data-cat="Commercial" aria-label="Open photo: Commercial kitchen"><img src="img/photos/space-kitchen.jpg" alt="Commercial kitchen" loading="lazy"><span>Commercial</span></button>
+<button type="button" class="gitem" id="p-space-vet-clinic" data-cat="Commercial" aria-label="Open photo: Veterinary clinic"><img src="img/photos/space-vet-clinic.jpg" alt="Veterinary clinic" loading="lazy"><span>Commercial</span></button>
+<button type="button" class="gitem" id="p-space-locker-room" data-cat="Commercial" aria-label="Open photo: Locker room"><img src="img/photos/space-locker-room.jpg" alt="Locker room" loading="lazy"><span>Commercial</span></button>
+<button type="button" class="gitem" id="p-space-salon" data-cat="Commercial" aria-label="Open photo: Salon"><img src="img/photos/space-salon.jpg" alt="Salon" loading="lazy"><span>Commercial</span></button>
+<button type="button" class="gitem" id="p-space-medical" data-cat="Commercial" aria-label="Open photo: Medical center"><img src="img/photos/space-medical.jpg" alt="Medical center" loading="lazy"><span>Commercial</span></button>
+<button type="button" class="gitem" id="p-space-warehouse" data-cat="Industrial" aria-label="Open photo: Warehouse"><img src="img/photos/space-warehouse.jpg" alt="Warehouse" loading="lazy"><span>Industrial</span></button>
+<button type="button" class="gitem" id="p-space-factory" data-cat="Industrial" aria-label="Open photo: Factory"><img src="img/photos/space-factory.jpg" alt="Factory" loading="lazy"><span>Industrial</span></button>
+<button type="button" class="gitem" id="p-space-production-line" data-cat="Industrial" aria-label="Open photo: Production floor"><img src="img/photos/space-production-line.jpg" alt="Production floor" loading="lazy"><span>Industrial</span></button>
+<button type="button" class="gitem" id="p-space-food-production" data-cat="Industrial" aria-label="Open photo: Food production"><img src="img/photos/space-food-production.jpg" alt="Food production" loading="lazy"><span>Industrial</span></button></div>
+<p class="note">This is every photo from your current website. At launch we add more of your own jobs and before and afters, tagged by city for local search.</p></div></section>
 <section class="cta" aria-labelledby="ctaTitle">
   <div class="wrap">
     <div class="stack" style="gap:10px">
@@ -125,16 +142,18 @@
       <a href="colors.html">Colors</a>
       <a href="gallery.html">Gallery</a>
       <a href="reviews.html">Reviews</a>
+      <a href="about-us.html">About us</a>
       <a href="worry-free-guarantee.html">Worry-free guarantee</a>
       <a href="certified-professionals.html">Certified professionals</a>
       <a href="trailers.html">On-site storage</a>
       <a href="contact-us.html">Contact us</a>
+      <a href="search.html">Search the site</a>
       <a href="privacy-policy.html">Privacy policy</a>
       <a href="./#inbox">Lead inbox (owner view)</a>
     </div>
   </div>
   <div class="wrap legal">
-    <p>© 2026 The Coating Crew. Floor images and the 3D studio are AI-rendered concept visuals.</p>
+    <p>© 2026 The Coating Crew. Photos are from your current website. The before and after slider, install story and 3D studio use rendered concept visuals.</p>
     <a class="builtby" href="https://www.aidanbarnard.com" target="_blank" rel="noopener"><span>Built by</span><img src="img/ab-logo.png" alt="AB logo"><b>aidanbarnard.com</b></a>
   </div>
 </footer>
@@ -151,5 +170,7 @@
   <button type="button" class="nx" id="lbNx" aria-label="Next photo">›</button>
 </div>
 <script src="site.js"></script>
+<script src="search-index.js" defer></script>
+<script src="search.js" defer></script>
 </body>
 </html>

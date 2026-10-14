@@ -91,8 +91,8 @@ header.site.scrolled .logo img{height:46px}
 @keyframes marquee{to{transform:translateX(-50%)}}
 /* hero */
 .hero{position:relative;overflow:hidden;background:var(--ink);color:#fff;isolation:isolate}
-.hero-bg{position:absolute;inset:-8% 0 -8% 0;background:#3A3F45 url(img/hero-floor.jpg) center/cover no-repeat;will-change:transform;z-index:-2}
-.hero::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,rgba(18,18,18,.92) 0%,rgba(18,18,18,.74) 48%,rgba(18,18,18,.28) 100%)}
+.hero-bg{position:absolute;inset:-8% 0 -8% 0;background:#3A3F45 url(img/photos/hero-residential.jpg) 50% 60%/cover no-repeat;will-change:transform;z-index:-2}
+.hero::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,rgba(18,18,18,.93) 0%,rgba(18,18,18,.82) 45%,rgba(18,18,18,.5) 100%),linear-gradient(180deg,rgba(18,18,18,.35),rgba(18,18,18,0) 40%)}
 .hero-inner{padding-block:40px 104px;display:flex;flex-direction:column;gap:28px}
 .hero-grid{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,.9fr);gap:48px;align-items:center}
 .hero-logo{width:min(900px,100%);margin-inline:auto;filter:drop-shadow(0 18px 30px rgba(0,0,0,.55));cursor:pointer}
@@ -369,6 +369,93 @@ footer a{color:var(--peach)}
   .js .rv.pre{transform:none}
   html{scroll-behavior:auto}
 }
+/* ===== Extras: real photos, about, site search ===== */
+.fcard .im.sys,.media.fit{background-size:contain;background-repeat:no-repeat;background-color:#FFFFFF}
+.swc:target i,.gitem:target{outline:4px solid #F26A21;outline-offset:3px}
+.rgrid .review:target{outline:4px solid #F26A21;outline-offset:4px}
+details:target{outline:3px solid #F26A21;outline-offset:4px;border-radius:12px}
+
+/* About */
+.about{display:grid;grid-template-columns:minmax(0,1.08fr) minmax(0,.92fr);gap:56px;align-items:center}
+.about p.body{font-size:21px;line-height:1.65;color:var(--steel);max-width:62ch}
+.about .facts{display:flex;flex-wrap:wrap;gap:10px}
+.about .facts span{padding:10px 16px;border-radius:999px;border:2px solid #121212;background:#FFFFFF;font-weight:700;font-size:18px;box-shadow:0 4px 0 #121212}
+.about .shot{border-radius:18px;aspect-ratio:4/5;max-height:620px;width:100%;background:#CCCCCC center/cover no-repeat;border:2px solid #121212;box-shadow:0 8px 0 #121212,0 30px 50px -20px rgba(18,18,18,.5)}
+.strip{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.strip a{display:block;border-radius:14px;overflow:hidden;aspect-ratio:1;border:2px solid #121212;box-shadow:0 5px 0 #121212}
+.strip img{width:100%;height:100%;object-fit:cover;transition:transform .5s ease}
+.strip a:hover img{transform:scale(1.06)}
+.about .shot{justify-self:stretch}
+@media (max-width:900px){.about{grid-template-columns:minmax(0,1fr);gap:28px}.about .shot{aspect-ratio:4/3}.strip{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+/* Search button in the header */
+.search-btn{display:inline-flex;align-items:center;justify-content:center;width:54px;height:54px;flex:none;border-radius:14px;border:2px solid transparent;cursor:pointer;color:#FFFFFF;
+  background:linear-gradient(180deg,#38404C 0%,#1A1E25 52%,#0C0E12 100%) padding-box,var(--g-loop) border-box;background-size:100% 100%,200% 100%;
+  box-shadow:0 5px 0 #000,0 14px 24px -12px rgba(0,0,0,.7),inset 0 1px 0 rgba(255,255,255,.25);transition:transform .16s ease}
+.search-btn:hover{transform:translateY(-2px)}
+.search-btn svg{width:24px;height:24px;stroke:#FFB385;stroke-width:2.6;fill:none}
+.util .slink{background:none;border:0;padding:0;cursor:pointer;font:inherit;font-weight:600;font-size:18px;background-image:var(--g-loop);background-size:200% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent;filter:drop-shadow(0 2px 0 #000)}
+
+/* Search panel (overlay and search page) */
+.srch{position:fixed;inset:0;z-index:100;display:flex;justify-content:center;align-items:flex-start;padding:calc(env(safe-area-inset-top,0px) + 4vh) 16px 16px;background:rgba(10,12,16,.74);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+.srch[hidden]{display:none !important}
+.srch-panel{width:min(940px,100%);max-height:calc(100vh - 8vh);max-height:calc(100dvh - 8vh);display:flex;flex-direction:column;border-radius:22px;border:2px solid transparent;color:#FFFFFF;overflow:hidden;text-align:left;
+  background:linear-gradient(180deg,#1C222B 0%,#121212 100%) padding-box,var(--g-loop) border-box;background-size:100% 100%,200% 100%;box-shadow:0 30px 80px rgba(0,0,0,.6)}
+.srch-inline .srch-panel{max-height:none;width:100%}
+.srch-top{display:flex;align-items:center;gap:14px;padding:16px 20px;border-bottom:1px solid #2E3540}
+.srch-top>svg{flex:none;width:30px;height:30px;stroke:#FFB385;stroke-width:2.6;fill:none}
+.srch-top input{flex:1;min-width:0;background:transparent;border:0;outline:0;color:#FFFFFF;font:inherit;font-size:26px;font-weight:700;padding-block:8px}
+.srch-top input::placeholder{color:#C3C9D2;opacity:1}
+.srch-top input::-webkit-search-cancel-button{display:none}
+.srch-x{flex:none;min-height:46px;padding:0 16px;border-radius:12px;border:2px solid #5A6270;background:transparent;color:#FFFFFF;font:inherit;font-weight:800;font-size:17px;cursor:pointer}
+.srch-x:hover{border-color:#F26A21}
+.srch-body{overflow:auto;padding:20px;display:flex;flex-direction:column;gap:24px;overscroll-behavior:contain}
+.srch-sec{display:flex;flex-direction:column;gap:10px}
+.srch-h{font-size:17px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#FFB385;display:flex;justify-content:space-between;gap:12px}
+.srch-h em{font-style:normal;letter-spacing:0;text-transform:none;color:#E3E6EA;font-weight:600}
+.srch-chips{display:flex;flex-wrap:wrap;gap:10px}
+.srch-chip{min-height:46px;padding:0 18px;border-radius:999px;border:2px solid #8A5A3C;background:#1F252E;color:#FFFFFF;font:inherit;font-weight:700;font-size:18px;cursor:pointer}
+.srch-chip:hover,.srch-chip.on{border-color:#F26A21;background:#2A2018}
+.srch-list{display:flex;flex-direction:column;gap:4px}
+.sr{display:flex;gap:16px;align-items:center;padding:12px 14px;border-radius:14px;color:#FFFFFF;text-decoration:none;border:2px solid transparent;min-width:0}
+.sr:hover,.sr.on{background:#232A34;border-color:#F26A21}
+.sr .th{flex:none;width:68px;height:68px;border-radius:10px;background:#3A3F45 center/cover no-repeat}
+.sr .th.ic{display:grid;place-items:center;background:#2A313C;color:#FFB385;font-size:28px;font-weight:800}
+.sr .tx{min-width:0;display:flex;flex-direction:column;gap:3px}
+.sr b{font-size:20px;font-weight:800;line-height:1.3}
+.sr .crumb{font-size:16px;font-weight:700;color:#FFB385}
+.sr p{font-size:18px;line-height:1.5;color:#E3E6EA;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.sr mark,.sc mark{background:#7A3A12;color:#FFFFFF;border-radius:4px;padding:0 2px}
+.sr-colors{display:grid;grid-template-columns:repeat(auto-fill,minmax(124px,1fr));gap:10px}
+.sc{display:flex;flex-direction:column;gap:8px;color:#FFFFFF;text-decoration:none;font-weight:700;font-size:18px;padding:6px;border-radius:14px;border:2px solid transparent;text-align:center}
+.sc i{display:block;aspect-ratio:1;border-radius:10px;background:#444444 center/cover}
+.sc:hover,.sc.on{border-color:#F26A21;background:#232A34}
+.sr-photos{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px}
+.sp{position:relative;display:block;border-radius:12px;overflow:hidden;aspect-ratio:4/3;border:2px solid transparent}
+.sp img{width:100%;height:100%;object-fit:cover}
+.sp span{position:absolute;left:8px;right:8px;bottom:8px;padding:6px 10px;border-radius:10px;background:#121212;color:#FFFFFF;font-weight:700;font-size:16px;line-height:1.3}
+.sp:hover,.sp.on{border-color:#F26A21}
+.ans{display:flex;flex-direction:column;gap:12px;padding:20px 22px;border-radius:16px;background:linear-gradient(135deg,#3A2416 0%,#1C222B 70%);border:2px solid #F26A21}
+.ans .big{font-size:28px;font-weight:800;line-height:1.25}
+.ans p{font-size:19px;line-height:1.55;color:#FFFFFF}
+.ans .acts{display:flex;flex-wrap:wrap;gap:12px;margin-top:4px}
+.ans .acts .btn{min-height:52px;font-size:19px}
+.srch-msg{font-size:19px;line-height:1.55;color:#E3E6EA}
+.srch-msg b{color:#FFFFFF}
+.srch-fix{font-size:18px;color:#E3E6EA}
+.srch-fix button{background:none;border:0;padding:0;font:inherit;font-weight:800;color:#FFB385;text-decoration:underline;cursor:pointer}
+.srch-foot{display:flex;gap:20px;flex-wrap:wrap;padding:12px 20px;border-top:1px solid #2E3540;font-size:16px;font-weight:600;color:#D5D9DF}
+.srch-foot kbd{font:inherit;font-weight:800;padding:1px 8px;border-radius:6px;background:#2E3540;color:#FFFFFF}
+.srch-page{background:var(--night);padding-block:56px 80px}
+@media (max-width:640px){
+  .srch{padding:0}
+  .srch-panel{border-radius:0;max-height:100vh;max-height:100dvh;height:100vh;height:100dvh}
+  .srch-inline .srch-panel{height:auto;border-radius:18px}
+  .srch-top input{font-size:21px}
+  .srch-foot{display:none}
+  .sr .th{width:56px;height:56px}
+}
+/* ===== end extras ===== */
 /* ===== Gradient pack: white-to-orange gradients with logo-style black outlines, styled after the buttons on aidanbarnard.com ===== */
 :root{
   --g-loop:linear-gradient(90deg,#FFFFFF 0%,#FFE2CF 14%,#FFB385 30%,#F26A21 50%,#FFB385 70%,#FFE2CF 86%,#FFFFFF 100%);
@@ -462,8 +549,8 @@ header.site .wrap.hdr{max-width:1360px}
 
 <div class="util">
   <div class="wrap">
-    <span class="hrs">Family owned since 1999 · Mon–Fri 7am–6pm</span>
-    <nav aria-label="More pages"><a href="reviews.html">Reviews</a><a href="worry-free-guarantee.html">Guarantee</a><a href="certified-professionals.html">Certified installers</a><a href="trailers.html">Storage</a></nav>
+    <span class="hrs">Mon–Fri 7am–6pm</span>
+    <nav aria-label="More pages"><a href="about-us.html">About</a><a href="reviews.html">Reviews</a><a href="worry-free-guarantee.html">Guarantee</a><a href="certified-professionals.html">Certified installers</a><a href="trailers.html">Storage</a><button type="button" class="slink" data-search-open>Search</button></nav>
     <a class="ph" href="tel:+16512638557">Call (651) 263-8557</a>
   </div>
 </div>
@@ -480,6 +567,7 @@ header.site .wrap.hdr{max-width:1360px}
       <a class="navlink" href="contact-us.html">Contact</a>
     </nav>
     <div class="hdr-cta">
+      <button class="search-btn" type="button" data-search-open aria-label="Search the site" title="Search (press /)"><svg viewBox="0 0 24 24" stroke-linecap="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5 21 21"/></svg></button>
       <a class="btn btn-orange" href="#estimate">Get a Price</a>
       <button class="menu-btn" id="menuBtn" type="button" aria-expanded="false" aria-controls="mobileMenu" aria-label="Open menu">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
@@ -495,8 +583,10 @@ header.site .wrap.hdr{max-width:1360px}
       <a href="colors.html">Colors</a>
       <a href="gallery.html">Gallery</a>
       <a href="reviews.html">Reviews</a>
+      <a href="about-us.html">About us</a>
       <a href="worry-free-guarantee.html">Worry-free guarantee</a>
       <a href="trailers.html">On-site storage</a>
+      <a href="search.html">Search</a>
       <a href="contact-us.html">Contact us</a>
       <a href="#estimate">Get a Price</a>
       <p style="font-weight:800;font-size:20px">Call (651) 263-8557</p>
@@ -583,15 +673,15 @@ header.site .wrap.hdr{max-width:1360px}
 
 <section class="tiles" id="floors" aria-label="What we coat">
   <a class="tile t-res rv rv-z" href="residential.html">
-    <span class="bg" style="background-image:url(img/finish-chip.jpg)"></span>
+    <span class="bg" style="background-image:url(img/photos/job-garage-1.jpg)"></span>
     <h3>Residential</h3><p>Garages, basements, patios and pool decks</p><span class="go">Residential floors →</span>
   </a>
   <a class="tile t-com rv rv-z" href="commercial.html">
-    <span class="bg" style="background-image:url(img/finish-epoxy.jpg)"></span>
+    <span class="bg" style="background-image:url(img/photos/space-showroom.jpg)"></span>
     <h3>Commercial</h3><p>Retail stores, showrooms, kitchens, vet clinics and more</p><span class="go">Commercial floors →</span>
   </a>
   <a class="tile t-ind rv rv-z" href="industrial.html">
-    <span class="bg" style="background-image:url(img/finish-polyurea.jpg)"></span>
+    <span class="bg" style="background-image:url(img/photos/space-warehouse.jpg)"></span>
     <h3>Industrial</h3><p>Warehouses, machine shops, factories and food production</p><span class="go">Industrial floors →</span>
   </a>
 </section>
@@ -669,10 +759,10 @@ header.site .wrap.hdr{max-width:1360px}
       <a href="finishes.html" style="font-weight:700;font-size:20px">Compare all four finishes →</a>
     </div>
     <div class="cards4">
-      <div class="fcard rv"><div class="im" role="img" aria-label="Multilayer chip floor" style="background-image:url(img/finish-chip.jpg)"></div><div class="t"><h3>Multilayer chip</h3><p>Maximum strength for high-traffic floors, slip-resistant, with chips in any color.</p></div></div>
-      <div class="fcard rv"><div class="im" role="img" aria-label="Solid color epoxy floor" style="background-image:url(img/finish-epoxy.jpg)"></div><div class="t"><h3>Solid color epoxy</h3><p>An affordable finish that stands up to foot traffic and hides small chips and cracks.</p></div></div>
-      <div class="fcard rv"><div class="im" role="img" aria-label="Solid color polyurea floor" style="background-image:url(img/finish-polyurea.jpg)"></div><div class="t"><h3>Solid color polyurea</h3><p>Quick to install, easy to maintain, and ready in as little as one day.</p></div></div>
-      <div class="fcard rv"><div class="im" role="img" aria-label="Quartz floor" style="background-image:url(img/finish-quartz.jpg)"></div><div class="t"><h3>Quartz</h3><p>Easy to clean, from pool decks and patios to commercial kitchens.</p></div></div>
+      <div class="fcard rv"><div class="im sys" role="img" aria-label="Multilayer chip floor system layers" style="background-image:url(img/photos/system-chip.jpg)"></div><div class="t"><h3>Multilayer chip</h3><p>Maximum strength for high-traffic floors, slip-resistant, with chips in any color.</p></div></div>
+      <div class="fcard rv"><div class="im sys" role="img" aria-label="Solid color epoxy floor system layers" style="background-image:url(img/photos/system-epoxy.jpg)"></div><div class="t"><h3>Solid color epoxy</h3><p>An affordable finish that stands up to foot traffic and hides small chips and cracks.</p></div></div>
+      <div class="fcard rv"><div class="im sys" role="img" aria-label="Solid color polyurea floor system layers" style="background-image:url(img/photos/system-polyurea.jpg)"></div><div class="t"><h3>Solid color polyurea</h3><p>Quick to install, easy to maintain, and ready in as little as one day.</p></div></div>
+      <div class="fcard rv"><div class="im sys" role="img" aria-label="Quartz floor system layers" style="background-image:url(img/photos/system-quartz.jpg)"></div><div class="t"><h3>Quartz</h3><p>Easy to clean, from pool decks and patios to commercial kitchens.</p></div></div>
     </div>
   </div>
 </section>
@@ -691,14 +781,14 @@ header.site .wrap.hdr{max-width:1360px}
       <button type="button" class="fbtn" aria-pressed="false" data-f="Patio">Patios</button>
     </div>
     <div class="gallery" id="gallery">
-      <button type="button" class="gitem big" data-cat="Basement" data-i="0" aria-label="Open photo: Basement · chip floor"><img src="img/work/job-1.jpg" alt="Basement · chip floor by The Coating Crew" loading="lazy"><span>Basement</span></button>
-      <button type="button" class="gitem" data-cat="Garage" data-i="1" aria-label="Open photo: Garage · chip floor"><img src="img/work/job-2.jpg" alt="Garage · chip floor by The Coating Crew" loading="lazy"><span>Garage</span></button>
-      <button type="button" class="gitem big" data-cat="Patio" data-i="2" aria-label="Open photo: Patio · chip floor"><img src="img/work/job-3.jpg" alt="Patio · chip floor by The Coating Crew" loading="lazy"><span>Patio</span></button>
-      <button type="button" class="gitem" data-cat="Garage" data-i="3" aria-label="Open photo: Garage · solid color"><img src="img/work/job-4.jpg" alt="Garage · solid color by The Coating Crew" loading="lazy"><span>Garage</span></button>
-      <button type="button" class="gitem" data-cat="Garage" data-i="4" aria-label="Open photo: Garage · chip floor"><img src="img/work/job-5.jpg" alt="Garage · chip floor by The Coating Crew" loading="lazy"><span>Garage</span></button>
-      <button type="button" class="gitem" data-cat="Garage" data-i="5" aria-label="Open photo: Garage · dark chip"><img src="img/work/job-6.jpg" alt="Garage · dark chip by The Coating Crew" loading="lazy"><span>Garage</span></button>
-      <button type="button" class="gitem" data-cat="Garage" data-i="6" aria-label="Open photo: Garage · blue chip"><img src="img/work/job-7.jpg" alt="Garage · blue chip by The Coating Crew" loading="lazy"><span>Garage</span></button>
-      <button type="button" class="gitem" data-cat="Garage" data-i="7" aria-label="Open photo: Garage · tan chip"><img src="img/work/job-8.jpg" alt="Garage · tan chip by The Coating Crew" loading="lazy"><span>Garage</span></button>
+      <button type="button" class="gitem big" data-cat="Basement" data-i="0" aria-label="Open photo: Basement · chip floor"><img src="img/photos/job-basement-1.jpg" alt="Basement · chip floor by The Coating Crew" loading="lazy"><span>Basement</span></button>
+      <button type="button" class="gitem" data-cat="Garage" data-i="1" aria-label="Open photo: Garage · chip floor"><img src="img/photos/job-garage-1.jpg" alt="Garage · chip floor by The Coating Crew" loading="lazy"><span>Garage</span></button>
+      <button type="button" class="gitem big" data-cat="Patio" data-i="2" aria-label="Open photo: Patio · chip floor"><img src="img/photos/job-patio-1.jpg" alt="Patio · chip floor by The Coating Crew" loading="lazy"><span>Patio</span></button>
+      <button type="button" class="gitem" data-cat="Garage" data-i="3" aria-label="Open photo: Garage · tan chip"><img src="img/photos/job-garage-5.jpg" alt="Garage · tan chip by The Coating Crew" loading="lazy"><span>Garage</span></button>
+      <button type="button" class="gitem" data-cat="Garage" data-i="4" aria-label="Open photo: Garage · chip floor"><img src="img/photos/job-garage-2.jpg" alt="Garage · chip floor by The Coating Crew" loading="lazy"><span>Garage</span></button>
+      <button type="button" class="gitem" data-cat="Basement" data-i="5" aria-label="Open photo: Basement · dark chip"><img src="img/photos/job-basement-2.jpg" alt="Basement · dark chip by The Coating Crew" loading="lazy"><span>Basement</span></button>
+      <button type="button" class="gitem" data-cat="Garage" data-i="6" aria-label="Open photo: Garage · blue chip"><img src="img/photos/job-garage-3.jpg" alt="Garage · blue chip by The Coating Crew" loading="lazy"><span>Garage</span></button>
+      <button type="button" class="gitem" data-cat="Garage" data-i="7" aria-label="Open photo: Garage · light chip"><img src="img/photos/job-garage-4.jpg" alt="Garage · light chip by The Coating Crew" loading="lazy"><span>Garage</span></button>
     </div>
   </div>
 </section>
@@ -774,6 +864,20 @@ header.site .wrap.hdr{max-width:1360px}
   </div>
 </section>
 
+<section class="band" id="about" aria-labelledby="aboutTitle">
+  <div class="wrap about">
+    <div class="stack rv" style="gap:18px">
+      <p class="eyebrow">About us</p>
+      <h2 class="h2" id="aboutTitle">About The Coating Crew</h2>
+      <p class="body">When we started The Coating Crew, we had over 20 years of experience in the concrete industry and a mission to offer Minneapolis-area home and business owners top-quality concrete floor coating systems. Since 1999, we’ve built a reputation for providing these superior products along with expert installation and exceptional customer service.</p>
+      <p class="body">As the area’s trusted full-service floor and concrete restoration company, The Coating Crew specializes in residential and light commercial applications. Our family-owned and operated business can handle both interior and exterior installations, and most surfaces will be ready for use within 24 hours.</p>
+      <div class="facts"><span>Family owned since 1999</span><span>Residential and light commercial</span><span>Interior and exterior</span><span>Ready within 24 hours</span></div>
+      <a class="btn btn-line" href="about-us.html" style="align-self:flex-start"><span class="gt">More about us</span></a>
+    </div>
+    <div class="shot rv" role="img" aria-label="A floor coating being rolled on" style="background-image:url(img/photos/install-roller.jpg)"></div>
+  </div>
+</section>
+
 <section class="dark" style="background:var(--navy)" aria-label="By the numbers">
   <div class="wrap stats" style="padding-block:72px">
     <div class="stat rv"><b data-count="1999">1999</b><span>Family owned since</span></div>
@@ -805,12 +909,12 @@ header.site .wrap.hdr{max-width:1360px}
       <h2 class="h2" id="faqTitle">Frequently asked questions</h2>
     </div>
     <div class="faq">
-      <details open><summary>How long does a floor coating take?<i>+</i></summary><p>In as little as one day, we can get your epoxy or polyurea floor coating installed and ready for full use. Most surfaces are ready for use within 24 hours.</p></details>
-      <details><summary>Can you install in the winter?<i>+</i></summary><p>Yes. We install year-round.</p></details>
-      <details><summary>What do I do with everything in my garage?<i>+</i></summary><p>Ask about storing your property in an on-site storage container while we coat your garage floor, through our partner Dart Portable Storage, Inc. A drop-off and pick-up fee applies. <a href="trailers.html">About on-site storage →</a></p></details>
-      <details><summary>What warranty comes with my floor?<i>+</i></summary><p>Many of our products carry a lifetime guarantee and a 15-year product warranty. Your specialist will walk you through the coverage for your system. <a href="worry-free-guarantee.html">Our worry-free guarantee →</a></p></details>
-      <details><summary>Do you coat commercial and industrial floors?<i>+</i></summary><p>Yes: retail stores, showrooms, commercial kitchens, vet clinics and kennels, locker rooms, restrooms, salons and medical centers, plus warehouses, machine shops, factories and food production facilities. <a href="commercial.html">Commercial</a> · <a href="industrial.html">Industrial</a></p></details>
-      <details><summary>What's included in the two-stall price?<i>+</i></summary><p>The offer is based on 400 square feet of new concrete and no repair treatments needed. Additional costs may include steps, stemwalls, joint fill, travel and more.</p></details>
+      <details id="faq-1" open><summary>How long does a floor coating take?<i>+</i></summary><p>In as little as one day, we can get your epoxy or polyurea floor coating installed and ready for full use. Most surfaces are ready for use within 24 hours.</p></details>
+      <details id="faq-2"><summary>Can you install in the winter?<i>+</i></summary><p>Yes. We install year-round.</p></details>
+      <details id="faq-3"><summary>What do I do with everything in my garage?<i>+</i></summary><p>Ask about storing your property in an on-site storage container while we coat your garage floor, through our partner Dart Portable Storage, Inc. A drop-off and pick-up fee applies. <a href="trailers.html">About on-site storage →</a></p></details>
+      <details id="faq-4"><summary>What warranty comes with my floor?<i>+</i></summary><p>Many of our products carry a lifetime guarantee and a 15-year product warranty. Your specialist will walk you through the coverage for your system. <a href="worry-free-guarantee.html">Our worry-free guarantee →</a></p></details>
+      <details id="faq-5"><summary>Do you coat commercial and industrial floors?<i>+</i></summary><p>Yes: retail stores, showrooms, commercial kitchens, vet clinics and kennels, locker rooms, restrooms, salons and medical centers, plus warehouses, machine shops, factories and food production facilities. <a href="commercial.html">Commercial</a> · <a href="industrial.html">Industrial</a></p></details>
+      <details id="faq-6"><summary>What's included in the two-stall price?<i>+</i></summary><p>The offer is based on 400 square feet of new concrete and no repair treatments needed. Additional costs may include steps, stemwalls, joint fill, travel and more.</p></details>
     </div>
     <div class="stack center rv" style="gap:16px">
       <p style="font-weight:800;font-size:24px">Based in Inver Grove Heights, serving the Minneapolis / Saint Paul area</p>
@@ -880,16 +984,18 @@ header.site .wrap.hdr{max-width:1360px}
       <a href="colors.html">Colors</a>
       <a href="gallery.html">Gallery</a>
       <a href="reviews.html">Reviews</a>
+      <a href="about-us.html">About us</a>
       <a href="worry-free-guarantee.html">Worry-free guarantee</a>
       <a href="certified-professionals.html">Certified professionals</a>
       <a href="trailers.html">On-site storage</a>
       <a href="contact-us.html">Contact us</a>
+      <a href="search.html">Search the site</a>
       <a href="privacy-policy.html">Privacy policy</a>
       <a href="#inbox">Lead inbox (owner view)</a>
     </div>
   </div>
   <div class="wrap legal">
-    <p>© 2026 The Coating Crew. Floor images and the 3D studio are AI-rendered concept visuals.</p>
+    <p>© 2026 The Coating Crew. Photos are from your current website. The before and after slider, install story and 3D studio use rendered concept visuals.</p>
     <a class="builtby" href="https://www.aidanbarnard.com" target="_blank" rel="noopener"><span>Built by</span><img src="img/ab-logo.png" alt="AB logo"><b>aidanbarnard.com</b></a>
   </div>
 </footer>
@@ -957,6 +1063,7 @@ header.site .wrap.hdr{max-width:1360px}
     ['Wombat Blue','282927:7 585957:13 44618b:3 777976:43 989996:21 c6c7c4:13']
   ];
   var state = { blend: 'Domino' };
+  try { var pick = sessionStorage.getItem('ccBlend'); if (pick && BLENDS.some(function (b) { return b[0] === pick; })) { state.blend = pick; state.blendPicked = true; var bn = document.getElementById('blendName'); if (bn) bn.textContent = pick; var sb = document.getElementById('stageBadge'); if (sb) sb.textContent = pick + ' blend'; } sessionStorage.removeItem('ccBlend'); } catch (e) {}
 
   function rng(seed) { var a = seed >>> 0; return function () { a = (a + 0x6D2B79F5) | 0; var t = Math.imul(a ^ (a >>> 15), 1 | a); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
   function hashStr(s) { var h = 2166136261; for (var i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619); } return h >>> 0; }
@@ -1252,14 +1359,8 @@ header.site .wrap.hdr{max-width:1360px}
     var btn = document.createElement('button'); btn.type = 'button'; btn.className = 'sw'; btn.setAttribute('aria-pressed', String(b[0] === state.blend)); btn.dataset.blend = b[0];
     var ico = document.createElement('i'); btn.appendChild(ico); btn.appendChild(document.createTextNode(b[0])); swBox.appendChild(btn); swIcons.push(ico);
   });
-  /* paint the swatch chips a few at a time so the page stays smooth while it loads */
-  (async function paintSwatches() {
-    for (var i = 0; i < BLENDS.length; i++) {
-      var cv = await flakeCanvas(96, BLENDS[i][1], { rMin: 1.3, rMax: 3.4, coverage: 2.6, seed: 11 + i });
-      swIcons[i].style.backgroundImage = 'url(' + cv.toDataURL('image/jpeg', 0.85) + ')';
-      if (i % 4 === 3) await frame();
-    }
-  })();
+  /* real swatch photos from the current colors page */
+  BLENDS.forEach(function (b, i) { swIcons[i].style.backgroundImage = 'url(img/colors/' + b[0].toLowerCase().replace(/ /g, '-') + '.jpg)'; });
   var studio = null;
   swBox.addEventListener('click', function (e) {
     var btn = e.target.closest('.sw'); if (!btn) return;
@@ -1649,6 +1750,8 @@ header.site .wrap.hdr{max-width:1360px}
   $('#storySteps li').classList.add('on');
 })();
 </script>
+<script src="search-index.js" defer></script>
+<script src="search.js" defer></script>
 
 </body>
 </html>

@@ -97,15 +97,22 @@
     items.forEach(function (it) { it.addEventListener('click', function () { open(it); }); });
     $('#lbX').addEventListener('click', close); $('#lbPv').addEventListener('click', function () { show(cur - 1); }); $('#lbNx').addEventListener('click', function () { show(cur + 1); });
     lb.addEventListener('click', function (e) { if (e.target === lb) close(); });
+    function openFromHash() { if (location.hash.indexOf('#p-') !== 0) return; var it = document.getElementById(location.hash.slice(1)); if (it && it.classList.contains('gitem')) { it.scrollIntoView({ block: 'center' }); open(it); } }
+    openFromHash(); addEventListener('hashchange', openFromHash);
     addEventListener('keydown', function (e) { if (lb.hidden) return; if (e.key === 'Escape') close(); if (e.key === 'ArrowLeft') show(cur - 1); if (e.key === 'ArrowRight') show(cur + 1); });
   }
-  /* colors page: every blend as a rendered chip swatch */
+  /* colors page: the real swatch photos; tapping one opens it in the 3D studio */
   var grid = $('#swgrid');
   if (grid) {
-    BLENDS.forEach(function (b, i) {
-      var a = document.createElement('a'); a.className = 'swc'; a.href = './#studio'; var ico = document.createElement('i'); a.appendChild(ico); a.appendChild(document.createTextNode(b[0])); grid.appendChild(a);
-      setTimeout(function () { flakeCanvas(220, b[1], { rMin: 2.4, rMax: 6, coverage: 2.6, seed: 11 + i }).then(function (cv) { ico.style.backgroundImage = 'url(' + cv.toDataURL('image/jpeg', 0.86) + ')'; }); }, 40 * i);
+    BLENDS.forEach(function (b) {
+      var slug = b[0].toLowerCase().replace(/ /g, '-');
+      var a = document.createElement('a'); a.className = 'swc'; a.href = './#studio'; a.id = 'color-' + slug;
+      a.setAttribute('aria-label', b[0] + ': try it in the 3D studio');
+      var ico = document.createElement('i'); ico.style.backgroundImage = 'url(img/colors/' + slug + '.jpg)';
+      a.appendChild(ico); a.appendChild(document.createTextNode(b[0])); grid.appendChild(a);
+      a.addEventListener('click', function () { try { sessionStorage.setItem('ccBlend', b[0]); } catch (e) {} });
     });
+    if (location.hash.indexOf('#color-') === 0) { var t = document.getElementById(location.hash.slice(1)); if (t) setTimeout(function () { t.scrollIntoView({ block: 'center' }); t.focus({ preventScroll: true }); }, 60); }
   }
   /* contact form (concept: validates, sends nothing) */
   var cf = $('#contactForm');
