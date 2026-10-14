@@ -541,6 +541,8 @@ header.site .wrap.hdr{max-width:1360px}
 .cta{background:radial-gradient(120% 160% at 0% 0%,#2C3440 0%,#121212 62%);color:#FFFFFF;position:relative}
 .cta::before{content:"";position:absolute;left:0;right:0;top:0;height:3px;background-image:var(--g-loop);background-size:200% 100%;animation:ccShift 16s linear infinite}
 
+.mbar .btn{white-space:nowrap;word-spacing:.06em;letter-spacing:.01em;padding:0 12px;font-size:20px}
+@media (max-width:640px){.btn{word-spacing:.1em;letter-spacing:.02em}}
 @media (prefers-reduced-motion:reduce){
   .h1,.btn-orange,.menu-btn,.fbtn[aria-pressed="true"],.opt input:checked+span,.tile .go,.btn-ink,.btn-ghost,.btn-line,header.site::after,.cta::before{animation:none}
 }
