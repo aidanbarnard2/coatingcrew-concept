@@ -369,6 +369,89 @@ footer a{color:var(--peach)}
   .js .rv.pre{transform:none}
   html{scroll-behavior:auto}
 }
+/* ===== Gradient pack: white-to-orange gradients with logo-style black outlines, styled after the buttons on aidanbarnard.com ===== */
+:root{
+  --g-loop:linear-gradient(90deg,#FFFFFF 0%,#FFE2CF 14%,#FFB385 30%,#F26A21 50%,#FFB385 70%,#FFE2CF 86%,#FFFFFF 100%);
+  --g-btn:linear-gradient(90deg,#FFFFFF 0%,#FFB385 11%,#F7853D 24%,#F26A21 50%,#F7853D 76%,#FFB385 89%,#FFFFFF 100%);
+  --ol:drop-shadow(1.6px 0 0 #121212) drop-shadow(-1.6px 0 0 #121212) drop-shadow(0 1.6px 0 #121212) drop-shadow(0 -1.6px 0 #121212);
+  --ts-ol:1.6px 0 0 #121212,-1.6px 0 0 #121212,0 1.6px 0 #121212,0 -1.6px 0 #121212,1.2px 1.2px 0 #121212,-1.2px 1.2px 0 #121212,1.2px -1.2px 0 #121212,-1.2px -1.2px 0 #121212,0 4px 0 #121212;
+}
+@keyframes ccShift{from{background-position:0% 50%}to{background-position:-200% 50%}}
+@keyframes ccShift2{from{background-position:0 0,0% 50%}to{background-position:0 0,-200% 50%}}
+
+/* Big text: white-to-orange fill, black outline and drop like the logo lettering */
+.h1,.h2,.cta h2,.stat b,.offer .price,.tile h3{
+  background-image:var(--g-loop);background-size:200% 100%;background-position:0% 50%;
+  -webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent;
+  filter:var(--ol) drop-shadow(0 4px 0 #121212);
+  width:fit-content;max-width:100%;letter-spacing:.012em;word-spacing:.06em;
+}
+.stat b{margin-inline:auto}
+.h1{animation:ccShift 14s linear infinite;filter:var(--ol) drop-shadow(0 6px 0 #121212)}
+.h1 *{-webkit-text-fill-color:transparent;color:transparent}
+
+/* Buttons: glossy white-to-orange with a black outline and hard black shadow */
+.btn{border-radius:14px;border:2px solid #121212;font-weight:800;font-size:20px;letter-spacing:.03em;word-spacing:.2em;transition:transform .16s ease,box-shadow .16s ease}
+.btn:hover{filter:none}
+.btn-orange,.menu-btn,.fbtn[aria-pressed="true"],.opt input:checked+span,.tile .go{
+  background-color:#F26A21;background-image:var(--g-btn);background-size:200% 100%;background-position:0% 50%;
+  border:2px solid #121212;color:#FFFFFF;text-shadow:var(--ts-ol);font-weight:800;letter-spacing:.03em;word-spacing:.2em;
+  box-shadow:0 5px 0 #121212,0 18px 30px -12px rgba(18,18,18,.7),inset 0 2px 0 rgba(255,255,255,.95),inset 0 -5px 0 rgba(176,64,8,.35);
+  animation:ccShift 16s linear infinite;
+}
+.btn-orange:hover,.tile:hover .go,.fbtn[aria-pressed="true"]:hover{transform:translateY(-2px);box-shadow:0 7px 0 #121212,0 24px 36px -12px rgba(18,18,18,.75),inset 0 2px 0 rgba(255,255,255,.95),inset 0 -5px 0 rgba(176,64,8,.35)}
+.btn-orange:active{transform:translateY(4px);box-shadow:0 1px 0 #121212,0 8px 16px -8px rgba(18,18,18,.6),inset 0 2px 0 rgba(255,255,255,.95),inset 0 -3px 0 rgba(176,64,8,.35)}
+.btn-orange.pulse{animation:ccShift 16s linear infinite}
+
+/* Dark buttons: glossy black with a white-to-orange edge and gradient text */
+.btn-ink,.btn-ghost,.btn-line{
+  color:#FFFFFF;border:2px solid transparent;
+  background:linear-gradient(180deg,#38404C 0%,#1A1E25 52%,#0C0E12 100%) padding-box,var(--g-loop) border-box;
+  background-size:100% 100%,200% 100%;
+  box-shadow:0 5px 0 #000,0 18px 30px -12px rgba(0,0,0,.75),inset 0 1px 0 rgba(255,255,255,.25);
+  animation:ccShift2 16s linear infinite;
+}
+.btn-ink:hover,.btn-ghost:hover,.btn-line:hover{transform:translateY(-2px);box-shadow:0 7px 0 #000,0 24px 36px -12px rgba(0,0,0,.8),inset 0 1px 0 rgba(255,255,255,.25)}
+.btn-ink:active,.btn-ghost:active,.btn-line:active{transform:translateY(4px);box-shadow:0 1px 0 #000,inset 0 1px 0 rgba(255,255,255,.25)}
+.btn .gt{background-image:var(--g-loop);background-size:200% 100%;background-position:0% 50%;-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent;filter:drop-shadow(0 2px 0 #000)}
+
+/* Filter chips and estimator options */
+.fbtn{border-radius:14px;font-weight:700;box-shadow:0 4px 0 #121212;transition:transform .16s ease,box-shadow .16s ease}
+.fbtn:hover{transform:translateY(-2px);box-shadow:0 6px 0 #121212}
+.opt span{border-color:#121212;box-shadow:0 4px 0 #121212}
+.tile .go{border-radius:12px;font-size:20px}
+
+/* Header: dark bar, menu in a glowing pill, white-to-orange links */
+header.site{background:linear-gradient(180deg,#232C39 0%,#121212 100%);border-bottom:0}
+header.site::after{content:"";position:absolute;left:0;right:0;bottom:-3px;height:3px;background-image:var(--g-loop);background-size:200% 100%;animation:ccShift 16s linear infinite;pointer-events:none}
+header.site.scrolled{box-shadow:0 10px 26px rgba(0,0,0,.35)}
+header.site .wrap.hdr{max-width:1360px}
+.navlinks{gap:2px;padding:6px;border-radius:999px;background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.02));border:1.5px solid rgba(255,179,133,.6);box-shadow:inset 0 1px 0 rgba(255,255,255,.12),0 14px 28px -14px rgba(0,0,0,.95)}
+.navlink{padding:10px 13px;border:0;border-radius:999px;font-weight:700;font-size:19px;
+  background-image:var(--g-loop);background-size:200% 100%;background-position:0% 50%;
+  -webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent;
+  filter:drop-shadow(0 2px 0 #000);transition:background-position .7s ease,box-shadow .2s ease}
+.navlink:hover{background-position:-70% 50%;box-shadow:inset 0 0 0 1.5px rgba(255,179,133,.75)}
+.navlink.active{box-shadow:inset 0 0 0 2px #F26A21,0 0 18px rgba(242,106,33,.55)}
+.menu-btn{width:54px;height:54px;border-radius:14px;color:#121212}
+.menu-btn svg{width:26px;height:26px;stroke-width:2.6}
+@media (max-width:1240px){.navlinks{display:none}.menu-btn{display:inline-flex !important}}
+.util a,.util .ph{background-image:var(--g-loop);background-size:200% 100%;background-position:0% 50%;-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent;filter:drop-shadow(0 2px 0 #000);transition:background-position .7s ease}
+.util a:hover{background-position:-70% 50%}
+.mobile-menu{background:#121212;border-top:0}
+.mobile-menu .wrap{gap:4px}
+.mobile-menu a,.mobile-menu p{align-self:flex-start;border:0;padding:8px 0;font-size:26px;font-weight:800;
+  background-image:var(--g-loop);background-size:200% 100%;background-position:0% 50%;
+  -webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent;filter:var(--ol) drop-shadow(0 3px 0 #121212)}
+
+/* Closing call to action on dark so the gradient text and buttons pop */
+.cta{background:radial-gradient(120% 160% at 0% 0%,#2C3440 0%,#121212 62%);color:#FFFFFF;position:relative}
+.cta::before{content:"";position:absolute;left:0;right:0;top:0;height:3px;background-image:var(--g-loop);background-size:200% 100%;animation:ccShift 16s linear infinite}
+
+@media (prefers-reduced-motion:reduce){
+  .h1,.btn-orange,.menu-btn,.fbtn[aria-pressed="true"],.opt input:checked+span,.tile .go,.btn-ink,.btn-ghost,.btn-line,header.site::after,.cta::before{animation:none}
+}
+/* ===== end gradient pack ===== */
 </style>
 </head>
 <body>
@@ -462,7 +545,7 @@ footer a{color:var(--peach)}
       <p class="sub load-in d2">Factory-trained, certified installers, year-round installs, and on-site storage so your belongings stay safe while we work.</p>
       <div class="load-in d3" style="display:flex;flex-wrap:wrap;gap:12px">
         <a class="btn btn-orange pulse" href="#estimate">Get My Price</a>
-        <a class="btn btn-ghost" href="#studio">Design my floor in 3D</a>
+        <a class="btn btn-ghost" href="#studio"><span class="gt">Design my floor in 3D</span></a>
       </div>
       <div class="trust load-in d4"><span>Family owned since 1999</span><span>BBB accredited</span><span>Worry-free guarantee</span></div>
     </div>
@@ -470,7 +553,7 @@ footer a{color:var(--peach)}
       <p class="lab">Ask about our two-stall garage floor</p>
       <p class="price">$2,495*</p>
       <p style="color:#fff;font-size:21px">Custom epoxy and polyurea coatings, installed by our own factory-trained crew.</p>
-      <a class="btn" href="#estimate" style="background:#fff;color:var(--ink)">Claim this price</a>
+      <a class="btn btn-orange" href="#estimate">Claim this price</a>
       <p class="fine">*Offer based on 400 square feet of new concrete and no repair treatments needed. Additional costs may include steps, stemwalls, joint fill, travel and more.</p>
     </div>
   </div>
@@ -555,7 +638,7 @@ footer a{color:var(--peach)}
           </div>
         </div>
         <div class="swatches" id="swatches" role="group" aria-label="Chip blends"></div>
-        <a class="btn btn-line" href="#estimate" id="priceThis" style="border-color:#fff;color:#fff">Price this floor</a>
+        <a class="btn btn-line" href="#estimate" id="priceThis"><span class="gt">Price this floor</span></a>
       </div>
     </div>
   </div>
@@ -680,7 +763,7 @@ footer a{color:var(--peach)}
         <p id="doneText">The Coating Crew will reach out to schedule your free estimate.</p>
         <p class="offer-note" id="doneOffer" hidden>Ask about our two-stall garage floor for only $2,495*.</p>
         <p style="color:var(--ink);font-size:20px">Concept demo: this request just landed in the <a href="#inbox">lead inbox</a> below.</p>
-        <button type="button" class="btn btn-line" id="estReset">Start another estimate</button>
+        <button type="button" class="btn btn-line" id="estReset"><span class="gt">Start another estimate</span></button>
       </div>
       <div class="est-nav" id="estNav">
         <button type="button" class="linkbtn" id="estBack" hidden>← Back</button>
@@ -743,8 +826,8 @@ footer a{color:var(--peach)}
       <p style="font-size:23px;font-weight:700">Free, no-obligation estimates across the Minneapolis / Saint Paul area.</p>
     </div>
     <div class="rv rv-r" style="display:flex;flex-wrap:wrap;gap:12px">
-      <a class="btn btn-ink" href="#estimate">Get My Price</a>
-      <a class="btn btn-line" href="tel:+16512638557">Call (651) 263-8557</a>
+      <a class="btn btn-orange" href="#estimate">Get My Price</a>
+      <a class="btn btn-line" href="tel:+16512638557"><span class="gt">Call (651) 263-8557</span></a>
     </div>
   </div>
 </section>
@@ -813,7 +896,7 @@ footer a{color:var(--peach)}
 
 <div class="mbar" aria-label="Quick actions">
   <div class="in">
-    <a class="btn btn-ink" href="tel:+16512638557">Call Now</a>
+    <a class="btn btn-ink" href="tel:+16512638557"><span class="gt">Call Now</span></a>
     <a class="btn btn-orange" href="#estimate">Get a Price</a>
   </div>
 </div>
