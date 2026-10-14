@@ -4,6 +4,12 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <link rel="icon" href="img/logo.webp">
+<meta name="description" content="Epoxy and polyurea floor coatings in as little as one day. Garages, basements, patios, commercial and industrial floors across the Minneapolis / Saint Paul area.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="The Coating Crew | Minneapolis Garage Floor Coatings">
+<meta property="og:description" content="A showroom floor in as little as one day. Concept site by Aidan Barnard.">
+<meta property="og:image" content="https://aidanbarnard2.github.io/coatingcrew-concept/img/photos/hero-residential.jpg">
+<meta name="twitter:card" content="summary_large_image">
 <title>The Coating Crew Concept Site</title>
 <meta name="robots" content="noindex, nofollow">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -1028,6 +1034,21 @@ header.site .wrap.hdr{max-width:1360px}
   document.documentElement.classList.add('js');
 
   /* ---------- Blend palettes sampled from the colors page ---------- */
+  /* chip floor texture: made from the real swatch photo on the colors page; falls back to the blend's colors if the photo can't load */
+  var texCache = {};
+  /* measured: at this tint the lit floor's average color matches the swatch photo within a few levels */
+  var FLOOR_TINT = 0x9a9a9a;
+  function chipTex(name, pal, chunk) {
+    if (texCache[name]) return texCache[name];
+    var slug = name.toLowerCase().replace(/ /g, '-');
+    texCache[name] = new Promise(function (res) {
+      var im = new Image();
+      im.onload = function () { res(im); };
+      im.onerror = function () { delete texCache[name]; flakeCanvas(1024, pal, { rMin: 2.2, rMax: 5.8, coverage: 2.7, seed: hashStr(name), chunk: chunk }).then(res); };
+      im.src = 'img/colors/tex/' + slug + '.jpg';
+    });
+    return texCache[name];
+  }
   var BLENDS = [
     ['Armadillo','6a6358:10 807a6e:20 938c7f:27 a39c8f:24 b5aea1:14 ccc6ba:6'],
     ['Basalt','656a6e:13 777b80:29 84898d:27 92969b:21 a3a7ab:9 bfc3c7:2'],
@@ -1459,7 +1480,7 @@ header.site .wrap.hdr{max-width:1360px}
     var concreteTex = new THREE.CanvasTexture(concreteCanvas(1536)); concreteTex.encoding = THREE.sRGBEncoding; concreteTex.anisotropy = maxAniso;
     var baseClip = new THREE.Plane(new THREE.Vector3(0, 0, 1), 0), topClip = new THREE.Plane(new THREE.Vector3(0, 0, -1), 0);
     var concreteMat = new THREE.MeshStandardMaterial({ map: concreteTex, roughness: 0.93, clippingPlanes: [baseClip] });
-    function coatMat(tex, plane) { return new THREE.MeshPhysicalMaterial({ map: tex, roughness: 0.38, metalness: 0, clearcoat: 1, clearcoatRoughness: 0.05, transparent: !!mirror, opacity: mirror ? 0.88 : 1, envMapIntensity: 0.85, clippingPlanes: [plane] }); }
+    function coatMat(tex, plane) { return new THREE.MeshPhysicalMaterial({ map: tex, color: FLOOR_TINT, roughness: 0.38, metalness: 0, clearcoat: 1, clearcoatRoughness: 0.05, transparent: !!mirror, opacity: mirror ? 0.94 : 1, envMapIntensity: 0.5, clippingPlanes: [plane] }); }
     var baseMesh = new THREE.Mesh(floorGeo, concreteMat); baseMesh.rotation.x = -Math.PI / 2; baseMesh.position.y = 0.002; scene.add(baseMesh);
     var topMesh = new THREE.Mesh(floorGeo, coatMat(null, topClip)); topMesh.rotation.x = -Math.PI / 2; topMesh.position.y = 0.004; topMesh.visible = false; scene.add(topMesh);
     var wet = new THREE.Mesh(new THREE.PlaneGeometry(W, 0.07), new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.5 })); wet.rotation.x = -Math.PI / 2; wet.position.y = 0.006; wet.visible = false; scene.add(wet);
@@ -1470,7 +1491,7 @@ header.site .wrap.hdr{max-width:1360px}
     function blendTex(name) {
       if (cache[name]) return Promise.resolve(cache[name]);
       var pal = BLENDS.filter(function (b) { return b[0] === name; })[0][1];
-      return flakeCanvas(1024, pal, { rMin: 2.2, rMax: 5.8, coverage: 2.7, seed: hashStr(name), chunk: 14000 }).then(function (cv) {
+      return chipTex(name, pal, 14000).then(function (cv) {
         var t = new THREE.CanvasTexture(cv); t.encoding = THREE.sRGBEncoding; t.wrapS = t.wrapT = THREE.RepeatWrapping; t.repeat.set(W / 1.25, D / 1.25); t.anisotropy = maxAniso; cache[name] = t; return t;
       });
     }
@@ -1644,10 +1665,10 @@ header.site .wrap.hdr{max-width:1360px}
       prep: new THREE.MeshStandardMaterial({ map: tex(cs.prep), roughness: 0.88 }),
       patch: new THREE.MeshStandardMaterial({ map: tex(cs.patch), roughness: 0.88 }),
       base: new THREE.MeshStandardMaterial({ color: 0x888888, roughness: 0.55 }),
-      chips: new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.8 }),
-      gloss: new THREE.MeshPhysicalMaterial({ color: 0xffffff, roughness: 0.38, clearcoat: 1, clearcoatRoughness: 0.05, transparent: !!mirror, opacity: mirror ? 0.88 : 1, envMapIntensity: 0.85 })
+      chips: new THREE.MeshStandardMaterial({ color: FLOOR_TINT, roughness: 0.8 }),
+      gloss: new THREE.MeshPhysicalMaterial({ color: FLOOR_TINT, roughness: 0.38, clearcoat: 1, clearcoatRoughness: 0.05, transparent: !!mirror, opacity: mirror ? 0.94 : 1, envMapIntensity: 0.5 })
     };
-    var fade = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.8, transparent: true, opacity: 0 });
+    var fade = new THREE.MeshStandardMaterial({ color: FLOOR_TINT, roughness: 0.8, transparent: true, opacity: 0 });
     var baseClip = new THREE.Plane(new THREE.Vector3(0, 0, 1), 0), topClip = new THREE.Plane(new THREE.Vector3(0, 0, -1), 0);
     var baseMesh = new THREE.Mesh(floorGeo, M.raw); baseMesh.rotation.x = -Math.PI / 2; baseMesh.position.y = 0.002; scene.add(baseMesh);
     var topMesh = new THREE.Mesh(floorGeo, M.prep); topMesh.rotation.x = -Math.PI / 2; topMesh.position.y = 0.004; scene.add(topMesh);
@@ -1680,7 +1701,7 @@ header.site .wrap.hdr{max-width:1360px}
       for (var i = 0; i < flakeN; i++) { var u = RCOL(), k = 0; while (k < pp.length - 1 && u > pp[k].cum) k++; var c = pp[k].c; col.setRGB(c[0] / 255, c[1] / 255, c[2] / 255).convertSRGBToLinear(); flakes.setColorAt(i, col); }
       if (flakes.instanceColor) flakes.instanceColor.needsUpdate = true;
       $('#storyBlend').textContent = 'Your floor: ' + name; cur = name;
-      flakeCanvas(1024, pal, { rMin: 2.2, rMax: 5.8, coverage: 2.7, seed: hashStr(name), chunk: 16000 }).then(function (cv) {
+      chipTex(name, pal, 16000).then(function (cv) {
         if (cur !== name) return; var t = tex(cv, true);
         [M.chips, M.gloss, fade].forEach(function (m) { m.map = t; m.needsUpdate = true; });
       });
