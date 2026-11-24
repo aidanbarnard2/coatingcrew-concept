@@ -13,7 +13,7 @@ A concept preview built by Saint Paul Agency (saintpaulagency.com) and Aidan Bar
 
 ## Rebuilding
 
-- `python3 tools/build_pages.py` rewraps every page in the shared head, header and footer. The home, colors, finishes and owner pages are built from `tools/pages/`. Pages stay out of search engines; build with `CC_INDEX=1` when this becomes the live site.
+- `python3 tools/build_pages.py` rewraps every page in the shared head, header and footer. The home, colors, finishes and owner pages are built from `tools/pages/`. Pages stay out of search engines; build with `CC_INDEX=1` when this becomes the live site (that also opens `robots.txt` and points it at `sitemap.xml`).
 - `tools/studio/` builds the visualizer rooms: `final.sh` renders each room's light passes with Blender's Python module (`pip install bpy OpenEXR`), then `python3 encode.py final ../../img/studio garage basement sunroom` packs them for the page. `mix.py` previews any lighting preset as a still.
 
 ## Accessibility and speed

@@ -468,3 +468,8 @@ if __name__ == '__main__':
     pages = sorted(p for p in glob.glob(os.path.join(ROOT, '*.html')) if not os.path.basename(p).startswith('test-'))
     for p in pages:
         print('built', build(p))
+    # sitemap for launch; robots.txt keeps crawlers out until CC_INDEX=1
+    public = [os.path.basename(p) for p in pages if os.path.basename(p) not in ('404.html', 'owner.html', 'search.html')]
+    urls = ''.join(f'  <url><loc>{SITE}{"" if n == "index.html" else n}</loc></url>\n' for n in sorted(public, key=lambda n: n != 'index.html'))
+    open(os.path.join(ROOT, 'sitemap.xml'), 'w').write(f'<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n{urls}</urlset>\n')
+    open(os.path.join(ROOT, 'robots.txt'), 'w').write(f'User-agent: *\nAllow: /\nSitemap: {SITE}sitemap.xml\n' if os.environ.get('CC_INDEX') else 'User-agent: *\nDisallow: /\n')
