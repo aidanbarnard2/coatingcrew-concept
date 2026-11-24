@@ -8,6 +8,7 @@ A concept preview built by Saint Paul Agency (saintpaulagency.com) and Aidan Bar
 - The home page opens on the showroom: a live floor visualizer where visitors pick a room, a chip sample and the light, followed by real jobs and reviews, the four systems side by side, the install day, the free-estimate form (pre-filled with the visitor's picks), FAQ and about.
 - `visualizer.js`: the floor visualizer. Three 3D rooms (garage, basement, sunroom) were path-traced in Blender with every light rendered on its own: the sun at three times of day, the sky, ceiling lights and lamps. The page mixes those passes live in WebGL, so visitors can change the time of day, weather, bulb brightness and bulb color, and lay any chip blend into the floor with its clear-coat reflections (`img/studio/`). It loads after the page does, and browsers with only software WebGL get still pictures.
 - `img/systems/`: rendered sample blocks for the four floor systems.
+- The home page opens with The Coating Crew's logo drawn as an SVG (`tools/logo/build_logo.py` traces the ribbon and flags and sets the lettering in Poppins ExtraBold, SIL Open Font License). The flags swing in, wave for a few seconds and settle, then wave again on hover or tap; people who ask for reduced motion see it still.
 - `home.js`: the free-estimate form, and the owner's lead inbox on `owner.html`.
 - `search.js` and `search-index.js`: site search.
 
@@ -18,4 +19,4 @@ A concept preview built by Saint Paul Agency (saintpaulagency.com) and Aidan Bar
 
 ## Accessibility and speed
 
-All text uses solid colors that pass WCAG 2.2 AA contrast. Every page is checked with axe-core at desktop and phone sizes, and the menu, estimate form, photo viewer and visualizer all work from the keyboard. Photos are served as WebP in two sizes, and the page's structured data (business, FAQ and breadcrumbs) is in JSON-LD.
+All text uses solid colors that pass WCAG 2.2 AA contrast. Every page is checked with axe-core at desktop and phone sizes, and the menu, estimate form, photo viewer and visualizer all work from the keyboard. The crew's own job photos get a light correction pass (local contrast, a touch of color, sharpening). Photos are served as WebP in two sizes, and the page's structured data (business, FAQ and breadcrumbs) is in JSON-LD.

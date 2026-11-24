@@ -95,20 +95,50 @@ def slug(n):
     return n.lower().replace(' ', '-')
 
 
-def viz_stage():
+def viz_stage(open_desk=False, p='v-'):
+    """The live room, the control bar under it (room, time of day, lights) and the full lighting drawer."""
+    r = ROOMS[0]
     rooms = '\n'.join(
-        f'      <button type="button" class="room" data-i="{i}" aria-pressed="{str(i == 0).lower()}"><img src="img/studio/{r["key"]}-thumb.webp" alt="" width="105" height="70" decoding="async"><span>{esc(r["name"])}</span></button>'
-        for i, r in enumerate(ROOMS))
-    label = f'{ROOMS[0]["name"]} with bare concrete, bright afternoon'
+        f'        <button type="button" class="room" data-i="{i}" aria-pressed="{str(i == 0).lower()}"><img src="img/studio/{x["key"]}-thumb.webp" alt="" width="105" height="70" decoding="async"><span>{esc(x["name"])}</span></button>'
+        for i, x in enumerate(ROOMS))
+    label = f'{r["name"]} with bare concrete, showroom lights'
+    sun = '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="4.5"/><path d="M12 1.5v2.5M12 20v2.5M4.6 4.6l1.8 1.8M17.6 17.6l1.8 1.8M1.5 12H4M20 12h2.5M4.6 19.4l1.8-1.8M17.6 6.4l1.8-1.8"/></svg>'
+    cloud = '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><path d="M7 18h10a4 4 0 0 0 .6-7.95A6 6 0 0 0 6.1 9.2 4.5 4.5 0 0 0 7 18z"/></svg>'
+    chev = '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>'
+    presets = [('showroom', 'Showroom lights'), ('morning', 'Sunny morning'), ('afternoon', 'Bright afternoon'), ('cloudy', 'Cloudy day'), ('golden', 'Golden hour'),
+               ('evening', 'Evening, warm bulbs'), ('nightcool', 'Night, cool LEDs'), ('dark', 'Lights off')]
+    pb = ''.join(f'<button type="button" data-preset="{k}" aria-pressed="{str(k == "showroom").lower()}">{v}</button>' for k, v in presets)
+    bulbs = ''.join(f'<button type="button" data-bulbs="{k}" aria-pressed="{str(k == "cool").lower()}">{v}</button>' for k, v in (('off', 'Off'), ('warm', 'Warm'), ('cool', 'Cool')))
+    hid = '' if open_desk else ' hidden'
     return f'''<div class="s-viz">
     <div class="viz-stage">
       <img class="viz-photo" src="img/studio/garage-bare-1320.webp" srcset="img/studio/garage-bare-660.webp 660w, img/studio/garage-bare-990.webp 990w, img/studio/garage-bare-1320.webp 1320w" sizes="(min-width:1340px) 700px, (min-width:1001px) 56vw, calc(100vw - 32px)" alt="{label}" width="1320" height="880" fetchpriority="high">
       <canvas role="img" aria-hidden="true" aria-label="{label}"></canvas>
-      <span class="viz-tag" aria-hidden="true"><b class="viz-tag-blend">Bare concrete</b><span class="viz-tag-light">Bright afternoon</span></span>
+      <span class="viz-tag" aria-hidden="true"><b class="viz-tag-blend">Bare concrete</b><span class="viz-tag-light">Showroom lights</span></span>
       <span class="loader" aria-hidden="true">Loading the room…</span>
     </div>
-    <div class="viz-rooms" role="group" aria-label="Choose a room">
+    <div class="cbar">
+      <div class="viz-rooms" role="group" aria-label="Choose a room">
 {rooms}
+      </div>
+      <div class="cbar-row">
+        <label class="tod"><span>Time of day <output class="viz-time-out">Midday</output></span><input type="range" class="viz-time" min="0" max="4" step="1" value="1" aria-label="Time of day" aria-valuetext="Midday"><span class="tod-ticks" aria-hidden="true"><i>Morning</i><i>Midday</i><i>Golden</i><i>Dusk</i><i>Night</i></span></label>
+        <div class="group"><span class="sub" id="{p}bulbLbl">Indoor lights</span><div class="seg seg3" role="group" aria-labelledby="{p}bulbLbl">{bulbs}</div></div>
+        <button type="button" class="more-btn" aria-expanded="{str(open_desk).lower()}" aria-controls="{p}desk">More lighting{chev}</button>
+      </div>
+    </div>
+    <div class="desk" id="{p}desk"{hid}>
+      <div class="group wide"><span class="sub" id="{p}presetLbl">Quick looks</span><div class="presets" role="group" aria-labelledby="{p}presetLbl">{pb}</div></div>
+      <div class="group"><span class="sub" id="{p}skyLbl">Weather</span><div class="seg" role="group" aria-labelledby="{p}skyLbl"><button type="button" data-sky="sun" aria-pressed="true">{sun}Sunny</button><button type="button" data-sky="cloud" aria-pressed="false">{cloud}Cloudy</button></div></div>
+      <label class="range kelvin"><span>Bulb color <output class="viz-k-out">5000K, cool daylight</output></span><input type="range" class="viz-k" min="2200" max="6500" step="100" value="5000" aria-label="Bulb color"><span class="kbar" aria-hidden="true"></span><span class="ends" aria-hidden="true"><i>Warm</i><i>Cool</i></span></label>
+      <div class="group">
+        <button type="button" class="toggle viz-ceil-on" aria-pressed="true"><span class="viz-ceil-name">{esc(r["ceiling"])}</span><span class="sw" aria-hidden="true"></span></button>
+        <label class="range"><span>Brightness <output class="viz-ceil-out">100%</output></span><input type="range" class="viz-ceil-dim" min="5" max="100" step="5" value="100" aria-label="{esc(r["ceiling"])} brightness"></label>
+      </div>
+      <div class="group">
+        <button type="button" class="toggle viz-lamps-on" aria-pressed="true"><span class="viz-lamps-name">{esc(r["lamps"])}</span><span class="sw" aria-hidden="true"></span></button>
+        <label class="range"><span>Brightness <output class="viz-lamps-out">100%</output></span><input type="range" class="viz-lamps-dim" min="5" max="100" step="5" value="100" aria-label="{esc(r["lamps"])} brightness"></label>
+      </div>
     </div>
   </div>'''
 
@@ -130,43 +160,6 @@ def viz_rail(est, p='v-'):
     <p class="viz-nogl note" hidden>Your browser is showing still pictures, so the floor stays Domino here. The swatch above shows the blend you picked.</p>
     <div class="rail">
       {"".join(groups)}
-    </div>
-  </div>'''
-
-
-def viz_desk(p='v-'):
-    r = ROOMS[0]
-    sun = '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="4.5"/><path d="M12 1.5v2.5M12 20v2.5M4.6 4.6l1.8 1.8M17.6 17.6l1.8 1.8M1.5 12H4M20 12h2.5M4.6 19.4l1.8-1.8M17.6 6.4l1.8-1.8"/></svg>'
-    cloud = '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><path d="M7 18h10a4 4 0 0 0 .6-7.95A6 6 0 0 0 6.1 9.2 4.5 4.5 0 0 0 7 18z"/></svg>'
-    presets = [('morning', 'Sunny morning'), ('afternoon', 'Bright afternoon'), ('cloudy', 'Cloudy day'), ('golden', 'Golden hour'),
-               ('evening', 'Evening, warm bulbs'), ('nightcool', 'Night, cool LEDs'), ('dark', 'Lights off')]
-    pb = ''.join(f'<button type="button" data-preset="{k}" aria-pressed="{str(k == "afternoon").lower()}">{v}</button>' for k, v in presets)
-    times = [('morning', 'Morning'), ('midday', 'Midday'), ('golden', 'Golden hour'), ('dusk', 'Dusk'), ('night', 'Night')]
-    tb = ''.join(f'<button type="button" data-time="{k}" aria-pressed="{str(k == "midday").lower()}">{v}</button>' for k, v in times)
-    return f'''<div class="s-desk">
-    <div class="desk">
-      <div class="desk-top">
-        <h2 class="desk-h" id="{p}lightTitle">Change the light</h2>
-        <div class="presets" role="group" aria-labelledby="{p}lightTitle">{pb}</div>
-      </div>
-      <div class="desk-col">
-        <div class="group"><span class="sub" id="{p}timeLbl">Time of day</span><div class="seg5" role="group" aria-labelledby="{p}timeLbl">{tb}</div></div>
-        <div class="group"><span class="sub" id="{p}skyLbl">Weather</span><div class="seg" role="group" aria-labelledby="{p}skyLbl"><button type="button" data-sky="sun" aria-pressed="true">{sun}Sunny</button><button type="button" data-sky="cloud" aria-pressed="false">{cloud}Cloudy</button></div></div>
-      </div>
-      <div class="desk-col">
-        <div class="group">
-          <button type="button" class="toggle viz-ceil-on" aria-pressed="false"><span class="viz-ceil-name">{esc(r["ceiling"])}</span><span class="sw" aria-hidden="true"></span></button>
-          <label class="range"><span>Brightness <output class="viz-ceil-out">100%</output></span><input type="range" class="viz-ceil-dim" min="5" max="100" step="5" value="100" aria-label="{esc(r["ceiling"])} brightness"></label>
-        </div>
-        <div class="group">
-          <button type="button" class="toggle viz-lamps-on" aria-pressed="false"><span class="viz-lamps-name">{esc(r["lamps"])}</span><span class="sw" aria-hidden="true"></span></button>
-          <label class="range"><span>Brightness <output class="viz-lamps-out">100%</output></span><input type="range" class="viz-lamps-dim" min="5" max="100" step="5" value="100" aria-label="{esc(r["lamps"])} brightness"></label>
-        </div>
-      </div>
-      <div class="desk-col">
-        <label class="range kelvin"><span>Bulb color <output class="viz-k-out">3000K, soft white</output></span><input type="range" class="viz-k" min="2200" max="6500" step="100" value="3000" aria-label="Bulb color"><span class="kbar" aria-hidden="true"></span><span class="ends" aria-hidden="true"><i>Warm</i><i>Cool</i></span></label>
-        <p class="desk-note">Bulb color changes every light that’s on. Warm bulbs bring out tans and browns; cool LEDs make grays and blues look crisper.</p>
-      </div>
     </div>
   </div>'''
 
@@ -309,8 +302,9 @@ def head(page, title, desc, main):
     img = OG_IMG.get(page, 'img/photos/job-garage-5.jpg')
     t, d = esc(title), esc(desc)
     url = SITE + ('' if page == 'index.html' else page)
+    html_cls = ' class="logo-in-hero"' if page == 'index.html' else ''
     return f'''<!doctype html>
-<html lang="en">
+<html lang="en"{html_cls}>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
@@ -392,6 +386,8 @@ def clean(m, page):
         w, h = dims(mo.group(1))
         return tag.replace('<img ', f'<img width="{w}" height="{h}" ', 1)
     m = re.sub(r'<img src="(img/photos/t/[^"]+)"[^>]*>', sized, m)
+    # the photo viewer opens the color-corrected WebP
+    m = re.sub(r'data-full="img/photos/([\w-]+)\.jpg"', lambda mo: f'data-full="img/w/{mo.group(1)}-1200.webp"' if os.path.exists(os.path.join(ROOT, f'img/w/{mo.group(1)}-1200.webp')) else mo.group(0), m)
     m = re.sub(r'<section class="cta".*?</section>', '{{CTA}}', m, flags=re.S)
     return m
 
@@ -438,7 +434,8 @@ def build(path):
         main = re.sub(r'<!--(title|desc): .*?-->\n?', '', s)
         show = '#showroom' if page == 'index.html' else 'colors.html'
         main = main.replace('{{COMPARE}}', open(os.path.join(SRC, '_compare.html')).read().replace('{show}', show))
-        main = main.replace('{{VIZ_STAGE}}', viz_stage()).replace('{{VIZ_RAIL}}', viz_rail(est)).replace('{{VIZ_DESK}}', viz_desk())
+        main = main.replace('{{VIZ_STAGE}}', viz_stage(open_desk=page == 'colors.html')).replace('{{VIZ_RAIL}}', viz_rail(est))
+        main = main.replace('{{LOGO}}', open(os.path.join(SRC, '_logo.svg')).read().strip())
         main = re.sub(r'\{\{PIC (\S+) "([^"]*)" "([^"]*)"( eager)?\}\}', lambda mo: pic(mo.group(1), mo.group(2), mo.group(3), bool(mo.group(4))), main)
     else:
         s = open(path).read()

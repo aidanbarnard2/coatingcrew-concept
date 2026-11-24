@@ -157,53 +157,76 @@ def garage(mode):
     point('opener_light', 'lamps', ox, D - 3.8, 2.33, 60, radius=0.06)
     for sx in (-0.15, 0.15):
         box(f'op_strap{sx}', ox + sx - 0.015, D - 3.8, 2.66, ox + sx + 0.015, D - 3.76, H, m['galv'])
-    # LED shop lights (Ceiling lights group)
-    for i, (lx, ly) in enumerate([(2.1, 2.3), (4.7, 2.3), (2.1, 4.9), (4.7, 4.9)]):
-        box(f'led{i}_h', lx - 0.62, ly - 0.08, H - 0.05, lx + 0.62, ly + 0.08, H, m['trim'], bevel=0.005)
-        box(f'led{i}_l', lx - 0.6, ly - 0.06, H - 0.056, lx + 0.6, ly + 0.06, H - 0.05, emitter('led_lens', 9.0), group='ceiling')
-        area(f'led{i}', 'ceiling', lx, ly, H - 0.06, 1.2, 0.12, 260)
-    # shelving with bins along the left wall
-    sx0, sx1, sy0, sy1 = 0.02, 0.52, 3.4, 4.45
-    for (px, py) in [(sx0, sy0), (sx1 - 0.035, sy0), (sx0, sy1 - 0.035), (sx1 - 0.035, sy1 - 0.035)]:
-        box(f'post{px:.2f}{py:.2f}', px, py, 0, px + 0.035, py + 0.035, 1.9, m['black'])
-    colors = ['darkplastic', 'grayplastic', 'darkplastic', 'blueplastic', 'grayplastic']
-    for k, z in enumerate([0.12, 0.58, 1.04, 1.5, 1.88]):
-        box(f'shelf{k}', sx0, sy0, z, sx1, sy1, z + 0.02, m['osb'])
-        if k < 4:
-            nb = 1 + (k % 2)
-            for b in range(nb):
-                ya = sy0 + 0.04 + b * 0.5
-                c = colors[(k + b) % len(colors)]
-                hgt = 0.30 + 0.06 * ((k + b) % 2)
-                box(f'bin{k}{b}', sx0 + 0.03, ya, z + 0.02, sx1 - 0.04, ya + 0.46, z + 0.02 + hgt, m[c], bevel=0.015)
-                lid = 'yellow' if c == 'darkplastic' else c
-                box(f'lid{k}{b}', sx0 + 0.02, ya - 0.01, z + 0.02 + hgt, sx1 - 0.03, ya + 0.47, z + 0.05 + hgt, m[lid], bevel=0.01)
-    # fridge and carts near the door, left side
-    box('cart1', 0.08, 6.55, 0, 0.75, 7.15, 1.08, m['greenplastic'], bevel=0.03)
-    box('cart1l', 0.05, 6.53, 1.08, 0.78, 7.17, 1.12, m['greenplastic'], bevel=0.015)
-    box('cart2', W - 0.75, 6.5, 0, W - 0.1, 7.1, 1.08, m['blueplastic'], bevel=0.03)
-    box('cart2l', W - 0.78, 6.48, 1.08, W - 0.07, 7.12, 1.12, m['blueplastic'], bevel=0.015)
-    # workbench and pegboard on the right wall
-    bx0 = W - 0.66
-    box('bench_top', bx0, 3.5, 0.86, W, 5.0, 0.92, m['bench'], bevel=0.005)
-    box('bench_cab', bx0 + 0.04, 3.55, 0.0, W, 4.95, 0.86, m['grayplastic'], bevel=0.008)
-    for i in range(4):
-        box(f'drawer{i}', bx0 + 0.03, 3.6 + i * 0.34, 0.5, bx0 + 0.045, 3.9 + i * 0.34, 0.8, m['galv'], bevel=0.004)
-    box('pegboard', W - 0.02, 3.5, 1.02, W, 5.0, 1.95, m['pegboard'])
-    for i, (ty, tz, h_) in enumerate([(3.7, 1.5, 0.3), (3.95, 1.45, 0.4), (4.3, 1.55, 0.25), (4.6, 1.4, 0.35)]):
-        box(f'tool{i}', W - 0.05, ty - 0.02, tz - h_ / 2, W - 0.02, ty + 0.02, tz + h_ / 2, m['black'], bevel=0.005)
-    box('bench_shelf', W - 0.3, 3.5, 1.98, W, 5.0, 2.0, m['osb'])
-    box('bench_led', W - 0.28, 3.55, 1.972, W - 0.24, 4.95, 1.98, emitter('strip', 8.0), group='lamps')
-    area('bench_light', 'lamps', W - 0.26, 4.25, 1.965, 0.04, 1.4, 50)
-    box('panel', W - 0.1, 2.85, 1.2, W, 3.3, 1.85, m['grayplastic'], bevel=0.004)
+    # hexagon LED grid (Ceiling lights group): white diffuser tubes in a honeycomb, the look premium garages are built around
+    tube = pbr('hex_tube', (0.9, 0.9, 0.9), rough=0.4, spec=0.4, emit=220.0)
+    hs, tw = 0.42, 0.036
+    rt3 = math.sqrt(3)
+    ncol, nrow, cx0, cy0 = 7, 5, 3.4, 4.15
+    xs0 = cx0 - (ncol - 1) * 1.5 * hs / 2
+    ys0 = cy0 - ((nrow - 1) * rt3 * hs + rt3 * hs / 2) / 2
+    edges = set()
+    for c in range(ncol):
+        for r in range(nrow):
+            hx = xs0 + c * 1.5 * hs
+            hy = ys0 + r * rt3 * hs + (c % 2) * rt3 * hs / 2
+            pts = [(round(hx + hs * math.cos(math.radians(60 * k)), 3), round(hy + hs * math.sin(math.radians(60 * k)), 3)) for k in range(6)]
+            for k in range(6):
+                a, b = pts[k], pts[(k + 1) % 6]
+                edges.add(tuple(sorted((a, b))))
+    for n, (a, b) in enumerate(sorted(edges)):
+        L = math.hypot(b[0] - a[0], b[1] - a[1]) + tw * 0.6
+        o = box(f'hex{n}', -L / 2, -tw / 2, H - 0.028, L / 2, tw / 2, H - 0.004, tube, group='ceiling')
+        o.location = ((a[0] + b[0]) / 2, (a[1] + b[1]) / 2, 0)
+        o.rotation_euler = (0, 0, math.atan2(b[1] - a[1], b[0] - a[0]))
+    area("hex_fill", "ceiling", cx0, cy0, H - 0.05, 4.4, 3.9, 120)
+    # cabinet system: tall lockers on the left wall, base and wall cabinets with a stainless top on the right
+    cab = pbr('cabinet', (0.055, 0.06, 0.068), rough=0.32, spec=0.5, coat=0.25)
+    cab_edge = pbr('cabinet_edge', (0.035, 0.038, 0.042), rough=0.5)
+    steel = pbr('steel', (0.72, 0.72, 0.73), rough=0.22, metal=1.0, var=0.05, var_scale=80)
+    chrome = pbr('chrome', (0.9, 0.9, 0.9), rough=0.08, metal=1.0)
+
+    def handle_v(name, x, y, za, zb, side):
+        box(name, x - side * 0.02, y - 0.008, za, x - side * 0.035, y + 0.008, zb, chrome, bevel=0.003)
+
+    # left lockers (x from 0 to 0.6), two tall units
+    for i, (ya, yb) in enumerate([(2.55, 3.4), (3.42, 4.27)]):
+        box(f'locker{i}_body', 0.0, ya, 0.1, 0.58, yb, 2.15, cab_edge)
+        box(f'locker{i}_kick', 0.0, ya + 0.02, 0.0, 0.52, yb - 0.02, 0.1, m['black'])
+        mid = (ya + yb) / 2
+        box(f'locker{i}_d1', 0.58, ya + 0.004, 0.11, 0.6, mid - 0.003, 2.14, cab, bevel=0.003)
+        box(f'locker{i}_d2', 0.58, mid + 0.003, 0.11, 0.6, yb - 0.004, 2.14, cab, bevel=0.003)
+        handle_v(f'locker{i}_h1', 0.6 + 0.035, mid - 0.04, 0.95, 1.35, -1)
+        handle_v(f'locker{i}_h2', 0.6 + 0.035, mid + 0.04, 0.95, 1.35, -1)
+    # right run: base cabinets, steel worktop, wall cabinets, under-cabinet light (Work lights group)
+    ry0, ry1, n = 2.2, 5.15, 4
+    bw = (ry1 - ry0) / n
+    box('base_kick', W - 0.54, ry0, 0.0, W, ry1, 0.1, m['black'])
+    box('base_body', W - 0.6, ry0, 0.1, W, ry1, 0.88, cab_edge)
+    for i in range(n):
+        ya, yb = ry0 + i * bw + 0.003, ry0 + (i + 1) * bw - 0.003
+        if i % 2 == 0:
+            for j, (za, zb) in enumerate([(0.11, 0.42), (0.43, 0.64), (0.65, 0.865)]):
+                box(f'base{i}_dr{j}', W - 0.62, ya, za + 0.002, W - 0.6, yb, zb - 0.002, cab, bevel=0.003)
+                box(f'base{i}_drh{j}', W - 0.64, (ya + yb) / 2 - 0.16, zb - 0.06, W - 0.62, (ya + yb) / 2 + 0.16, zb - 0.045, chrome, bevel=0.003)
+        else:
+            box(f'base{i}_door', W - 0.62, ya, 0.112, W - 0.6, yb, 0.863, cab, bevel=0.003)
+            box(f'base{i}_dh', W - 0.64, ya + 0.05, 0.6, W - 0.62, ya + 0.065, 0.82, chrome, bevel=0.003)
+    box('worktop', W - 0.64, ry0 - 0.02, 0.88, W, ry1 + 0.02, 0.92, steel, bevel=0.004)
+    box('wall_body', W - 0.36, ry0, 1.46, W, ry1, 2.26, cab_edge)
+    for i in range(n):
+        ya, yb = ry0 + i * bw + 0.003, ry0 + (i + 1) * bw - 0.003
+        box(f'wall{i}_door', W - 0.38, ya, 1.462, W - 0.36, yb, 2.258, cab, bevel=0.003)
+        box(f'wall{i}_dh', W - 0.4, (ya + yb) / 2 - 0.14, 1.5, W - 0.38, (ya + yb) / 2 + 0.14, 1.515, chrome, bevel=0.003)
+    box('uc_led', W - 0.33, ry0 + 0.05, 1.448, W - 0.3, ry1 - 0.05, 1.46, emitter('strip', 8.0), group='lamps')
+    area('uc_light', 'lamps', W - 0.31, (ry0 + ry1) / 2, 1.44, 0.05, ry1 - ry0 - 0.1, 70)
     interior_door_on_y_wall('housedoor', 0.0, 4.6, 5.45, m, side='L')
-    outlet('o1', 0.0, 3.2, 1.1, 'L', m); outlet('o2', W, 5.2, 1.1, 'R', m); outlet('sw1', 0.0, 5.6, 1.2, 'L', m)
+    outlet('o1', 0.0, 2.3, 1.1, 'L', m); outlet('o2', W, 5.3, 1.1, 'R', m); outlet('sw1', 0.0, 5.6, 1.2, 'L', m)
     # suns: garage door faces south (+Y), left wall east, right wall west
     sun('sun_am', 100, 27)
     sun('sun_noon', 172, 46)
     sun('sun_pm', 262, 24)
     cam = camera(2.7, 0.32, 1.45, yaw_deg=-6, lens=17.0, shift_y=-0.11)
-    return dict(name='Two-car garage', ceiling='Shop lights', lamps='Opener and bench lights', camera=cam)
+    return dict(name='Two-car garage', ceiling='Hexagon LED lights', lamps='Opener and cabinet lights', camera=cam)
 
 
 # ===================================================================== BASEMENT

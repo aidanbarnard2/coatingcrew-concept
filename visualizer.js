@@ -14,6 +14,7 @@
     tan: ['Thistle', 'Buckskin', 'Driftwood', 'Pecan', 'Pebble Beach', 'Sandstone', 'Garnet', 'Chestnut']
   };
   var CONCRETE = 'Bare concrete';
+  var TIME_ORDER = ['morning', 'midday', 'golden', 'dusk', 'night'];
   var slug = function (n) { return n.toLowerCase().replace(/ /g, '-'); };
   var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -40,6 +41,7 @@
   };
   var CLOUDY_SKY = norm([0.8, 0.85, 0.95]);
   var PRESETS = {
+    showroom: { label: 'Showroom lights', time: 'midday', cloudy: false, ceil: 100, lamps: 100, k: 5000 },
     morning: { label: 'Sunny morning', time: 'morning', cloudy: false, ceil: 0, lamps: 0, k: 3000 },
     afternoon: { label: 'Bright afternoon', time: 'midday', cloudy: false, ceil: 0, lamps: 0, k: 4000 },
     cloudy: { label: 'Cloudy day', time: 'midday', cloudy: true, ceil: 0, lamps: 0, k: 4000 },
@@ -114,7 +116,7 @@
     this.poster = root.querySelector('.viz-photo');
     this.status = root.querySelector('.viz-status');
     this.state = { room: 0, blend: root.getAttribute('data-blend') || 'Domino', bare: false, time: 'midday', cloudy: false,
-      ceilOn: false, ceil: 100, lampsOn: false, lamps: 100, k: 3000, preset: 'afternoon' };
+      ceilOn: true, ceil: 100, lampsOn: true, lamps: 100, k: 5000, preset: 'showroom' };
     this.touched = false;
     // pick up where the visitor left off on another page (room, light and sample)
     try {
@@ -219,8 +221,18 @@
         if (rail) rail.scrollBy({ left: (t.dataset.rail === 'next' ? 1 : -1) * rail.clientWidth * 0.8, behavior: reduce ? 'auto' : 'smooth' });
         return;
       }
+      if (t.classList.contains('more-btn')) {
+        var open = t.getAttribute('aria-expanded') !== 'true', desk = document.getElementById(t.getAttribute('aria-controls'));
+        t.setAttribute('aria-expanded', String(open)); if (desk) desk.hidden = !open;
+        return;
+      }
       self.touched = true;
       if (t.classList.contains('sample')) self.setBlend(t.dataset.blend);
+      else if (t.dataset.bulbs) {
+        var b = t.dataset.bulbs;
+        if (b === 'off') self.setLight({ ceilOn: false, lampsOn: false });
+        else self.setLight({ ceilOn: true, lampsOn: true, ceil: Math.max(self.state.ceil, 60), lamps: Math.max(self.state.lamps, 60), k: b === 'warm' ? 2700 : 5000 });
+      }
       else if (t.classList.contains('room')) self.setRoom(+t.dataset.i);
       else if (t.dataset.preset) self.applyPreset(t.dataset.preset);
       else if (t.dataset.time) self.setLight({ time: t.dataset.time });
@@ -233,6 +245,14 @@
     on('.viz-ceil-dim', function (v) { self.setLight({ ceil: v, ceilOn: true }, true); });
     on('.viz-lamps-dim', function (v) { self.setLight({ lamps: v, lampsOn: true }, true); });
     on('.viz-k', function (v) { self.setLight({ k: v }, true); });
+    on('.viz-time', function (v) { self.setLight({ time: TIME_ORDER[v] || 'midday' }); });
+    // a soft highlight follows the pointer across the chip samples, like light on a glossy card
+    root.addEventListener('pointermove', function (e) {
+      var c = e.target.closest && e.target.closest('.sample'); if (!c) return;
+      var r = c.getBoundingClientRect();
+      c.style.setProperty('--gx', ((e.clientX - r.left) / r.width * 100).toFixed(1) + '%');
+      c.style.setProperty('--gy', ((e.clientY - r.top) / r.height * 100).toFixed(1) + '%');
+    }, { passive: true });
   };
 
   Viz.prototype.syncControls = function () {
@@ -252,6 +272,9 @@
     set('.viz-ceil-dim', '.viz-ceil-out', s.ceil, s.ceil + '%');
     set('.viz-lamps-dim', '.viz-lamps-out', s.lamps, s.lamps + '%');
     set('.viz-k', '.viz-k-out', s.k, s.k + 'K, ' + kName(s.k));
+    set('.viz-time', '.viz-time-out', TIME_ORDER.indexOf(s.time), TIMES[s.time].label);
+    var bulbs = !s.ceilOn && !s.lampsOn ? 'off' : s.k <= 3500 ? 'warm' : 'cool';
+    press('[data-bulbs]', function (b) { return b.dataset.bulbs === bulbs; });
     var tl = this.q('.viz-tag-light'); if (tl) tl.textContent = this.lightLabel();
   };
 
@@ -426,6 +449,8 @@
     var r = this.rooms[i];
     var cn = this.q('.viz-ceil-name'); if (cn) cn.textContent = r.ceiling;
     var ln = this.q('.viz-lamps-name'); if (ln) ln.textContent = r.lamps;
+    var cd = this.q('.viz-ceil-dim'); if (cd) cd.setAttribute('aria-label', r.ceiling + ' brightness');
+    var ld = this.q('.viz-lamps-dim'); if (ld) ld.setAttribute('aria-label', r.lamps + ' brightness');
     if (!this.gl) { this.showPoster(); this.announce(first); return Promise.resolve(); }
     this.stage.classList.add('loading');
     var want = this.state.bare ? CONCRETE : this.state.blend;
@@ -440,7 +465,7 @@
       self.announce(first);
       if (first) {
         self.root.dispatchEvent(new CustomEvent('viz:ready'));
-        if (self.intro && self.state.bare) setTimeout(function () { if (self.intro && self.state.bare) { self.intro = false; self.setBare(false, true); } }, 700);
+        if (self.intro && self.state.bare) setTimeout(function () { if (self.intro && self.state.bare) { self.intro = false; self.setBare(false, true); } }, Math.max(700, 2400 - performance.now()));
       }
     });
   };

@@ -25,6 +25,58 @@
     addEventListener('resize', function () { if (innerWidth > 1080 && !menu.hidden) setMenu(false); });
   }
 
+  /* on the home page the big logo leads; the header logo appears once it scrolls away */
+  var heroLogo = $('#ccLogo'), rootEl = document.documentElement;
+  if (heroLogo && 'IntersectionObserver' in window) {
+    new IntersectionObserver(function (es) { rootEl.classList.toggle('logo-in-hero', es[0].isIntersecting); }, { rootMargin: '-80px 0px 0px 0px' }).observe(heroLogo);
+  } else rootEl.classList.remove('logo-in-hero');
+
+  /* hero logo: the checkered flags wave as the page opens, settle within a few seconds, and wave again on hover or tap */
+  var logo = $('#ccLogo'), motionOK = !(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches);
+  if (logo && motionOK) (function () {
+    var flags = $$('.cc-cloth', logo).map(function (g) {
+      var top = g.dataset.top.split(',').map(Number), bot = g.dataset.bottom.split(',').map(Number), side = +g.dataset.side;
+      var dx = bot[0] - top[0], dy = bot[1] - top[1], len = Math.hypot(dx, dy), d = [dx / len, dy / len];
+      var o = side < 0 ? [-d[1], d[0]] : [d[1], -d[0]];
+      o = [o[0] * 0.985 + d[0] * 0.174, o[1] * 0.985 + d[1] * 0.174];
+      return { cells: $$('polygon', g), edge: $('.cc-edge', g), A: [top[0] + d[0] * 10, top[1] + d[1] * 10], d: d, o: o, t0: +(g.dataset.t || 0) };
+    });
+    var NU = 6, NV = 7, L = 300, W = 260;
+    function draw(f, t) {
+      var P = [], i, j;
+      for (i = 0; i <= NU; i++) { P[i] = []; for (j = 0; j <= NV; j++) {
+        var u = i / NU, v = j / NV, a = 6.2832 * (1.15 * v - t * 0.55) + 0.9 * u;
+        var al = u * L + 24 * v * Math.sin(a), aw = v * W - 12 * v * (1 - Math.cos(a));
+        P[i][j] = [f.A[0] + f.d[0] * al + f.o[0] * aw, f.A[1] + f.d[1] * al + f.o[1] * aw];
+      } }
+      var k = 0, fmt = function (q) { return q[0].toFixed(1) + ',' + q[1].toFixed(1); };
+      for (i = 0; i < NU; i++) for (j = 0; j < NV; j++) {
+        f.cells[k++].setAttribute('points', [P[i][j], P[i + 1][j], P[i + 1][j + 1], P[i][j + 1]].map(fmt).join(' '));
+      }
+      var e = [P[0][0]];
+      for (j = 1; j <= NV; j++) e.push(P[0][j]);
+      for (i = 1; i <= NU; i++) e.push(P[i][NV]);
+      for (j = NV - 1; j >= 0; j--) e.push(P[NU][j]);
+      f.edge.setAttribute('d', 'M' + e.map(function (q) { return q[0].toFixed(1) + ' ' + q[1].toFixed(1); }).join(' L'));
+    }
+    var t = 0, speed = 0, until = 0, last = 0, running = false;
+    function frame(now) {
+      var dt = Math.min(0.05, (now - last) / 1000); last = now;
+      var target = now < until ? 1 : 0;
+      speed += (target - speed) * (target ? 0.08 : 0.045);
+      t += dt * speed;
+      flags.forEach(function (f) { draw(f, t + f.t0); });
+      if (target || speed > 0.01) requestAnimationFrame(frame); else running = false;
+    }
+    function wave(ms) {
+      until = performance.now() + ms;
+      if (!running) { running = true; last = performance.now(); requestAnimationFrame(frame); }
+    }
+    wave(2600);  // with the ease-out, the flags are still within about four seconds
+    logo.addEventListener('pointerenter', function () { wave(1800); });
+    logo.addEventListener('click', function () { wave(2200); });
+  })();
+
   /* toast, shared */
   var toast = $('#toast'), toastTimer;
   window.ccToast = function (title, body) {

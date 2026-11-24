@@ -43,6 +43,7 @@ TIMES = {
 PRESETS = {
     'sunny_morning': ('morning', 0, 0, 3000),
     'bright_afternoon': ('midday', 0, 0, 4000),
+    'showroom': ('midday', 1.0, 1.0, 5000),
     'golden_hour': ('golden', 0.6, 0.6, 2700),
     'evening_warm': ('dusk', 1.0, 1.0, 2700),
     'night_cool': ('night', 1.0, 0.0, 5000),
