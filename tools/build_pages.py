@@ -68,14 +68,16 @@ def dims(path):
     return _dims[path]
 
 
-def pic(src, alt='', sizes='(min-width:900px) 600px, 100vw', eager=False):
-    """An <img> with WebP sizes for any photo from img/photos/."""
-    m = re.match(r'img/photos/([\w-]+)\.jpg$', src)
+def pic(src, alt='', sizes='(min-width:900px) 600px, calc(100vw - 32px)', eager=False):
+    """An <img> with WebP sizes (640, 960, 1200) for any photo from img/photos/."""
+    m = re.match(r'img/photos/(?:t/)?([\w-]+)\.jpg$', src)
     if m and os.path.exists(os.path.join(ROOT, f'img/w/{m.group(1)}-1200.webp')):
-        a, b = f'img/w/{m.group(1)}-640.webp', f'img/w/{m.group(1)}-1200.webp'
+        n = m.group(1)
+        b = f'img/w/{n}-1200.webp'
+        sset = ', '.join(f'img/w/{n}-{w}.webp {w}w' for w in (640, 960, 1200) if os.path.exists(os.path.join(ROOT, f'img/w/{n}-{w}.webp')))
         w, h = dims(b)
         load = ' fetchpriority="high"' if eager else ' loading="lazy"'
-        return f'<img src="{b}" srcset="{a} 640w, {b} 1200w" sizes="{sizes}" alt="{esc(alt)}" width="{w}" height="{h}" decoding="async"{load}>'
+        return f'<img src="{b}" srcset="{sset}" sizes="{sizes}" alt="{esc(alt)}" width="{w}" height="{h}" decoding="async"{load}>'
     w, h = dims(src)
     load = ' fetchpriority="high"' if eager else ' loading="lazy"'
     return f'<img src="{src}" alt="{esc(alt)}" width="{w}" height="{h}" decoding="async"{load}>'
@@ -320,7 +322,8 @@ def head(page, title, desc, main):
 <meta property="og:image" content="{SITE}{img}">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#1D232A">
-<link rel="icon" href="img/logo.webp">
+<link rel="icon" href="img/favicon-48.png" sizes="48x48" type="image/png">
+<link rel="apple-touch-icon" href="img/apple-touch-icon.png">
 <link rel="preload" href="fonts/archivo-wdth.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="site.css?v={CSS_V}">
 {ld(page, title, main)}</head>
@@ -349,7 +352,7 @@ def clean(m, page):
     m = m.replace('./#studio', 'colors.html#visualizer').replace('./#inbox', 'owner.html')
     # page heroes: a real photo beside the headline instead of a dimmed background
     m = re.sub(r'<section class="phero"([^>]*)>\s*<div class="bg" style="background-image:url\(([^)]+)\)" aria-hidden="true"></div>\s*<div class="wrap">(.*?)</div>\s*</section>',
-               lambda mo: f'<section class="phero"{mo.group(1)}>\n  <div class="wrap">\n    <div class="ptext">{mo.group(3).rstrip()}\n    </div>\n    <div class="pimg">{pic(mo.group(2), "", "(min-width:900px) 560px, 100vw", eager=True)}</div>\n  </div>\n</section>',
+               lambda mo: f'<section class="phero"{mo.group(1)}>\n  <div class="wrap">\n    <div class="ptext">{mo.group(3).rstrip()}\n    </div>\n    <div class="pimg">{pic(mo.group(2), "", "(min-width:900px) 560px, calc(100vw - 32px)", eager=True)}</div>\n  </div>\n</section>',
                m, flags=re.S)
     m = re.sub(r'(<div class="ptext">)\s*\n\s*\n', r'\1\n', m)
     m = re.sub(r'\n\s*\n(\s*<div class="btn-row">)', r'\n\1', m)
@@ -386,6 +389,20 @@ def clean(m, page):
         w, h = dims(mo.group(1))
         return tag.replace('<img ', f'<img width="{w}" height="{h}" ', 1)
     m = re.sub(r'<img src="(img/photos/t/[^"]+)"[^>]*>', sized, m)
+
+    def thumb(mo):
+        tag = mo.group(0)
+        alt = re.search(r'alt="([^"]*)"', tag)
+        full = re.search(r'data-full="([^"]*)"', tag)
+        big = 'class="gitem big"' in m[max(0, mo.start() - 200):mo.start()]
+        new = pic(mo.group(1), html.unescape(alt.group(1)) if alt else '', '(min-width:900px) 50vw, 100vw' if big else '(min-width:900px) 25vw, 50vw')
+        return new.replace('<img ', f'<img data-full="{full.group(1)}" ', 1) if full else new
+    m = re.sub(r'<img (?:width="\d+" height="\d+" )?src="(img/photos/t/[^"]+)"[^>]*>', thumb, m)
+    # photos placed by an earlier build: add the 960 size and phone-accurate sizes
+    m = re.sub(r'srcset="img/w/([\w-]+)-640\.webp 640w, img/w/\1-1200\.webp 1200w"',
+               lambda mo: f'srcset="img/w/{mo.group(1)}-640.webp 640w, img/w/{mo.group(1)}-960.webp 960w, img/w/{mo.group(1)}-1200.webp 1200w"', m)
+    m = m.replace('sizes="(min-width:900px) 560px, 100vw"', 'sizes="(min-width:900px) 560px, calc(100vw - 32px)"')
+    m = m.replace('sizes="(min-width:900px) 600px, 100vw"', 'sizes="(min-width:900px) 600px, calc(100vw - 32px)"')
     # the photo viewer opens the color-corrected WebP
     m = re.sub(r'data-full="img/photos/([\w-]+)\.jpg"', lambda mo: f'data-full="img/w/{mo.group(1)}-1200.webp"' if os.path.exists(os.path.join(ROOT, f'img/w/{mo.group(1)}-1200.webp')) else mo.group(0), m)
     m = re.sub(r'<section class="cta".*?</section>', '{{CTA}}', m, flags=re.S)
