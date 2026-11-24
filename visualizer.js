@@ -104,6 +104,9 @@
     '}'
   ].join('\n');
 
+  // User Timing marks, visible in the browser's performance panel
+  function mark(n) { try { performance.mark(n); } catch (e) {} }
+
   function loadImg(src) {
     return new Promise(function (res, rej) { var i = new Image(); i.decoding = 'async'; i.onload = function () { res(i); }; i.onerror = rej; i.src = src; });
   }
@@ -148,7 +151,24 @@
     var self = this;
     fetch(this.base + 'rooms.json').then(function (r) { return r.json(); }).then(function (rooms) {
       self.rooms = rooms; if (!self.roomBtns || !self.roomBtns.length) self.buildRooms(); return self.initGL();
-    }).then(function (ok) { if (ok) return self.setRoom(self.state.room, true); self.noGL(); }).catch(function () { self.noGL(); });
+    }).then(function (ok) {
+      if (!ok) return self.noGL();
+      if (self.intro) self.chip(self.state.blend);   // fetch the coating while the room loads, so the sweep never waits
+      return self.setRoom(self.state.room, true);
+    }).catch(function () { self.noGL(); });
+  };
+
+  /* first visit: once the room is up, the logo has landed and the room is on screen, the coating sweeps across */
+  Viz.prototype.playIntro = function () {
+    var self = this;
+    var go = function () { if (self.intro && self.state.bare) { self.intro = false; mark('cc-sweep'); self.setBare(false, true); } };
+    setTimeout(function () {
+      if (!('IntersectionObserver' in window)) return go();
+      var io = new IntersectionObserver(function (es) {
+        if (es[0].intersectionRatio >= 0.35) { io.disconnect(); setTimeout(go, 150); }
+      }, { threshold: [0, 0.35, 0.7] });
+      io.observe(self.stage);
+    }, Math.max(250, 1900 - performance.now()));
   };
 
   Viz.prototype.adoptRooms = function () {
@@ -430,7 +450,7 @@
   };
 
   Viz.prototype.animateWipe = function () {
-    var self = this, t0 = performance.now(), ms = 1100;
+    var self = this, t0 = performance.now(), ms = 1400;
     cancelAnimationFrame(this.rafW);
     if (reduce) { this.prevTex = null; this.wipe = 0; this.draw(); return; }
     this.wipe = 0.0001;
@@ -464,8 +484,9 @@
       self.canvas.removeAttribute('aria-hidden');
       self.announce(first);
       if (first) {
+        mark('cc-room-ready');
         self.root.dispatchEvent(new CustomEvent('viz:ready'));
-        if (self.intro && self.state.bare) setTimeout(function () { if (self.intro && self.state.bare) { self.intro = false; self.setBare(false, true); } }, Math.max(700, 2400 - performance.now()));
+        if (self.intro && self.state.bare) self.playIntro();
       }
     });
   };
@@ -473,9 +494,10 @@
   /* still pictures for browsers without fast WebGL: the room with a Domino floor */
   Viz.prototype.showPoster = function () {
     if (!this.poster || !this.rooms) return;
-    var b = this.base + this.rooms[this.state.room].key + '-poster-';
-    this.poster.srcset = b + '660.webp 660w, ' + b + '990.webp 990w, ' + b + '1320.webp 1320w';
-    this.poster.src = b + '1320.webp';
+    var img = this.poster, b = this.base + this.rooms[this.state.room].key + '-poster-';
+    var swap = function () { img.srcset = b + '660.webp 660w, ' + b + '990.webp 990w, ' + b + '1320.webp 1320w'; img.src = b + '1320.webp'; };
+    var ready = function () { if (document.readyState === 'complete') swap(); else window.addEventListener('load', swap, { once: true }); };
+    if (img.complete && img.naturalWidth) ready(); else img.addEventListener('load', ready, { once: true });
   };
 
   Viz.prototype.swapChip = function (name) {
@@ -519,9 +541,6 @@
   window.CCViz = Viz;
   Array.prototype.forEach.call(document.querySelectorAll('[data-viz]'), function (el) {
     var v = el._viz = new Viz(el);
-    var go = function () { v.boot(); };
-    var idle = function () { if ('requestIdleCallback' in window) requestIdleCallback(go, { timeout: 1200 }); else setTimeout(go, 150); };
-    if (document.readyState === 'complete') idle(); else window.addEventListener('load', idle, { once: true });
-    ['pointerdown', 'focusin'].forEach(function (ev) { el.addEventListener(ev, go, { once: true, passive: true }); });
+    v.boot();  // starts right away; browsers with only software WebGL stop at a cheap check and keep the still picture
   });
 })();
