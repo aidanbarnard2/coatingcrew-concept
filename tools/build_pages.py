@@ -34,6 +34,9 @@ NO_SEARCH = {'owner.html'}
 
 I_PHONE = '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><path d="M5 3h4l2 5-2.5 1.5a11 11 0 0 0 6 6L16 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 5a2 2 0 0 1 2-2z"/></svg>'
 I_MENU = '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>'
+I_SEARCH = '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5L21 21"/></svg>'
+I_SPLIT = '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M12 2v20"/></svg>'
+I_ARROWS = '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 7l-5 5 5 5M15 7l5 5-5 5"/></svg>'
 I_LEFT = '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>'
 I_RIGHT = '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg>'
 
@@ -124,6 +127,12 @@ def viz_stage(open_desk=False, p='v-'):
       <canvas role="img" aria-hidden="true" aria-label="{label}"></canvas>
       <span class="viz-tag" aria-hidden="true"><b class="viz-tag-blend">Bare concrete</b><span class="viz-tag-light">Showroom lights</span></span>
       <span class="loader" aria-hidden="true">Loading the room…</span>
+      <button type="button" class="viz-compare" aria-pressed="false">{I_SPLIT}Before and after</button>
+      <div class="ba" hidden>
+        <input type="range" class="ba-range" min="0" max="100" step="1" value="50" aria-label="Before and after: compare bare concrete with the coating">
+        <span class="ba-line" aria-hidden="true"><span class="ba-grip">{I_ARROWS}</span></span>
+        <span class="ba-lab ba-l" aria-hidden="true">Before</span><span class="ba-lab ba-r" aria-hidden="true">After</span>
+      </div>
     </div>
     <div class="cbar">
       <div class="viz-rooms" role="group" aria-label="Choose a room">
@@ -161,7 +170,6 @@ def viz_rail(est, p='v-'):
     return f'''<div class="s-rail">
     <div class="rail-head">
       <div class="picked"><span class="loupe viz-loupe" aria-hidden="true" style="background-image:url(img/colors/l/domino.webp)"></span><div><span>Your sample</span><b class="viz-blend-name">Domino</b></div></div>
-      <button type="button" class="toggle viz-orig" aria-pressed="false">Show bare concrete<span class="sw" aria-hidden="true"></span></button>
       <a class="btn btn-primary" href="{est}" data-price-floor>Price this floor</a>
       <div class="rail-btns"><button type="button" data-rail="prev" aria-label="Scroll the samples back">{I_LEFT}</button><button type="button" data-rail="next" aria-label="Scroll to more samples">{I_RIGHT}</button></div>
     </div>
@@ -207,6 +215,7 @@ def header(page, est):
       </ul>
     </nav>
     <div class="hdr-cta">
+      <a class="srch-btn" href="search.html" data-search-open aria-label="Search the site">{I_SEARCH}<span>Search</span><kbd aria-hidden="true">/</kbd></a>
       <a class="phone" href="{TEL}" aria-label="Call {PHONE}">{I_PHONE}<span>{PHONE}</span></a>
       <a class="btn btn-primary" href="{est}">Get a Price</a>
       <button class="menu-btn" id="menuBtn" type="button" aria-expanded="false" aria-controls="mobileMenu">{I_MENU}<span class="menu-label">Menu</span></button>
@@ -281,6 +290,16 @@ LIGHTBOX = '''<div class="lb" id="lb" role="dialog" aria-modal="true" aria-label
 </div>'''
 
 
+# the next page starts loading when a visitor hovers a link; pages with the 3D room are only fetched,
+# so their opening animation plays when the visitor actually arrives
+SPEC = json.dumps({
+    'prerender': [{'where': {'and': [{'selector_matches': "a[href$='.html']"},
+                                     {'not': {'selector_matches': "a[href^='colors.html'], a[href='index.html'], a[target], a[href='owner.html']"}}]},
+                   'eagerness': 'moderate'}],
+    'prefetch': [{'where': {'selector_matches': "a[href='./'], a[href^='./#'], a[href^='colors.html']"}, 'eagerness': 'moderate'}],
+}, separators=(',', ':'))
+
+
 def strip_tags(s):
     return html.unescape(re.sub(r'<[^>]+>', '', s)).strip()
 
@@ -292,7 +311,7 @@ def ld(page, title, main):
         graph.append(BUSINESS)
     if page != 'index.html':
         name = strip_tags(re.search(r'<h1[^>]*>(.*?)</h1>', main, flags=re.S).group(1)) if '<h1' in main else title
-        crumb = re.search(r'<p class="crumbs">.*?/\s*([^<]+)</p>', main)
+        crumb = re.search(r'<p class="crumbs">.*?</a>\s*/\s*([^<]+)</p>', main)
         graph.append({'@type': 'BreadcrumbList', 'itemListElement': [
             {'@type': 'ListItem', 'position': 1, 'name': 'Home', 'item': SITE},
             {'@type': 'ListItem', 'position': 2, 'name': crumb.group(1).strip() if crumb else name, 'item': url}]})
@@ -308,14 +327,18 @@ def ld(page, title, main):
 
 def head(page, title, desc, main):
     img = OG_IMG.get(page, 'img/photos/job-garage-5.jpg')
+    card = f'img/og/{page[:-5]}.jpg'
+    og = card if os.path.exists(os.path.join(ROOT, card)) else img
     t, d = esc(title), esc(desc)
+    # the not-found page can be served at any depth, so its links resolve from the site root
+    base = '\n<base href="/coatingcrew-concept/">' if page == '404.html' else ''
     url = SITE + ('' if page == 'index.html' else page)
     html_cls = ' class="logo-in-hero"' if page == 'index.html' else ''
     return f'''<!doctype html>
 <html lang="en"{html_cls}>
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">{base}
 <title>{t}</title>
 <meta name="description" content="{d}">
 <meta name="robots" content="{ROBOTS}">
@@ -325,13 +348,18 @@ def head(page, title, desc, main):
 <meta property="og:url" content="{url}">
 <meta property="og:title" content="{t}">
 <meta property="og:description" content="{d}">
-<meta property="og:image" content="{SITE}{img}">
+<meta property="og:image" content="{SITE}{og}">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="{t}">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="{SITE}{og}">
 <meta name="theme-color" content="#1D232A">
 <link rel="icon" href="img/favicon-48.png" sizes="48x48" type="image/png">
 <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
 <link rel="preload" href="fonts/archivo-wdth.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="site.css?v={ver('site.css')}">
+<script type="speculationrules">{SPEC}</script>
 {ld(page, title, main)}</head>
 <body>'''
 

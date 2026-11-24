@@ -12,14 +12,19 @@
 <meta property="og:url" content="https://aidanbarnard2.github.io/coatingcrew-concept/colors.html">
 <meta property="og:title" content="Chip Colors and Floor Visualizer | The Coating Crew">
 <meta property="og:description" content="Try any of our 32 chip blends on a garage, basement or sunroom floor, from morning sun to night, under warm or cool bulbs. Floor coatings across the Minneapolis / Saint Paul area.">
-<meta property="og:image" content="https://aidanbarnard2.github.io/coatingcrew-concept/img/studio/garage-poster.jpg">
+<meta property="og:image" content="https://aidanbarnard2.github.io/coatingcrew-concept/img/og/colors.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Chip Colors and Floor Visualizer | The Coating Crew">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://aidanbarnard2.github.io/coatingcrew-concept/img/og/colors.jpg">
 <meta name="theme-color" content="#1D232A">
 <link rel="icon" href="img/favicon-48.png" sizes="48x48" type="image/png">
 <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
 <link rel="preload" href="fonts/archivo-wdth.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="site.css?v=298ead0d">
-<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://aidanbarnard2.github.io/coatingcrew-concept/"},{"@type":"ListItem","position":2,"name":"a> / Colors and visualizer","item":"https://aidanbarnard2.github.io/coatingcrew-concept/colors.html"}]}]}</script>
+<link rel="stylesheet" href="site.css?v=eb0a24ea">
+<script type="speculationrules">{"prerender":[{"where":{"and":[{"selector_matches":"a[href$='.html']"},{"not":{"selector_matches":"a[href^='colors.html'], a[href='index.html'], a[target], a[href='owner.html']"}}]},"eagerness":"moderate"}],"prefetch":[{"where":{"selector_matches":"a[href='./'], a[href^='./#'], a[href^='colors.html']"},"eagerness":"moderate"}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://aidanbarnard2.github.io/coatingcrew-concept/"},{"@type":"ListItem","position":2,"name":"Colors and visualizer","item":"https://aidanbarnard2.github.io/coatingcrew-concept/colors.html"}]}]}</script>
 </head>
 <body>
 <a class="skip" href="#main">Skip to main content</a>
@@ -37,6 +42,7 @@
       </ul>
     </nav>
     <div class="hdr-cta">
+      <a class="srch-btn" href="search.html" data-search-open aria-label="Search the site"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5L21 21"/></svg><span>Search</span><kbd aria-hidden="true">/</kbd></a>
       <a class="phone" href="tel:+16512638557" aria-label="Call (651) 263-8557"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><path d="M5 3h4l2 5-2.5 1.5a11 11 0 0 0 6 6L16 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 5a2 2 0 0 1 2-2z"/></svg><span>(651) 263-8557</span></a>
       <a class="btn btn-primary" href="./#estimate">Get a Price</a>
       <button class="menu-btn" id="menuBtn" type="button" aria-expanded="false" aria-controls="mobileMenu"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg><span class="menu-label">Menu</span></button>
@@ -74,6 +80,12 @@
       <canvas role="img" aria-hidden="true" aria-label="Two-car garage with bare concrete, showroom lights"></canvas>
       <span class="viz-tag" aria-hidden="true"><b class="viz-tag-blend">Bare concrete</b><span class="viz-tag-light">Showroom lights</span></span>
       <span class="loader" aria-hidden="true">Loading the room…</span>
+      <button type="button" class="viz-compare" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M12 2v20"/></svg>Before and after</button>
+      <div class="ba" hidden>
+        <input type="range" class="ba-range" min="0" max="100" step="1" value="50" aria-label="Before and after: compare bare concrete with the coating">
+        <span class="ba-line" aria-hidden="true"><span class="ba-grip"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 7l-5 5 5 5M15 7l5 5-5 5"/></svg></span></span>
+        <span class="ba-lab ba-l" aria-hidden="true">Before</span><span class="ba-lab ba-r" aria-hidden="true">After</span>
+      </div>
     </div>
     <div class="cbar">
       <div class="viz-rooms" role="group" aria-label="Choose a room">
@@ -104,7 +116,6 @@
   <div class="s-rail">
     <div class="rail-head">
       <div class="picked"><span class="loupe viz-loupe" aria-hidden="true" style="background-image:url(img/colors/l/domino.webp)"></span><div><span>Your sample</span><b class="viz-blend-name">Domino</b></div></div>
-      <button type="button" class="toggle viz-orig" aria-pressed="false">Show bare concrete<span class="sw" aria-hidden="true"></span></button>
       <a class="btn btn-primary" href="./#estimate" data-price-floor>Price this floor</a>
       <div class="rail-btns"><button type="button" data-rail="prev" aria-label="Scroll the samples back"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button><button type="button" data-rail="next" aria-label="Scroll to more samples"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></button></div>
     </div>
@@ -128,6 +139,12 @@
     </div>
   </div>
 </section>
+
+<aside class="follow" id="follow" aria-label="Your floor" hidden>
+  <span class="loupe viz-loupe" aria-hidden="true" style="background-image:url(img/colors/l/domino.webp)"></span>
+  <span class="f-txt"><span>Your floor</span><b class="viz-blend-name">Domino</b></span>
+  <a class="btn btn-primary" href="./#estimate" data-price-floor>Price this floor</a>
+</aside>
 
 <section class="cta" aria-labelledby="ctaTitle">
   <div class="wrap">
@@ -185,8 +202,8 @@
   <div class="in"><a class="btn btn-dark" href="tel:+16512638557">Call Now</a><a class="btn btn-primary" href="./#estimate">Get a Price</a></div>
 </nav>
 <div class="toast" id="toast" role="status" aria-live="polite"><b id="toastTitle"></b><span id="toastBody"></span></div>
-<script src="site.js?v=509bb42c" defer></script>
-<script src="visualizer.js?v=cd637944" defer></script>
+<script src="site.js?v=57912294" defer></script>
+<script src="visualizer.js?v=e2ffd373" defer></script>
 <script src="search-index.js?v=873df6a9" defer></script>
 <script src="search.js?v=c564e83e" defer></script>
 </body>

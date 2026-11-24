@@ -70,7 +70,7 @@
     'uniform sampler2D tB0,tB1,tG0,tG1,tMask,tChip,tPrev;',
     'uniform vec3 uW[6];uniform vec3 uG[6];',
     'uniform mat3 uM;uniform vec2 uSize;uniform vec4 uCrop;',
-    'uniform float uTile,uWipe,uGlossK,uPrevGlossK;',
+    'uniform float uTile,uWipe,uGlossK,uPrevGlossK,uSplit;',
     'vec3 dec(vec3 c){return pow(c,vec3(2.2));}',
     'vec3 aces(vec3 x){return clamp((x*(2.51*x+0.03))/(x*(2.43*x+0.59)+0.14),0.0,1.0);}',
     'void main(){',
@@ -87,6 +87,7 @@
     '    vec3 bl=pow(texture2D(tPrev,tc).rgb,vec3(2.2));',
     '    float edge=uWipe*1.25*uSize.y-0.12*uSize.y;',
     '    float t=smoothstep(edge-24.0,edge+24.0,px.y);',
+    '    if(uSplit>=0.0){t=1.0-smoothstep(uSplit*uSize.x-1.5,uSplit*uSize.x+1.5,px.x);}',
     '    vec3 alb=mix(al,bl,t);',
     '    float gk=mix(uGlossK,uPrevGlossK,t);',
     '    vec2 g=(px-uCrop.xy)/(uCrop.zw-uCrop.xy);',
@@ -139,6 +140,7 @@
     this.buildTiles();
     this.adoptRooms();
     this.bind();
+    this.bindCompare();
     this.syncControls();
     this.announce(true);
   }
@@ -215,7 +217,7 @@
 
   Viz.prototype.showBlend = function () {
     var n = this.state.blend;
-    Array.prototype.forEach.call(this.root.querySelectorAll('.viz-blend-name'), function (el) { el.textContent = n; });
+    Array.prototype.forEach.call(document.querySelectorAll('.viz-blend-name'), function (el) { el.textContent = n; });
     Array.prototype.forEach.call(document.querySelectorAll('.viz-loupe'), function (lp) { lp.style.backgroundImage = 'url(img/colors/l/' + slug(n) + '.webp)'; });
   };
 
@@ -260,6 +262,7 @@
       else if (t.classList.contains('viz-ceil-on')) self.setLight({ ceilOn: !self.state.ceilOn });
       else if (t.classList.contains('viz-lamps-on')) self.setLight({ lampsOn: !self.state.lampsOn });
       else if (t.classList.contains('viz-orig')) self.setBare(!self.state.bare);
+      else if (t.classList.contains('viz-compare')) self.setCompare(t.getAttribute('aria-pressed') !== 'true');
     });
     var on = function (sel, fn) { var el = self.q(sel); if (el) el.addEventListener('input', function () { self.touched = true; fn(+el.value); }); };
     on('.viz-ceil-dim', function (v) { self.setLight({ ceil: v, ceilOn: true }, true); });
@@ -374,7 +377,7 @@
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 1, -1, -1, 1, 1, 1]), gl.STATIC_DRAW);
     var loc = gl.getAttribLocation(p, 'p'); gl.enableVertexAttribArray(loc); gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
     var u = this.u = {};
-    ['tB0', 'tB1', 'tG0', 'tG1', 'tMask', 'tChip', 'tPrev', 'uW', 'uG', 'uM', 'uSize', 'uCrop', 'uTile', 'uWipe', 'uGlossK', 'uPrevGlossK']
+    ['tB0', 'tB1', 'tG0', 'tG1', 'tMask', 'tChip', 'tPrev', 'uW', 'uG', 'uM', 'uSize', 'uCrop', 'uTile', 'uWipe', 'uGlossK', 'uPrevGlossK', 'uSplit']
       .forEach(function (n) { u[n] = gl.getUniformLocation(p, n); });
     ['tB0', 'tB1', 'tG0', 'tG1', 'tMask', 'tChip', 'tPrev'].forEach(function (n, i) { gl.uniform1i(u[n], i); });
     this.aniso = gl.getExtension('EXT_texture_filter_anisotropic') || gl.getExtension('WEBKIT_EXT_texture_filter_anisotropic');
@@ -433,7 +436,8 @@
     if (!this.cur || !this.w) return;
     var gl = this.gl, u = this.u, r = this.rooms[this.state.room], w = this.w, ex = this.exposure(w, r);
     this.cur.forEach(function (t, k) { this.bindTex(t, k); }, this);
-    this.bindTex(this.chipTex, 5); this.bindTex(this.prevTex || this.chipTex, 6);
+    var split = this.split != null && this.bareTex;
+    this.bindTex(this.chipTex, 5); this.bindTex(split ? this.bareTex : (this.prevTex || this.chipTex), 6);
     var W = [], G = [];
     for (var i = 0; i < 6; i++) for (var j = 0; j < 3; j++) {
       var base = w[i][j] * ex.exp * ex.wb[j];
@@ -443,8 +447,9 @@
     var m = r.floor;
     gl.uniformMatrix3fv(u.uM, false, [m[0], m[3], m[6], m[1], m[4], m[7], m[2], m[5], m[8]]);
     gl.uniform2f(u.uSize, r.W, r.H); gl.uniform4f(u.uCrop, r.crop[0], r.crop[1], r.crop[2], r.crop[3]);
-    gl.uniform1f(u.uTile, r.tile); gl.uniform1f(u.uWipe, this.wipe || 0);
-    gl.uniform1f(u.uGlossK, this.lastBare ? 0.035 : 1.0); gl.uniform1f(u.uPrevGlossK, this.prevBare ? 0.035 : 1.0);
+    gl.uniform1f(u.uTile, r.tile); gl.uniform1f(u.uWipe, split ? 0 : (this.wipe || 0));
+    gl.uniform1f(u.uGlossK, this.lastBare ? 0.035 : 1.0); gl.uniform1f(u.uPrevGlossK, split || this.prevBare ? 0.035 : 1.0);
+    gl.uniform1f(u.uSplit, split ? this.split : -1.0);
     gl.viewport(0, 0, this.canvas.width, this.canvas.height);
     gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
   };
@@ -471,7 +476,7 @@
     var ln = this.q('.viz-lamps-name'); if (ln) ln.textContent = r.lamps;
     var cd = this.q('.viz-ceil-dim'); if (cd) cd.setAttribute('aria-label', r.ceiling + ' brightness');
     var ld = this.q('.viz-lamps-dim'); if (ld) ld.setAttribute('aria-label', r.lamps + ' brightness');
-    if (!this.gl) { this.showPoster(); this.announce(first); return Promise.resolve(); }
+    if (!this.gl) { this.showPoster(); if (this.split != null) this.bareStill(); this.announce(first); return Promise.resolve(); }
     this.stage.classList.add('loading');
     var want = this.state.bare ? CONCRETE : this.state.blend;
     return Promise.all([this.loadRoom(i), this.chip(want)]).then(function (res) {
@@ -506,6 +511,7 @@
       var want = self.state.bare ? CONCRETE : self.state.blend;
       if (want !== name || !self.cur) return;
       self.prevTex = self.chipTex; self.prevBare = self.lastBare; self.chipTex = t; self.lastBare = self.state.bare;
+      if (self.split != null) { self.prevTex = null; self.prevBare = self.lastBare; self.draw(); return; }
       self.animateWipe();
     });
   };
@@ -526,6 +532,57 @@
     if (!auto) this.intro = false;
     this.state.bare = on; this.syncControls(); this.announce(auto);
     if (this.gl && this.cur) this.swapChip(on ? CONCRETE : this.state.blend);
+  };
+
+  /* before and after: bare concrete on the left of the handle, the coating on the right */
+  Viz.prototype.setCompare = function (on) {
+    var self = this, ba = this.q('.ba'), btn = this.q('.viz-compare');
+    if (btn) btn.setAttribute('aria-pressed', String(on));
+    if (!ba) return;
+    ba.hidden = !on;
+    this.stage.classList.toggle('comparing', on);
+    if (!on) { this.split = null; if (this.gl) this.draw(); return; }
+    this.intro = false;
+    if (this.state.bare) { this.state.bare = false; this.syncControls(); if (this.gl && this.cur) this.swapChip(this.state.blend); }
+    this.moveSplit(0.5);
+    if (this.gl) this.chip(CONCRETE).then(function (t) { self.bareTex = t; self.draw(); });
+    else this.bareStill();
+    var st = this.status; if (st) st.textContent = 'Before and after is on. Move the handle, or use the arrow keys, to compare bare concrete with the coating.';
+  };
+
+  Viz.prototype.moveSplit = function (f) {
+    f = Math.max(0, Math.min(1, f));
+    this.split = f;
+    var ba = this.q('.ba'), range = this.q('.ba-range');
+    if (ba) ba.style.setProperty('--split', (f * 100).toFixed(2) + '%');
+    if (range) {
+      if (document.activeElement !== range) range.value = Math.round(f * 100);
+      range.setAttribute('aria-valuetext', Math.round(f * 100) + '% bare concrete, ' + Math.round((1 - f) * 100) + '% coated');
+    }
+    if (this.gl) this.draw();
+  };
+
+  // still pictures: the bare-concrete picture laid over the coated one and cut at the handle
+  Viz.prototype.bareStill = function () {
+    var ba = this.q('.ba'); if (!ba || !this.rooms) return;
+    var img = ba.querySelector('.ba-bare');
+    if (!img) { img = document.createElement('img'); img.className = 'ba-bare'; img.alt = ''; ba.insertBefore(img, ba.firstChild); }
+    var b = this.base + this.rooms[this.state.room].key + '-bare-';
+    img.srcset = b + '660.webp 660w, ' + b + '990.webp 990w, ' + b + '1320.webp 1320w'; img.sizes = '(min-width:1001px) 56vw, 100vw'; img.src = b + '1320.webp';
+  };
+
+  Viz.prototype.bindCompare = function () {
+    var self = this, ba = this.q('.ba'), range = this.q('.ba-range'); if (!ba) return;
+    var drag = false;
+    var at = function (e) { var r = self.stage.getBoundingClientRect(); self.moveSplit((e.clientX - r.left) / r.width); };
+    ba.addEventListener('pointerdown', function (e) {
+      // a mouse can grab anywhere on the picture; on touch screens only the handle, so the page still scrolls
+      if (e.pointerType !== 'mouse' && !e.target.closest('.ba-grip')) return;
+      drag = true; ba.setPointerCapture(e.pointerId); at(e); e.preventDefault();
+    });
+    ba.addEventListener('pointermove', function (e) { if (drag) at(e); });
+    ['pointerup', 'pointercancel'].forEach(function (ev) { ba.addEventListener(ev, function () { drag = false; }); });
+    if (range) range.addEventListener('input', function () { self.moveSplit(+range.value / 100); });
   };
 
   Viz.prototype.noGL = function () {

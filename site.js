@@ -4,6 +4,7 @@
   var $ = function (s, r) { return (r || document).querySelector(s); };
   var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
   document.documentElement.classList.add('js');
+  var motionOK = !(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches);
 
   /* header shadow once the page scrolls */
   var header = $('header.site'), ticking = false;
@@ -32,7 +33,7 @@
   } else rootEl.classList.remove('logo-in-hero');
 
   /* hero logo: the checkered flags wave as the page opens, settle within a few seconds, and wave again on hover or tap */
-  var logo = $('#ccLogo'), motionOK = !(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches);
+  var logo = $('#ccLogo');
   if (logo && motionOK) (function () {
     var flags = $$('.cc-cloth', logo).map(function (g) {
       var top = g.dataset.top.split(',').map(Number), bot = g.dataset.bottom.split(',').map(Number), side = +g.dataset.side;
@@ -76,6 +77,64 @@
     logo.addEventListener('pointerenter', function () { wave(1800); });
     logo.addEventListener('click', function () { wave(2200); });
   })();
+
+  /* the picked floor follows you down the page, until the estimate form is in view */
+  var follow = $('#follow'), studio = $('.studio');
+  if (follow && studio && 'IntersectionObserver' in window) {
+    var past = false, atEst = false, est = $('#estimate');
+    var place = function () {
+      var on = past && !atEst;
+      if (on) { follow.hidden = false; requestAnimationFrame(function () { follow.classList.add('show'); }); }
+      else { follow.classList.remove('show'); setTimeout(function () { if (!follow.classList.contains('show')) follow.hidden = true; }, 350); }
+    };
+    new IntersectionObserver(function (es) { past = !es[0].isIntersecting && es[0].boundingClientRect.top < 0; place(); }).observe(studio);
+    if (est) new IntersectionObserver(function (es) { atEst = es[0].isIntersecting; place(); }, { rootMargin: '0px 0px -30% 0px' }).observe(est);
+  }
+
+  /* numbers count up once when they come into view */
+  var counts = $$('[data-count]');
+  if (counts.length && motionOK && 'IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (es) {
+      es.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        io.unobserve(e.target);
+        var el = e.target, to = +el.dataset.count, t0 = performance.now();
+        (function tick(now) {
+          var p = Math.min(1, (now - t0) / 1100), v = Math.round(to * (1 - Math.pow(1 - p, 3)));
+          el.textContent = v; if (p < 1) requestAnimationFrame(tick);
+        })(t0);
+      });
+    }, { threshold: 0.6 });
+    counts.forEach(function (el) { el.textContent = '0'; io.observe(el); });
+  }
+
+  /* photo strips: grab and fling with a mouse (touch screens already swipe) */
+  $$('.reel').forEach(function (reel) {
+    reel.classList.add('grab');
+    var down = false, moved = false, x0 = 0, s0 = 0, vx = 0, lx = 0, lt = 0, raf = 0;
+    reel.addEventListener('pointerdown', function (e) {
+      if (e.pointerType !== 'mouse' || e.button !== 0) return;
+      cancelAnimationFrame(raf); down = true; moved = false; x0 = lx = e.clientX; s0 = reel.scrollLeft; lt = performance.now(); vx = 0;
+    });
+    window.addEventListener('pointermove', function (e) {
+      if (!down) return;
+      var dx = e.clientX - x0;
+      if (!moved && Math.abs(dx) > 6) { moved = true; reel.classList.add('dragging'); }
+      if (!moved) return;
+      reel.scrollLeft = s0 - dx;
+      var now = performance.now(); vx = (e.clientX - lx) / Math.max(1, now - lt); lx = e.clientX; lt = now;
+    });
+    window.addEventListener('pointerup', function () {
+      if (!down) return; down = false;
+      if (!moved) return;
+      var v = -vx * 12;
+      (function glide() {
+        if (motionOK && Math.abs(v) > 0.5) { reel.scrollLeft += v; v *= 0.92; raf = requestAnimationFrame(glide); }
+        else reel.classList.remove('dragging');
+      })();
+    });
+    reel.addEventListener('click', function (e) { if (moved) { e.preventDefault(); e.stopPropagation(); moved = false; } }, true);
+  });
 
   /* toast, shared */
   var toast = $('#toast'), toastTimer;
