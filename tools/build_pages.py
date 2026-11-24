@@ -6,6 +6,7 @@ own <main> content, which is cleaned up to the current design (real <img> tags w
 backgrounds, no label lines above headings, no arrows on links). Safe to run again.
 """
 import glob
+import hashlib
 import html
 import json
 import os
@@ -49,6 +50,11 @@ BUSINESS = {
     'makesOffer': {'@type': 'Offer', 'name': 'Two-stall garage floor coating', 'price': '2495', 'priceCurrency': 'USD',
                    'description': 'Based on 400 square feet of new concrete with no repairs needed. Steps, stemwalls, joint fill, travel and more may add to the cost.'},
 }
+
+
+def ver(f):
+    """Content hash for cache busting: a file's URL changes whenever the file does."""
+    return hashlib.md5(open(os.path.join(ROOT, f), 'rb').read()).hexdigest()[:8]
 
 
 def esc(s):
@@ -325,7 +331,7 @@ def head(page, title, desc, main):
 <link rel="icon" href="img/favicon-48.png" sizes="48x48" type="image/png">
 <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
 <link rel="preload" href="fonts/archivo-wdth.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="site.css?v={CSS_V}">
+<link rel="stylesheet" href="site.css?v={ver('site.css')}">
 {ld(page, title, main)}</head>
 <body>'''
 
@@ -467,7 +473,7 @@ def build(path):
     if 'class="gitem' in main:
         out.append(LIGHTBOX)
     out.append('<div class="toast" id="toast" role="status" aria-live="polite"><b id="toastTitle"></b><span id="toastBody"></span></div>')
-    out.append('\n'.join(f'<script src="{j}" defer></script>' for j in js))
+    out.append('\n'.join(f'<script src="{j}?v={ver(j)}" defer></script>' for j in js))
     out.append('</body>\n</html>\n')
     open(path, 'w').write('\n'.join(out))
     return page
