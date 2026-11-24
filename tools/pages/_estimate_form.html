@@ -1,0 +1,60 @@
+    <form class="est" id="est" novalidate aria-labelledby="estTitle">
+      <div class="est-progress"><span id="estStep">Step 1 of 4</span></div>
+      <div class="bar" aria-hidden="true"><i id="estBar"></i></div>
+      <fieldset data-step="1" tabindex="-1">
+        <legend>What are we coating?</legend>
+        <div class="opts">
+          <label class="opt"><input type="radio" name="space" value="Garage"><span>Garage</span></label>
+          <label class="opt"><input type="radio" name="space" value="Basement"><span>Basement</span></label>
+          <label class="opt"><input type="radio" name="space" value="Patio or pool deck"><span>Patio or pool deck</span></label>
+          <label class="opt"><input type="radio" name="space" value="Business"><span>Business</span></label>
+        </div>
+      </fieldset>
+      <fieldset data-step="2" tabindex="-1" hidden>
+        <legend id="sizeLegend">How big is it?</legend>
+        <div class="opts" id="sizeOpts"></div>
+      </fieldset>
+      <fieldset data-step="3" tabindex="-1" hidden>
+        <legend>Which finish are you leaning toward?</legend>
+        <div class="opts">
+          <label class="opt"><input type="radio" name="finish" value="Chip"><span>Chip</span></label>
+          <label class="opt"><input type="radio" name="finish" value="Solid epoxy"><span>Solid epoxy</span></label>
+          <label class="opt"><input type="radio" name="finish" value="Solid polyurea"><span>Solid polyurea</span></label>
+          <label class="opt"><input type="radio" name="finish" value="Quartz"><span>Quartz</span></label>
+          <label class="opt"><input type="radio" name="finish" value="Help me choose"><span>Help me choose</span></label>
+        </div>
+      </fieldset>
+      <fieldset data-step="4" tabindex="-1" hidden>
+        <legend>Where should we call you?</legend>
+        <div class="fields">
+          <label><span>Name <span class="req">(required)</span></span><input type="text" id="f-name" autocomplete="name" required></label>
+          <label><span>Phone <span class="req">(required)</span></span><input type="tel" id="f-phone" inputmode="tel" autocomplete="tel" required></label>
+          <label><span>Email <span class="req">(optional)</span></span><input type="email" id="f-email" autocomplete="email"></label>
+          <label><span>ZIP code <span class="req">(optional)</span></span><input type="text" id="f-zip" inputmode="numeric" autocomplete="postal-code" maxlength="5"></label>
+          <label class="full"><span>How did you hear about us? <span class="req">(optional)</span></span>
+            <select id="f-source">
+              <option value="">Choose one</option>
+              <option>Google search</option>
+              <option>Google ad</option>
+              <option>Facebook or Instagram</option>
+              <option>Radio</option>
+              <option>Saw your truck or a yard sign</option>
+              <option>Friend or neighbor</option>
+              <option>Other</option>
+            </select>
+          </label>
+        </div>
+      </fieldset>
+      <p class="err" id="estErr" role="alert" hidden></p>
+      <div class="done" data-step="5" tabindex="-1" hidden>
+        <h3>You’re on the list</h3>
+        <p id="doneText">The Coating Crew will reach out to schedule your free estimate.</p>
+        <p class="ok" id="doneOffer" hidden>Ask about our two-stall garage floor for $2,495.</p>
+        <p>Concept demo: this request just landed in the <a href="owner.html">owner’s lead inbox</a>.</p>
+        <button type="button" class="btn btn-outline" id="estReset" style="align-self:flex-start">Start another estimate</button>
+      </div>
+      <div class="est-nav" id="estNav">
+        <button type="button" class="linkbtn" id="estBack" hidden>Back</button>
+        <button type="submit" class="btn btn-primary" id="estNext">Next</button>
+      </div>
+    </form>

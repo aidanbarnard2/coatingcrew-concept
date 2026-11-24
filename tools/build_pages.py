@@ -31,6 +31,9 @@ EXTRA_JS = {'index.html': ['visualizer.js', 'home.js'], 'colors.html': ['visuali
 OG_IMG = {'index.html': 'img/studio/garage-poster.jpg', 'colors.html': 'img/studio/garage-poster.jpg',
           'finishes.html': 'img/systems/lineup.jpg'}
 NO_SEARCH = {'owner.html'}
+# ad landing pages: one job (the estimate), so no site menu to wander off into
+LANDING = {'garage-floor-coating.html', 'basement-floor-coating.html'}
+EXTRA_JS.update({p: ['home.js'] for p in LANDING})
 
 I_PHONE = '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><path d="M5 3h4l2 5-2.5 1.5a11 11 0 0 0 6 6L16 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 5a2 2 0 0 1 2-2z"/></svg>'
 I_MENU = '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>'
@@ -184,13 +187,12 @@ def viz_rail(est, p='v-'):
 
 # ---------------------------------------------------------------- shell
 def cta(est):
-    return f'''<section class="cta" aria-labelledby="ctaTitle">
+    return f'''<section class="night" aria-labelledby="ctaTitle">
+  <img src="img/studio/garage-night-1320.webp" srcset="img/studio/garage-night-660.webp 660w, img/studio/garage-night-990.webp 990w, img/studio/garage-night-1320.webp 1320w" sizes="100vw" alt="" width="1320" height="880" loading="lazy" decoding="async">
   <div class="wrap">
-    <div>
-      <h2 id="ctaTitle">Ready for a floor you’ll love?</h2>
-      <p>Free, no-obligation estimates across the Minneapolis / Saint Paul area.</p>
-    </div>
-    <div class="btn-row"><a class="btn btn-dark" href="{est}">Get My Free Estimate</a><a class="btn btn-outline" href="{TEL}">Call {PHONE}</a></div>
+    <h2 class="display" id="ctaTitle">Ready for a floor you’ll love?</h2>
+    <p>Free, no-obligation estimates across the Minneapolis / Saint Paul area.</p>
+    <div class="btn-row"><a class="btn btn-primary" href="{est}">Get My Free Estimate</a><a class="btn btn-light" href="{TEL}">Call {PHONE}</a></div>
   </div>
 </section>'''
 
@@ -206,6 +208,18 @@ def header(page, est):
             a = ' aria-current="true"'
         return f'<li><a href="{href}"{a}>{label}</a></li>'
     links = '\n        '.join(item(h, l) for h, l in NAV)
+    if page in LANDING:
+        return f'''<a class="skip" href="#main">Skip to main content</a>
+<aside class="preview-note" aria-label="About this page">Concept preview by Aidan Barnard. Not the live website.</aside>
+<header class="site">
+  <div class="wrap hdr">
+    <a class="logo" href="./"><img src="img/logo-300.webp" srcset="img/logo-150.webp 150w, img/logo-300.webp 300w, img/logo-450.webp 450w" sizes="147px" alt="The Coating Crew home" width="147" height="52"></a>
+    <div class="hdr-cta">
+      <a class="phone" href="{TEL}" aria-label="Call {PHONE}">{I_PHONE}<span>{PHONE}</span></a>
+      <a class="btn btn-primary" href="#estimate">Get a Price</a>
+    </div>
+  </div>
+</header>'''
     return f'''<a class="skip" href="#main">Skip to main content</a>
 <aside class="preview-note" aria-label="About this page">Concept preview by Aidan Barnard. Not the live website.</aside>
 <header class="site">
@@ -441,7 +455,7 @@ def clean(m, page):
     m = m.replace('sizes="(min-width:900px) 600px, 100vw"', 'sizes="(min-width:900px) 600px, calc(100vw - 32px)"')
     # the photo viewer opens the color-corrected WebP
     m = re.sub(r'data-full="img/photos/([\w-]+)\.jpg"', lambda mo: f'data-full="img/w/{mo.group(1)}-1200.webp"' if os.path.exists(os.path.join(ROOT, f'img/w/{mo.group(1)}-1200.webp')) else mo.group(0), m)
-    m = re.sub(r'<section class="cta".*?</section>', '{{CTA}}', m, flags=re.S)
+    m = re.sub(r'<section class="(?:cta|night)".*?</section>', '{{CTA}}', m, flags=re.S)
     return m
 
 
@@ -479,7 +493,7 @@ REVIEWS = ''
 def build(path):
     page = os.path.basename(path)
     src = os.path.join(SRC, page)
-    est = '#estimate' if page == 'index.html' else './#estimate'
+    est = '#estimate' if page == 'index.html' or page in LANDING else './#estimate'
     if os.path.exists(src):
         s = open(src).read()
         title = re.search(r'<!--title: (.*?)-->', s).group(1)
@@ -488,6 +502,7 @@ def build(path):
         show = '#showroom' if page == 'index.html' else 'colors.html'
         main = main.replace('{{COMPARE}}', open(os.path.join(SRC, '_compare.html')).read().replace('{show}', show))
         main = main.replace('{{VIZ_STAGE}}', viz_stage(open_desk=page == 'colors.html')).replace('{{VIZ_RAIL}}', viz_rail(est))
+        main = main.replace('{{EST_FORM}}', open(os.path.join(SRC, '_estimate_form.html')).read().rstrip())
         main = main.replace('{{LOGO}}', open(os.path.join(SRC, '_logo.svg')).read().strip())
         main = re.sub(r'\{\{PIC (\S+) "([^"]*)" "([^"]*)"( eager)?\}\}', lambda mo: pic(mo.group(1), mo.group(2), mo.group(3), bool(mo.group(4))), main)
     else:
@@ -498,7 +513,7 @@ def build(path):
         a = s.index('<main'); a = s.index('>', a) + 1
         main = clean(s[a:s.index('</main>')], page).strip('\n')
     main = main.replace('{{CTA}}', cta(est))
-    js = ['site.js'] + EXTRA_JS.get(page, []) + ([] if page in NO_SEARCH else ['search-index.js', 'search.js'])
+    js = ['track.js', 'site.js'] + EXTRA_JS.get(page, []) + ([] if page in NO_SEARCH or page in LANDING else ['search-index.js', 'search.js'])
     out = [head(page, title, desc, main), header(page, est), f'<main id="main" tabindex="-1">\n{main.strip()}\n</main>', footer(page, est)]
     if 'class="gitem' in main:
         out.append(LIGHTBOX)
@@ -519,7 +534,7 @@ if __name__ == '__main__':
     for p in pages:
         print('built', build(p))
     # sitemap for launch; robots.txt keeps crawlers out until CC_INDEX=1
-    public = [os.path.basename(p) for p in pages if os.path.basename(p) not in ('404.html', 'owner.html', 'search.html')]
+    public = [os.path.basename(p) for p in pages if os.path.basename(p) not in ('404.html', 'owner.html', 'search.html') and os.path.basename(p) not in LANDING]
     urls = ''.join(f'  <url><loc>{SITE}{"" if n == "index.html" else n}</loc></url>\n' for n in sorted(public, key=lambda n: n != 'index.html'))
     open(os.path.join(ROOT, 'sitemap.xml'), 'w').write(f'<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n{urls}</urlset>\n')
     open(os.path.join(ROOT, 'robots.txt'), 'w').write(f'User-agent: *\nAllow: /\nSitemap: {SITE}sitemap.xml\n' if os.environ.get('CC_INDEX') else 'User-agent: *\nDisallow: /\n')

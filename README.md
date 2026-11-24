@@ -12,6 +12,12 @@ A concept preview built by Saint Paul Agency (saintpaulagency.com) and Aidan Bar
 - `home.js`: the free-estimate form, and the owner's lead inbox on `owner.html`.
 - `search.js` and `search-index.js`: site search.
 
+## Going live
+
+- `track.js` holds the three launch settings: the Google Tag Manager ID, the Meta pixel ID and the URL that receives each estimate request. Until they are filled in, nothing loads from a third party and the form runs in demo mode.
+- Every lead records how the visitor arrived (ad click IDs, UTM tags, landing page) next to what they picked.
+- `garage-floor-coating.html` and `basement-floor-coating.html` are ad landing pages: no site menu, the form beside the headline.
+
 ## Rebuilding
 
 - `python3 tools/build_pages.py` rewraps every page in the shared head, header and footer. The home, colors, finishes and owner pages are built from `tools/pages/`. Pages stay out of search engines; build with `CC_INDEX=1` when this becomes the live site (that also opens `robots.txt` and points it at `sitemap.xml`).

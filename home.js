@@ -46,8 +46,8 @@
     // the sample, room and light picked in the showroom, plus the answers so far
     function renderPicks() {
       var has = picks && picks.touched && picks.blend;
-      $('#picksEmpty').hidden = !!has; $('#picksRow').hidden = !has;
-      if (has) {
+      if ($('#picksEmpty')) { $('#picksEmpty').hidden = !!has; $('#picksRow').hidden = !has; }
+      if (has && $('#picksLoupe')) {
         $('#picksLoupe').style.backgroundImage = picks.bare ? 'none' : 'url(img/colors/l/' + slug(picks.blend) + '.webp)';
         var dl = $('#picksList'); dl.innerHTML = '';
         [['Sample', picks.bare ? 'Bare concrete for now (last picked: ' + picks.blend + ')' : picks.blend], ['Room', picks.room], ['Light', picks.light]].forEach(function (r) {
@@ -59,7 +59,7 @@
         // a picked chip blend means a chip floor, unless they've chosen another finish
         if (!data.finish && !picks.bare) { data.finish = 'Chip'; var c = $('input[name="finish"][value="Chip"]', est); if (c) c.checked = true; }
       }
-      var box = $('#estSummary'); box.innerHTML = '';
+      var box = $('#estSummary'); if (!box) return; box.innerHTML = '';
       [data.space, data.size, data.finish].filter(Boolean).forEach(function (t) { var c = document.createElement('li'); c.className = 'chip'; c.textContent = t; box.appendChild(c); });
     }
     function clearErr() { err.hidden = true; err.textContent = ''; $$('[aria-invalid]', est).forEach(function (el) { el.removeAttribute('aria-invalid'); el.removeAttribute('aria-describedby'); }); }
@@ -71,6 +71,7 @@
       $('#estNav').hidden = n === 5;
       next.textContent = n === 4 ? 'Get My Free Estimate' : 'Next';
       stepTxt.textContent = 'Step ' + n + ' of 4';
+      if (n > 1 && window.ccTrack) window.ccTrack(n === 5 ? 'estimate_done' : 'estimate_step', { step: n });
       $('.est-progress', est).hidden = n === 5; $('.bar', est).hidden = n === 5;
       if (n === 2) renderSizes();
       renderPicks();
@@ -94,6 +95,9 @@
       if (el) { el.setAttribute('aria-invalid', 'true'); el.setAttribute('aria-describedby', 'estErr'); el.focus(); }
     }
     function save(lead) {
+      var cfg = window.CC_CONFIG || {};
+      // live site: every request is sent to the business's endpoint (CRM, email or text service)
+      if (cfg.formEndpoint) return fetch(cfg.formEndpoint, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(lead) }).then(function (r) { if (!r.ok) throw new Error('send'); });
       if (db) return db.add(lead);
       var list = readLocal(); list.unshift(Object.assign({ id: 'local-' + Date.now() }, lead));
       return writeLocal(list) ? Promise.resolve() : Promise.reject({ code: 'storage' });
@@ -116,6 +120,9 @@
         finish: data.finish || '', blend: p.blend && !p.bare ? p.blend : '', room: p.room || '', light: p.light || '',
         status: 'new', createdAt: Date.now()
       };
+      var visit = window.ccVisit ? window.ccVisit() : null;
+      if (visit) { lead.channel = visit.channel; lead.campaign = visit.campaign; lead.term = visit.term; lead.landing = visit.landing; lead.gclid = visit.ids.gclid; lead.fbclid = visit.ids.fbclid; }
+      if (window.ccTrack) window.ccTrack('estimate_submit', { space: lead.space, size: lead.size, finish: lead.finish, blend: lead.blend, channel: lead.channel || '' });
       next.disabled = true; next.textContent = 'Sending…';
       save(lead).then(function () {
         next.disabled = false;
@@ -162,7 +169,7 @@
         var top = el('div', 'top'); top.appendChild(el('h3', 'who', l.name || 'No name')); top.appendChild(el('span', 'when', ago(l.createdAt || Date.now())));
         var ct = el('p', 'contact', [l.phone, l.zip ? 'ZIP ' + l.zip : '', l.email].filter(Boolean).join(', '));
         var meta = el('div', 'meta');
-        [['src', l.source], ['', l.space], ['', l.size], ['', l.finish], ['', l.blend ? l.blend + ' blend' : ''], ['', l.room], ['', l.light], ['', l.status === 'called' ? 'Called' : '']]
+        [['src', l.channel ? 'Came from: ' + l.channel : ''], ['', l.campaign ? 'Campaign: ' + l.campaign : ''], ['', l.term ? 'Search: ' + l.term : ''], ['', l.landing ? 'Landed on: ' + l.landing : ''], ['src', l.source ? 'Says: ' + l.source : ''], ['', l.space], ['', l.size], ['', l.finish], ['', l.blend ? l.blend + ' blend' : ''], ['', l.room], ['', l.light], ['', l.status === 'called' ? 'Called' : '']]
           .forEach(function (m) { if (m[1]) meta.appendChild(el('span', m[0], m[1])); });
         var act = el('div', 'act');
         var call = el('button', null, l.status === 'called' ? 'Mark as new' : 'Mark called'); call.type = 'button';

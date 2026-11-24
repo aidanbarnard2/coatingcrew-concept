@@ -789,5 +789,29 @@ header.site{view-transition-name:site-header}
 .night>img{object-position:50% 22%}
 .night::before{background:linear-gradient(90deg,rgba(20,24,29,.92) 0,rgba(20,24,29,.7) 38%,rgba(20,24,29,0) 78%)}
 @media (max-width:760px){.night::before{background:linear-gradient(180deg,rgba(20,24,29,.25) 0,rgba(20,24,29,.86) 38%,rgba(20,24,29,.9) 100%)}}
-/* sections below the first screen are laid out when they come near the viewport */
-main>.band,main>.est-sec{content-visibility:auto;contain-intrinsic-size:auto 900px}
+
+/* ===================== v7: conversion pass ===================== */
+.proofbar{background:var(--ink);color:#FFFFFF}
+.proofbar .proof{display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px 28px;padding-block:18px}
+.proofbar .proof li{font-size:17px}
+.proofbar .proof li:not(:has(svg))::before{content:"";width:9px;height:16px;margin:0 6px 4px 2px;border-right:3px solid var(--peach);border-bottom:3px solid var(--peach);transform:rotate(40deg);flex:none}
+/* ad landing pages */
+.lp-hero{background:var(--garage);color:#FFFFFF;padding-block:44px 64px}
+.lp-grid{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:52px;align-items:start}
+.lp-copy{display:flex;flex-direction:column;gap:22px}
+.lp-copy .display{font-size:clamp(44px,5.2vw,80px)}
+.lp-ticks{display:grid;grid-template-columns:1fr 1fr;gap:10px 20px}
+.lp-ticks li{font-size:18px}
+.lp-ticks li::before{border-color:var(--peach)}
+.lp-pic{border-radius:var(--r);overflow:hidden;aspect-ratio:3/2;background:#3B3F44}
+.lp-pic img{width:100%;height:100%;object-fit:cover}
+.lp-form{position:sticky;top:104px;display:flex;flex-direction:column;gap:14px;padding:26px;border-radius:var(--r);background:#FFFFFF;color:var(--ink)}
+.lp-form .est{border:0;padding:0}
+.lp-form .h3{font-size:34px;font-stretch:78%;font-weight:800;letter-spacing:-.01em;line-height:1.05}
+.lp-note{font-size:17px;line-height:1.5;color:var(--ink-2)}
+.lp-form a{color:var(--orange-text)}
+.lp-form :focus-visible{outline-color:var(--ink)}
+@media (max-width:999px){.lp-grid{display:flex;flex-direction:column;gap:22px}.lp-copy{display:contents}.lp-copy>*{order:3}.lp-copy>h1{order:0}.lp-copy>.studio-sub{order:1}.lp-form{position:static;order:2;padding:20px 16px}.lp-hero{padding-top:24px}}
+@media (max-width:520px){.lp-ticks{grid-template-columns:1fr}}
+.lp-hero a:not(.btn){color:var(--peach)}
+.lp-hero .lp-form a:not(.btn){color:var(--orange-text)}
