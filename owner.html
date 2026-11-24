@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Lead Inbox (Owner View) | The Coating Crew</title>
+<meta name="description" content="Concept demo of the owner&#x27;s lead inbox: every free-estimate request, the floor the customer picked and where they heard about The Coating Crew.">
+<meta name="robots" content="noindex, nofollow">
+<link rel="canonical" href="https://aidanbarnard2.github.io/coatingcrew-concept/owner.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="The Coating Crew">
+<meta property="og:url" content="https://aidanbarnard2.github.io/coatingcrew-concept/owner.html">
+<meta property="og:title" content="Lead Inbox (Owner View) | The Coating Crew">
+<meta property="og:description" content="Concept demo of the owner&#x27;s lead inbox: every free-estimate request, the floor the customer picked and where they heard about The Coating Crew.">
+<meta property="og:image" content="https://aidanbarnard2.github.io/coatingcrew-concept/img/photos/job-garage-5.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#1D232A">
+<link rel="icon" href="img/logo.webp">
+<link rel="preload" href="fonts/archivo-wdth.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="site.css?v=4">
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://aidanbarnard2.github.io/coatingcrew-concept/"},{"@type":"ListItem","position":2,"name":"a> / Lead inbox","item":"https://aidanbarnard2.github.io/coatingcrew-concept/owner.html"}]}]}</script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to main content</a>
+<aside class="preview-note" aria-label="About this page">Concept preview by Aidan Barnard. Not the live website.</aside>
+<header class="site">
+  <div class="wrap hdr">
+    <a class="logo" href="./"><img src="img/logo-300.webp" srcset="img/logo-150.webp 150w, img/logo-300.webp 300w, img/logo-450.webp 450w" sizes="147px" alt="The Coating Crew home" width="147" height="52"></a>
+    <nav class="nav" aria-label="Main">
+      <ul>
+        <li><a href="residential.html">Residential</a></li>
+        <li><a href="commercial.html">Commercial</a></li>
+        <li><a href="colors.html">Colors &amp; Visualizer</a></li>
+        <li><a href="gallery.html">Our Work</a></li>
+        <li><a href="about-us.html">About</a></li>
+      </ul>
+    </nav>
+    <div class="hdr-cta">
+      <a class="phone" href="tel:+16512638557" aria-label="Call (651) 263-8557"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><path d="M5 3h4l2 5-2.5 1.5a11 11 0 0 0 6 6L16 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 5a2 2 0 0 1 2-2z"/></svg><span>(651) 263-8557</span></a>
+      <a class="btn btn-primary" href="./#estimate">Get a Price</a>
+      <button class="menu-btn" id="menuBtn" type="button" aria-expanded="false" aria-controls="mobileMenu"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg><span class="menu-label">Menu</span></button>
+    </div>
+  </div>
+  <nav class="mobile-menu" id="mobileMenu" aria-label="Menu" hidden>
+    <div class="wrap">
+      <ul>
+        <li><a href="residential.html">Residential</a></li>
+        <li><a href="commercial.html">Commercial</a></li>
+        <li><a href="colors.html">Colors &amp; Visualizer</a></li>
+        <li><a href="gallery.html">Our Work</a></li>
+        <li><a href="about-us.html">About</a></li>
+        <li><a href="contact-us.html">Contact us</a></li>
+        <li><a href="search.html" data-search-open>Search the site</a></li>
+      </ul>
+      <div class="btn-row"><a class="btn btn-primary" href="./#estimate">Get a Price</a><a class="btn btn-outline" href="tel:+16512638557">Call (651) 263-8557</a></div>
+    </div>
+  </nav>
+</header>
+<main id="main" tabindex="-1">
+<section class="owner dark band" aria-labelledby="pageTitle">
+  <div class="wrap stack" style="gap:32px">
+    <div class="stack" style="gap:18px">
+      <p class="crumbs"><a href="./">Home</a> / Lead inbox</p>
+      <h1 class="h2" id="pageTitle">Your lead inbox</h1>
+      <p class="lede">Every free-estimate request lands here the moment it’s sent, with the sample, room and light the customer picked in the showroom and where they heard about you. In this concept, requests stay in this browser. On the live site they would reach your phone and email too.</p>
+      <div class="btn-row"><a class="btn btn-primary" href="./#estimate">Send a test request</a></div>
+    </div>
+    <div class="inbox-grid">
+      <div class="ibox">
+        <div class="ihead"><h2>At a glance</h2><span class="live off" id="liveTag">Connecting</span></div>
+        <div class="kpis">
+          <div class="kpi"><b id="kTotal">0</b><span>Quote requests</span></div>
+          <div class="kpi"><b id="kGarage">0</b><span>Two-stall garages</span></div>
+        </div>
+        <h3>Leads by source</h3>
+        <div class="stack" id="sources" style="gap:10px"></div>
+      </div>
+      <div class="ibox">
+        <div class="ihead"><h2>Newest first</h2><span class="inote" id="inboxNote"></span></div>
+        <div class="leads" id="leads"></div>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+<footer>
+  <div class="wrap fgrid">
+    <div class="stack" style="gap:16px">
+      <a class="logo-box" href="./"><img src="img/logo-300.webp" srcset="img/logo-150.webp 150w, img/logo-300.webp 300w, img/logo-450.webp 450w" sizes="136px" alt="The Coating Crew home" width="136" height="48" loading="lazy"></a>
+      <p>Family owned and operated since 1999. BBB accredited and a member of the Builders Association of the Twin Cities.</p>
+    </div>
+    <div>
+      <h2>Visit or call</h2>
+      <p>10967 Clark Rd, Ste E<br>Inver Grove Heights, MN 55077</p>
+      <p>Monday to Friday, 7am to 6pm</p>
+      <p><a class="fphone" href="tel:+16512638557">(651) 263-8557</a></p>
+    </div>
+    <nav aria-label="Floors">
+      <h2>Floors</h2>
+      <ul>
+        <li><a href="residential.html">Residential</a></li>
+        <li><a href="commercial.html">Commercial</a></li>
+        <li><a href="industrial.html">Industrial</a></li>
+        <li><a href="finishes.html">Finishes</a></li>
+        <li><a href="colors.html">Colors and visualizer</a></li>
+        <li><a href="gallery.html">Our work</a></li>
+        <li><a href="reviews.html">Reviews</a></li>
+      </ul>
+    </nav>
+    <nav aria-label="Company">
+      <h2>Company</h2>
+      <ul>
+        <li><a href="about-us.html">About us</a></li>
+        <li><a href="worry-free-guarantee.html">Worry-free guarantee</a></li>
+        <li><a href="certified-professionals.html">Certified professionals</a></li>
+        <li><a href="trailers.html">On-site storage</a></li>
+        <li><a href="contact-us.html">Contact us</a></li>
+        <li><a href="search.html" data-search-open>Search the site</a></li>
+        <li><a href="privacy-policy.html">Privacy policy</a></li>
+      </ul>
+    </nav>
+  </div>
+  <div class="wrap"><div class="legal">
+    <p>Concept design © 2026, shared with The Coating Crew for review only. Photos are from your current website. The floor visualizer rooms and sample blocks are 3D renders. See the <a href="owner.html">owner’s lead inbox</a>.</p>
+    <p class="builtby">Built by <a href="https://saintpaulagency.com" target="_blank" rel="noopener">saintpaulagency.com</a> and <a href="https://www.aidanbarnard.com" target="_blank" rel="noopener">aidanbarnard.com</a></p>
+  </div></div>
+</footer>
+<nav class="mbar" aria-label="Call or get a price">
+  <div class="in"><a class="btn btn-dark" href="tel:+16512638557">Call Now</a><a class="btn btn-primary" href="./#estimate">Get a Price</a></div>
+</nav>
+<div class="toast" id="toast" role="status" aria-live="polite"><b id="toastTitle"></b><span id="toastBody"></span></div>
+<script src="site.js" defer></script>
+<script src="home.js" defer></script>
+</body>
+</html>

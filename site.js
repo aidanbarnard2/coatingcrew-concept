@@ -22,7 +22,7 @@
     menuBtn.addEventListener('click', function () { setMenu(menu.hidden); if (!menu.hidden) { var f = $('a', menu); if (f) f.focus(); } });
     menu.addEventListener('click', function (e) { if (e.target.closest('a,button[data-search-open]')) setMenu(false); });
     addEventListener('keydown', function (e) { if (e.key === 'Escape' && !menu.hidden) setMenu(false, true); });
-    addEventListener('resize', function () { if (innerWidth > 1060 && !menu.hidden) setMenu(false); });
+    addEventListener('resize', function () { if (innerWidth > 1080 && !menu.hidden) setMenu(false); });
   }
 
   /* toast, shared */
@@ -88,10 +88,20 @@
     err.hidden = true; $('#cDone').hidden = false; $('#cDone').focus(); cf.reset();
   });
 
-  /* any "Price this floor" link carries the blend picked in the visualizer */
+  /* "Price this floor" carries the sample, room and light picked in the visualizer to the estimate form */
   document.addEventListener('click', function (e) {
     var a = e.target.closest('[data-price-floor]'); if (!a) return;
-    var v = a.closest('[data-viz]'); var name = v && $('.viz-blend-name', v);
-    try { if (name) { sessionStorage.setItem('ccBlend', name.textContent); sessionStorage.setItem('ccBlendPicked', '1'); } } catch (x) {}
+    var v = a.closest('[data-viz]'), viz = v && v._viz;
+    if (viz) { viz.touched = true; viz.emit(); }
+    try { var name = v && $('.viz-blend-name', v); if (name) { sessionStorage.setItem('ccBlend', name.textContent); sessionStorage.setItem('ccBlendPicked', '1'); } } catch (x) {}
+  });
+
+  /* photo reels: the arrow buttons scroll the reel in the same section */
+  $$('[data-reel]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var sec = b.closest('section'), reel = sec && $('.reel', sec); if (!reel) return;
+      var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+      reel.scrollBy({ left: (b.dataset.reel === 'next' ? 1 : -1) * reel.clientWidth * 0.8, behavior: reduce ? 'auto' : 'smooth' });
+    });
   });
 })();

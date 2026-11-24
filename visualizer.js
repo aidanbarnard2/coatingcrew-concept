@@ -115,42 +115,86 @@
     this.status = root.querySelector('.viz-status');
     this.state = { room: 0, blend: root.getAttribute('data-blend') || 'Domino', bare: false, time: 'midday', cloudy: false,
       ceilOn: false, ceil: 100, lampsOn: false, lamps: 100, k: 3000, preset: 'afternoon' };
-    try { var saved = sessionStorage.getItem('ccBlend'); if (saved && BLENDS.indexOf(saved) >= 0) this.state.blend = saved; } catch (e) {}
+    this.touched = false;
+    // pick up where the visitor left off on another page (room, light and sample)
+    try {
+      var prev = JSON.parse(sessionStorage.getItem('ccPicks') || 'null');
+      if (prev && prev.touched && prev.state) { for (var k in this.state) if (k in prev.state) this.state[k] = prev.state[k]; this.touched = true; }
+      var saved = sessionStorage.getItem('ccBlend'); if (saved && BLENDS.indexOf(saved) >= 0) this.state.blend = saved;
+      if (sessionStorage.getItem('ccBlendPicked')) this.touched = true;
+    } catch (e) {}
     var asked = new URLSearchParams(location.search).get('blend');
-    if (asked && BLENDS.indexOf(asked) >= 0) { this.state.blend = asked; try { sessionStorage.setItem('ccBlend', asked); sessionStorage.setItem('ccBlendPicked', '1'); } catch (e) {} }
+    if (asked && BLENDS.indexOf(asked) >= 0) { this.state.blend = asked; this.touched = true; try { sessionStorage.setItem('ccBlend', asked); sessionStorage.setItem('ccBlendPicked', '1'); } catch (e) {} }
+    this.state.bare = !!this.state.bare;
+    // first visit: the page opens on bare concrete and the coating sweeps across once the room is ready
+    this.intro = root.hasAttribute('data-intro') && !reduce && !this.touched;
+    if (this.intro) this.state.bare = true;
+    if (this.state.room >= this.roomCount()) this.state.room = 0;
     this.texCache = {}; this.roomCache = {};
     this.buildTiles();
+    this.adoptRooms();
     this.bind();
     this.syncControls();
+    this.announce(true);
+  }
+
+  Viz.prototype.roomCount = function () { return this.root.querySelectorAll('.room').length || 3; };
+
+  /* the heavy part (room data, WebGL, textures) waits until the page has loaded, or until the visitor reaches for it */
+  Viz.prototype.boot = function () {
+    if (this.booted) return; this.booted = true;
     var self = this;
     fetch(this.base + 'rooms.json').then(function (r) { return r.json(); }).then(function (rooms) {
-      self.rooms = rooms; self.buildRooms(); return self.initGL();
-    }).then(function (ok) { if (ok) return self.setRoom(0, true); self.noGL(); }).catch(function () { self.noGL(); });
-  }
+      self.rooms = rooms; if (!self.roomBtns || !self.roomBtns.length) self.buildRooms(); return self.initGL();
+    }).then(function (ok) { if (ok) return self.setRoom(self.state.room, true); self.noGL(); }).catch(function () { self.noGL(); });
+  };
+
+  Viz.prototype.adoptRooms = function () {
+    this.roomBtns = Array.prototype.slice.call(this.root.querySelectorAll('.room'));
+    var i = this.state.room;
+    this.roomBtns.forEach(function (b, k) { b.setAttribute('aria-pressed', String(k === i)); });
+  };
+
+  Viz.prototype.roomName = function () {
+    var i = this.state.room;
+    if (this.rooms) return this.rooms[i].name;
+    var b = this.roomBtns && this.roomBtns[i];
+    return b ? b.textContent.trim() : 'Room';
+  };
+
+  Viz.prototype.emit = function () {
+    if (!this.touched) return;
+    var p = { touched: true, blend: this.state.blend, bare: this.state.bare, room: this.roomName(), light: this.lightLabel(), state: this.state };
+    try { sessionStorage.setItem('ccPicks', JSON.stringify(p)); } catch (e) {}
+    this.root.dispatchEvent(new CustomEvent('viz:change', { detail: p, bubbles: true }));
+  };
 
   Viz.prototype.q = function (sel) { return this.root.querySelector(sel); };
 
   Viz.prototype.buildTiles = function () {
     var self = this;
     Array.prototype.forEach.call(this.root.querySelectorAll('.viz-tiles'), function (box) {
+      if (box.querySelector('.sample')) return; // already in the page
       (GROUPS[box.getAttribute('data-group')] || BLENDS).forEach(function (n) {
         var b = document.createElement('button');
         b.type = 'button'; b.className = 'sample'; b.dataset.blend = n;
         b.setAttribute('aria-pressed', String(n === self.state.blend));
         var face = document.createElement('span'); face.className = 'face';
-        face.style.backgroundImage = 'url(img/colors/' + slug(n) + '.jpg)';
+        face.style.backgroundImage = 'url(img/colors/s/' + slug(n) + '.webp)';
         var lab = document.createElement('span'); lab.className = 'lab'; lab.textContent = n;
         b.appendChild(face); b.appendChild(lab); box.appendChild(b);
       });
     });
     this.tiles = Array.prototype.slice.call(this.root.querySelectorAll('.sample'));
+    var cur = this.state.blend;
+    this.tiles.forEach(function (t) { t.setAttribute('aria-pressed', String(t.dataset.blend === cur)); });
     this.showBlend();
   };
 
   Viz.prototype.showBlend = function () {
     var n = this.state.blend;
     Array.prototype.forEach.call(this.root.querySelectorAll('.viz-blend-name'), function (el) { el.textContent = n; });
-    var lp = this.q('.viz-loupe'); if (lp) lp.style.backgroundImage = 'url(img/colors/tex-m/' + slug(n) + '.jpg)';
+    Array.prototype.forEach.call(document.querySelectorAll('.viz-loupe'), function (lp) { lp.style.backgroundImage = 'url(img/colors/l/' + slug(n) + '.webp)'; });
   };
 
   Viz.prototype.buildRooms = function () {
@@ -159,7 +203,7 @@
       var b = document.createElement('button');
       b.type = 'button'; b.className = 'room'; b.dataset.i = i;
       b.setAttribute('aria-pressed', String(i === 0));
-      var im = document.createElement('img'); im.alt = ''; im.loading = 'lazy'; im.src = self.base + r.key + '-thumb.jpg';
+      var im = document.createElement('img'); im.alt = ''; im.loading = 'lazy'; im.src = self.base + r.key + '-thumb.webp';
       var s = document.createElement('span'); s.textContent = r.name;
       b.appendChild(im); b.appendChild(s); box.appendChild(b);
     });
@@ -170,6 +214,12 @@
     var self = this, root = this.root;
     root.addEventListener('click', function (e) {
       var t = e.target.closest('button'); if (!t || !root.contains(t)) return;
+      if (t.dataset.rail) {
+        var rail = self.q('.rail');
+        if (rail) rail.scrollBy({ left: (t.dataset.rail === 'next' ? 1 : -1) * rail.clientWidth * 0.8, behavior: reduce ? 'auto' : 'smooth' });
+        return;
+      }
+      self.touched = true;
       if (t.classList.contains('sample')) self.setBlend(t.dataset.blend);
       else if (t.classList.contains('room')) self.setRoom(+t.dataset.i);
       else if (t.dataset.preset) self.applyPreset(t.dataset.preset);
@@ -179,7 +229,7 @@
       else if (t.classList.contains('viz-lamps-on')) self.setLight({ lampsOn: !self.state.lampsOn });
       else if (t.classList.contains('viz-orig')) self.setBare(!self.state.bare);
     });
-    var on = function (sel, fn) { var el = self.q(sel); if (el) el.addEventListener('input', function () { fn(+el.value); }); };
+    var on = function (sel, fn) { var el = self.q(sel); if (el) el.addEventListener('input', function () { self.touched = true; fn(+el.value); }); };
     on('.viz-ceil-dim', function (v) { self.setLight({ ceil: v, ceilOn: true }, true); });
     on('.viz-lamps-dim', function (v) { self.setLight({ lamps: v, lampsOn: true }, true); });
     on('.viz-k', function (v) { self.setLight({ k: v }, true); });
@@ -215,14 +265,15 @@
     return parts.join(', ');
   };
 
-  Viz.prototype.announce = function () {
-    if (!this.rooms) return;
-    var r = this.rooms[this.state.room], floor = this.state.bare ? 'bare concrete' : 'a ' + this.state.blend + ' chip floor';
+  Viz.prototype.announce = function (silent) {
+    var floor = this.state.bare ? 'bare concrete' : 'a ' + this.state.blend + ' chip floor';
     var lab = this.lightLabel();
-    var msg = r.name + ' with ' + floor + ', ' + lab.charAt(0).toLowerCase() + lab.slice(1);
-    if (this.status) this.status.textContent = 'Showing the ' + msg.charAt(0).toLowerCase() + msg.slice(1) + '.';
+    var msg = this.roomName() + ' with ' + floor + ', ' + lab.charAt(0).toLowerCase() + lab.slice(1);
+    if (this.status && !silent) this.status.textContent = 'Showing the ' + msg.charAt(0).toLowerCase() + msg.slice(1) + '.';
     if (this.canvas) this.canvas.setAttribute('aria-label', msg);
+    if (this.poster) this.poster.alt = msg;
     var tb = this.q('.viz-tag-blend'); if (tb) tb.textContent = this.state.bare ? 'Bare concrete' : this.state.blend;
+    if (!silent) this.emit();
   };
 
   Viz.prototype.applyPreset = function (key) {
@@ -262,8 +313,14 @@
   };
 
   Viz.prototype.initGL = function () {
-    var c = this.canvas, gl = c.getContext('webgl', { antialias: false, preserveDrawingBuffer: true }) || c.getContext('experimental-webgl');
+    // software-only WebGL would make the page janky, so those browsers get still pictures (?gl=force overrides, for testing)
+    var force = /[?&]gl=force/.test(location.search);
+    var opts = { antialias: false, failIfMajorPerformanceCaveat: !force };
+    var c = this.canvas, gl = c.getContext('webgl', opts) || c.getContext('experimental-webgl', opts);
     if (!gl) return Promise.resolve(false);
+    var dbg = gl.getExtension('WEBGL_debug_renderer_info');
+    var renderer = dbg ? String(gl.getParameter(dbg.UNMASKED_RENDERER_WEBGL)) : '';
+    if (!force && /swiftshader|llvmpipe|softpipe|software|basic render/i.test(renderer)) return Promise.resolve(false);
     this.gl = gl;
     function sh(type, src) { var s = gl.createShader(type); gl.shaderSource(s, src); gl.compileShader(s); if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) throw new Error(gl.getShaderInfoLog(s)); return s; }
     var p = gl.createProgram();
@@ -344,7 +401,7 @@
     gl.uniformMatrix3fv(u.uM, false, [m[0], m[3], m[6], m[1], m[4], m[7], m[2], m[5], m[8]]);
     gl.uniform2f(u.uSize, r.W, r.H); gl.uniform4f(u.uCrop, r.crop[0], r.crop[1], r.crop[2], r.crop[3]);
     gl.uniform1f(u.uTile, r.tile); gl.uniform1f(u.uWipe, this.wipe || 0);
-    gl.uniform1f(u.uGlossK, this.lastBare ? 0.1 : 1.0); gl.uniform1f(u.uPrevGlossK, this.prevBare ? 0.1 : 1.0);
+    gl.uniform1f(u.uGlossK, this.lastBare ? 0.035 : 1.0); gl.uniform1f(u.uPrevGlossK, this.prevBare ? 0.035 : 1.0);
     gl.viewport(0, 0, this.canvas.width, this.canvas.height);
     gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
   };
@@ -362,13 +419,14 @@
   };
 
   Viz.prototype.setRoom = function (i, first) {
-    var self = this, r = this.rooms[i];
+    var self = this;
     this.state.room = i;
     (this.roomBtns || []).forEach(function (b, k) { b.setAttribute('aria-pressed', String(k === i)); });
+    if (!this.rooms) { this.announce(); this.boot(); return Promise.resolve(); }
+    var r = this.rooms[i];
     var cn = this.q('.viz-ceil-name'); if (cn) cn.textContent = r.ceiling;
     var ln = this.q('.viz-lamps-name'); if (ln) ln.textContent = r.lamps;
-    if (this.poster) { this.poster.src = this.base + r.key + '-poster.jpg'; this.poster.alt = r.name + ' with a Domino chip floor in afternoon light'; }
-    if (!this.gl) { this.announce(); return Promise.resolve(); }
+    if (!this.gl) { this.showPoster(); this.announce(first); return Promise.resolve(); }
     this.stage.classList.add('loading');
     var want = this.state.bare ? CONCRETE : this.state.blend;
     return Promise.all([this.loadRoom(i), this.chip(want)]).then(function (res) {
@@ -378,9 +436,21 @@
       self.stage.style.aspectRatio = r.W + ' / ' + r.H;
       self.w = null; self.fadeLights(0);
       self.stage.classList.remove('loading'); self.stage.classList.add('ready');
-      self.announce();
-      if (first) self.root.dispatchEvent(new CustomEvent('viz:ready'));
+      self.canvas.removeAttribute('aria-hidden');
+      self.announce(first);
+      if (first) {
+        self.root.dispatchEvent(new CustomEvent('viz:ready'));
+        if (self.intro && self.state.bare) setTimeout(function () { if (self.intro && self.state.bare) { self.intro = false; self.setBare(false, true); } }, 700);
+      }
     });
+  };
+
+  /* still pictures for browsers without fast WebGL: the room with a Domino floor */
+  Viz.prototype.showPoster = function () {
+    if (!this.poster || !this.rooms) return;
+    var b = this.base + this.rooms[this.state.room].key + '-poster-';
+    this.poster.srcset = b + '660.webp 660w, ' + b + '990.webp 990w, ' + b + '1320.webp 1320w';
+    this.poster.src = b + '1320.webp';
   };
 
   Viz.prototype.swapChip = function (name) {
@@ -394,6 +464,7 @@
   };
 
   Viz.prototype.setBlend = function (name) {
+    this.intro = false;
     if (name === this.state.blend && !this.state.bare) return;
     this.state.blend = name;
     try { sessionStorage.setItem('ccBlend', name); sessionStorage.setItem('ccBlendPicked', '1'); } catch (e) {}
@@ -404,22 +475,28 @@
     if (this.gl && this.cur) this.swapChip(name);
   };
 
-  Viz.prototype.setBare = function (on) {
-    this.state.bare = on; this.syncControls(); this.announce();
+  Viz.prototype.setBare = function (on, auto) {
+    if (!auto) this.intro = false;
+    this.state.bare = on; this.syncControls(); this.announce(auto);
     if (this.gl && this.cur) this.swapChip(on ? CONCRETE : this.state.blend);
   };
 
   Viz.prototype.noGL = function () {
     this.stage.classList.add('nogl');
-    if (this.status) this.status.textContent = 'This browser can’t run the visualizer, so you’re seeing a still picture. Tap a sample to see the blend up close.';
+    this.gl = null;
+    if (this.state.bare && this.intro) { this.intro = false; this.state.bare = false; this.syncControls(); }
+    this.showPoster();
+    this.announce(true);
+    var cap = this.q('.viz-nogl');
+    if (cap) cap.hidden = false;
   };
 
   window.CCViz = Viz;
   Array.prototype.forEach.call(document.querySelectorAll('[data-viz]'), function (el) {
-    var start = function () { if (!el._viz) el._viz = new Viz(el); };
-    if ('IntersectionObserver' in window) {
-      var io = new IntersectionObserver(function (es) { if (es[0].isIntersecting) { io.disconnect(); start(); } }, { rootMargin: '600px 0px' });
-      io.observe(el);
-    } else start();
+    var v = el._viz = new Viz(el);
+    var go = function () { v.boot(); };
+    var idle = function () { if ('requestIdleCallback' in window) requestIdleCallback(go, { timeout: 1200 }); else setTimeout(go, 150); };
+    if (document.readyState === 'complete') idle(); else window.addEventListener('load', idle, { once: true });
+    ['pointerdown', 'focusin'].forEach(function (ev) { el.addEventListener(ev, go, { once: true, passive: true }); });
   });
 })();

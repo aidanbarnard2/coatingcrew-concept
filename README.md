@@ -4,16 +4,18 @@ A concept preview built by Saint Paul Agency (saintpaulagency.com) and Aidan Bar
 
 ## What's here
 
-- Static pages (`*.html`) sharing one header, footer and stylesheet (`site.css`).
-- `visualizer.js`: the floor visualizer. Three 3D rooms (garage, basement, sunroom) were path-traced in Blender with every light rendered on its own: the sun at three times of day, the sky, ceiling lights and lamps. The page mixes those passes live in WebGL, so visitors can change the time of day, weather, bulb brightness and bulb color, and lay any chip blend into the floor with its clear-coat reflections (`img/studio/`).
-- `home.js`: the free-estimate form and the owner's lead inbox on the home page.
+- Static pages (`*.html`) sharing one header, footer and stylesheet (`site.css`). Type is Archivo, self-hosted in `fonts/` (SIL Open Font License, see `fonts/ARCHIVO-OFL.txt`).
+- The home page opens on the showroom: a live floor visualizer where visitors pick a room, a chip sample and the light, followed by real jobs and reviews, the four systems side by side, the install day, the free-estimate form (pre-filled with the visitor's picks), FAQ and about.
+- `visualizer.js`: the floor visualizer. Three 3D rooms (garage, basement, sunroom) were path-traced in Blender with every light rendered on its own: the sun at three times of day, the sky, ceiling lights and lamps. The page mixes those passes live in WebGL, so visitors can change the time of day, weather, bulb brightness and bulb color, and lay any chip blend into the floor with its clear-coat reflections (`img/studio/`). It loads after the page does, and browsers with only software WebGL get still pictures.
+- `img/systems/`: rendered sample blocks for the four floor systems.
+- `home.js`: the free-estimate form, and the owner's lead inbox on `owner.html`.
 - `search.js` and `search-index.js`: site search.
 
 ## Rebuilding
 
-- `python3 tools/build_pages.py` rewraps every page in the shared header and footer. The home and colors pages are built from `tools/pages/`.
+- `python3 tools/build_pages.py` rewraps every page in the shared head, header and footer. The home, colors, finishes and owner pages are built from `tools/pages/`. Pages stay out of search engines; build with `CC_INDEX=1` when this becomes the live site.
 - `tools/studio/` builds the visualizer rooms: `final.sh` renders each room's light passes with Blender's Python module (`pip install bpy OpenEXR`), then `python3 encode.py final ../../img/studio garage basement sunroom` packs them for the page. `mix.py` previews any lighting preset as a still.
 
-## Accessibility
+## Accessibility and speed
 
-All text uses solid colors that pass WCAG 2.2 AA contrast. Every page is checked with axe-core at desktop and phone sizes, and the menu, estimate form, photo viewer and visualizer all work from the keyboard.
+All text uses solid colors that pass WCAG 2.2 AA contrast. Every page is checked with axe-core at desktop and phone sizes, and the menu, estimate form, photo viewer and visualizer all work from the keyboard. Photos are served as WebP in two sizes, and the page's structured data (business, FAQ and breadcrumbs) is in JSON-LD.

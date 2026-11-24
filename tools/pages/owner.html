@@ -1,0 +1,27 @@
+<!--title: Lead Inbox (Owner View) | The Coating Crew-->
+<!--desc: Concept demo of the owner's lead inbox: every free-estimate request, the floor the customer picked and where they heard about The Coating Crew.-->
+<section class="owner dark band" aria-labelledby="pageTitle">
+  <div class="wrap stack" style="gap:32px">
+    <div class="stack" style="gap:18px">
+      <p class="crumbs"><a href="./">Home</a> / Lead inbox</p>
+      <h1 class="h2" id="pageTitle">Your lead inbox</h1>
+      <p class="lede">Every free-estimate request lands here the moment it’s sent, with the sample, room and light the customer picked in the showroom and where they heard about you. In this concept, requests stay in this browser. On the live site they would reach your phone and email too.</p>
+      <div class="btn-row"><a class="btn btn-primary" href="./#estimate">Send a test request</a></div>
+    </div>
+    <div class="inbox-grid">
+      <div class="ibox">
+        <div class="ihead"><h2>At a glance</h2><span class="live off" id="liveTag">Connecting</span></div>
+        <div class="kpis">
+          <div class="kpi"><b id="kTotal">0</b><span>Quote requests</span></div>
+          <div class="kpi"><b id="kGarage">0</b><span>Two-stall garages</span></div>
+        </div>
+        <h3>Leads by source</h3>
+        <div class="stack" id="sources" style="gap:10px"></div>
+      </div>
+      <div class="ibox">
+        <div class="ihead"><h2>Newest first</h2><span class="inote" id="inboxNote"></span></div>
+        <div class="leads" id="leads"></div>
+      </div>
+    </div>
+  </div>
+</section>

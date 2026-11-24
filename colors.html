@@ -4,26 +4,28 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Chip Colors and Floor Visualizer | The Coating Crew</title>
-<meta name="description" content="Try any of our 32 chip blends in a garage, basement or sunroom, from morning sun to night, under warm or cool bulbs. Floor coatings across the Minneapolis / Saint Paul area.">
+<meta name="description" content="Try any of our 32 chip blends on a garage, basement or sunroom floor, from morning sun to night, under warm or cool bulbs. Floor coatings across the Minneapolis / Saint Paul area.">
 <meta name="robots" content="noindex, nofollow">
+<link rel="canonical" href="https://aidanbarnard2.github.io/coatingcrew-concept/colors.html">
 <meta property="og:type" content="website">
+<meta property="og:site_name" content="The Coating Crew">
+<meta property="og:url" content="https://aidanbarnard2.github.io/coatingcrew-concept/colors.html">
 <meta property="og:title" content="Chip Colors and Floor Visualizer | The Coating Crew">
-<meta property="og:description" content="Try any of our 32 chip blends in a garage, basement or sunroom, from morning sun to night, under warm or cool bulbs. Floor coatings across the Minneapolis / Saint Paul area.">
+<meta property="og:description" content="Try any of our 32 chip blends on a garage, basement or sunroom floor, from morning sun to night, under warm or cool bulbs. Floor coatings across the Minneapolis / Saint Paul area.">
 <meta property="og:image" content="https://aidanbarnard2.github.io/coatingcrew-concept/img/studio/garage-poster.jpg">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="theme-color" content="#14171C">
+<meta name="theme-color" content="#1D232A">
 <link rel="icon" href="img/logo.webp">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap">
-<link rel="stylesheet" href="site.css?v=3">
+<link rel="preload" href="fonts/archivo-wdth.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="site.css?v=4">
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://aidanbarnard2.github.io/coatingcrew-concept/"},{"@type":"ListItem","position":2,"name":"a> / Colors and visualizer","item":"https://aidanbarnard2.github.io/coatingcrew-concept/colors.html"}]}]}</script>
 </head>
 <body>
 <a class="skip" href="#main">Skip to main content</a>
-<p class="preview-note">Concept preview by Aidan Barnard · Not the live website</p>
+<aside class="preview-note" aria-label="About this page">Concept preview by Aidan Barnard. Not the live website.</aside>
 <header class="site">
   <div class="wrap hdr">
-    <a class="logo" href="./"><img src="img/logo.webp" alt="The Coating Crew home" width="147" height="52"></a>
+    <a class="logo" href="./"><img src="img/logo-300.webp" srcset="img/logo-150.webp 150w, img/logo-300.webp 300w, img/logo-450.webp 450w" sizes="147px" alt="The Coating Crew home" width="147" height="52"></a>
     <nav class="nav" aria-label="Main">
       <ul>
         <li><a href="residential.html">Residential</a></li>
@@ -55,132 +57,97 @@
   </nav>
 </header>
 <main id="main" tabindex="-1">
-<section class="phero" aria-labelledby="pageTitle">
-  <div class="bg" style="background-image:url(img/photos/chip-closeup.jpg)" aria-hidden="true"></div>
-  <div class="wrap">
-    <p class="crumbs"><a href="./">Home</a> / Colors and visualizer</p>
-    <h1 id="pageTitle">Chip colors in any light</h1>
-    <p class="intro">Pick from 32 chip blends and see each one in a garage, a basement and a sunroom, from morning sun to night, under warm or cool bulbs.</p>
-    <div class="btn-row"><a class="btn btn-primary" href="./#estimate">Get My Free Estimate</a><a class="btn btn-light" href="tel:+16512638557">Call (651) 263-8557</a></div>
+<section class="studio" id="visualizer" aria-labelledby="pageTitle">
+  <div class="wrap studio-app no-more" data-viz data-intro data-blend="Domino">
+    <div class="s-head">
+      <p class="crumbs"><a href="./">Home</a> / Colors and visualizer</p>
+      <h1 id="pageTitle">Chip colors in any light</h1>
+      <div class="head-row">
+        <p class="studio-sub">Pick a room, then a sample. Every light in these rooms can change: the time of day, sun or clouds, and each set of bulbs, from warm to cool and bright to dim.</p>
+        <div class="btn-row"><a class="btn btn-primary" href="./#estimate">Get My Free Estimate</a><a class="btn btn-light" href="tel:+16512638557">Call (651) 263-8557</a></div>
+      </div>
+    </div>
+  <div class="s-viz">
+    <div class="viz-stage">
+      <img class="viz-photo" src="img/studio/garage-bare-1320.webp" srcset="img/studio/garage-bare-660.webp 660w, img/studio/garage-bare-990.webp 990w, img/studio/garage-bare-1320.webp 1320w" sizes="(min-width:1340px) 700px, (min-width:1001px) 56vw, calc(100vw - 32px)" alt="Two-car garage with bare concrete, bright afternoon" width="1320" height="880" fetchpriority="high">
+      <canvas role="img" aria-hidden="true" aria-label="Two-car garage with bare concrete, bright afternoon"></canvas>
+      <span class="viz-tag" aria-hidden="true"><b class="viz-tag-blend">Bare concrete</b><span class="viz-tag-light">Bright afternoon</span></span>
+      <span class="loader" aria-hidden="true">Loading the room…</span>
+    </div>
+    <div class="viz-rooms" role="group" aria-label="Choose a room">
+      <button type="button" class="room" data-i="0" aria-pressed="true"><img src="img/studio/garage-thumb.webp" alt="" width="105" height="70" decoding="async"><span>Two-car garage</span></button>
+      <button type="button" class="room" data-i="1" aria-pressed="false"><img src="img/studio/basement-thumb.webp" alt="" width="105" height="70" decoding="async"><span>Finished basement</span></button>
+      <button type="button" class="room" data-i="2" aria-pressed="false"><img src="img/studio/sunroom-thumb.webp" alt="" width="105" height="70" decoding="async"><span>Sunroom</span></button>
+    </div>
   </div>
-</section>
-
-<section class="band" id="visualizer" aria-labelledby="vizTitle">
-  <div class="wrap">
-    <div class="viz-head">
-      <div class="stack" style="gap:12px">
-        <p class="eyebrow">Floor visualizer</p>
-        <h2 class="h2" id="vizTitle">Pick a room, then pick a sample</h2>
-        <p class="lede">Every light in these rooms can be changed: the time of day, sun or clouds, and each set of bulbs, from warm to cool and bright to dim. Switch to bare concrete to compare.</p>
+  <div class="s-desk">
+    <div class="desk">
+      <div class="desk-top">
+        <h2 class="desk-h" id="v-lightTitle">Change the light</h2>
+        <div class="presets" role="group" aria-labelledby="v-lightTitle"><button type="button" data-preset="morning" aria-pressed="false">Sunny morning</button><button type="button" data-preset="afternoon" aria-pressed="true">Bright afternoon</button><button type="button" data-preset="cloudy" aria-pressed="false">Cloudy day</button><button type="button" data-preset="golden" aria-pressed="false">Golden hour</button><button type="button" data-preset="evening" aria-pressed="false">Evening, warm bulbs</button><button type="button" data-preset="nightcool" aria-pressed="false">Night, cool LEDs</button><button type="button" data-preset="dark" aria-pressed="false">Lights off</button></div>
+      </div>
+      <div class="desk-col">
+        <div class="group"><span class="sub" id="v-timeLbl">Time of day</span><div class="seg5" role="group" aria-labelledby="v-timeLbl"><button type="button" data-time="morning" aria-pressed="false">Morning</button><button type="button" data-time="midday" aria-pressed="true">Midday</button><button type="button" data-time="golden" aria-pressed="false">Golden hour</button><button type="button" data-time="dusk" aria-pressed="false">Dusk</button><button type="button" data-time="night" aria-pressed="false">Night</button></div></div>
+        <div class="group"><span class="sub" id="v-skyLbl">Weather</span><div class="seg" role="group" aria-labelledby="v-skyLbl"><button type="button" data-sky="sun" aria-pressed="true"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="4.5"/><path d="M12 1.5v2.5M12 20v2.5M4.6 4.6l1.8 1.8M17.6 17.6l1.8 1.8M1.5 12H4M20 12h2.5M4.6 19.4l1.8-1.8M17.6 6.4l1.8-1.8"/></svg>Sunny</button><button type="button" data-sky="cloud" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><path d="M7 18h10a4 4 0 0 0 .6-7.95A6 6 0 0 0 6.1 9.2 4.5 4.5 0 0 0 7 18z"/></svg>Cloudy</button></div></div>
+      </div>
+      <div class="desk-col">
+        <div class="group">
+          <button type="button" class="toggle viz-ceil-on" aria-pressed="false"><span class="viz-ceil-name">Shop lights</span><span class="sw" aria-hidden="true"></span></button>
+          <label class="range"><span>Brightness <output class="viz-ceil-out">100%</output></span><input type="range" class="viz-ceil-dim" min="5" max="100" step="5" value="100" aria-label="Shop lights brightness"></label>
+        </div>
+        <div class="group">
+          <button type="button" class="toggle viz-lamps-on" aria-pressed="false"><span class="viz-lamps-name">Opener and bench lights</span><span class="sw" aria-hidden="true"></span></button>
+          <label class="range"><span>Brightness <output class="viz-lamps-out">100%</output></span><input type="range" class="viz-lamps-dim" min="5" max="100" step="5" value="100" aria-label="Opener and bench lights brightness"></label>
+        </div>
+      </div>
+      <div class="desk-col">
+        <label class="range kelvin"><span>Bulb color <output class="viz-k-out">3000K, soft white</output></span><input type="range" class="viz-k" min="2200" max="6500" step="100" value="3000" aria-label="Bulb color"><span class="kbar" aria-hidden="true"></span><span class="ends" aria-hidden="true"><i>Warm</i><i>Cool</i></span></label>
+        <p class="desk-note">Bulb color changes every light that’s on. Warm bulbs bring out tans and browns; cool LEDs make grays and blues look crisper.</p>
       </div>
     </div>
-    <div class="viz-app" data-viz data-blend="Domino">
-  <div class="viz">
-    <div class="viz-stage-col">
-      <div class="viz-stage">
-        <img class="viz-photo" src="img/studio/garage-poster.jpg" alt="Two-car garage with a Domino chip floor in afternoon light" width="1320" height="880" loading="lazy">
-        <canvas role="img" aria-label="Two-car garage with a Domino chip floor, bright afternoon"></canvas>
-        <span class="viz-tag" aria-hidden="true"><b class="viz-tag-blend">Domino</b><span class="viz-tag-light">Bright afternoon</span></span>
-        <span class="loader" aria-hidden="true">Loading the room…</span>
-      </div>
-      <div class="viz-group">
-        <span class="viz-label" id="v-roomLbl">Room</span>
-        <div class="viz-rooms" role="group" aria-labelledby="v-roomLbl"></div>
-      </div>
-    </div>
-    <div class="viz-panel">
-      <div class="picked">
-        <span class="loupe viz-loupe" aria-hidden="true"></span>
-        <div><span>Selected sample</span><b class="viz-blend-name">Domino</b></div>
-      </div>
+  </div>
+  <div class="s-rail">
+    <div class="rail-head">
+      <div class="picked"><span class="loupe viz-loupe" aria-hidden="true" style="background-image:url(img/colors/l/domino.webp)"></span><div><span>Your sample</span><b class="viz-blend-name">Domino</b></div></div>
+      <button type="button" class="toggle viz-orig" aria-pressed="false">Show bare concrete<span class="sw" aria-hidden="true"></span></button>
       <a class="btn btn-primary" href="./#estimate" data-price-floor>Price this floor</a>
-
-      <div class="light-panel">
-        <h3 class="viz-label">Lighting</h3>
-        <div class="viz-group">
-          <span class="viz-sub" id="v-presetLbl">Quick looks</span>
-          <div class="presets" role="group" aria-labelledby="v-presetLbl">
-            <button type="button" data-preset="morning" aria-pressed="false">Sunny morning</button>
-            <button type="button" data-preset="afternoon" aria-pressed="true">Bright afternoon</button>
-            <button type="button" data-preset="cloudy" aria-pressed="false">Cloudy day</button>
-            <button type="button" data-preset="golden" aria-pressed="false">Golden hour</button>
-            <button type="button" data-preset="evening" aria-pressed="false">Evening, warm bulbs</button>
-            <button type="button" data-preset="nightcool" aria-pressed="false">Night, cool LEDs</button>
-            <button type="button" data-preset="dark" aria-pressed="false">Lights off</button>
-          </div>
-        </div>
-        <div class="viz-group">
-          <span class="viz-sub" id="v-timeLbl">Time of day</span>
-          <div class="seg5" role="group" aria-labelledby="v-timeLbl">
-            <button type="button" data-time="morning" aria-pressed="false">Morning</button>
-            <button type="button" data-time="midday" aria-pressed="true">Midday</button>
-            <button type="button" data-time="golden" aria-pressed="false">Golden hour</button>
-            <button type="button" data-time="dusk" aria-pressed="false">Dusk</button>
-            <button type="button" data-time="night" aria-pressed="false">Night</button>
-          </div>
-        </div>
-        <div class="viz-group">
-          <span class="viz-sub" id="v-skyLbl">Weather</span>
-          <div class="seg" role="group" aria-labelledby="v-skyLbl">
-            <button type="button" data-sky="sun" aria-pressed="true"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="4.5"/><path d="M12 1.5v2.5M12 20v2.5M4.6 4.6l1.8 1.8M17.6 17.6l1.8 1.8M1.5 12H4M20 12h2.5M4.6 19.4l1.8-1.8M17.6 6.4l1.8-1.8"/></svg>Sunny</button>
-            <button type="button" data-sky="cloud" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><path d="M7 18h10a4 4 0 0 0 .6-7.95A6 6 0 0 0 6.1 9.2 4.5 4.5 0 0 0 7 18z"/></svg>Cloudy</button>
-          </div>
-        </div>
-        <div class="bulbs">
-          <div class="bulb">
-            <button type="button" class="toggle viz-ceil-on" aria-pressed="false"><span class="viz-ceil-name">Ceiling lights</span><span class="sw" aria-hidden="true"></span></button>
-            <label class="range"><span>Brightness <output class="viz-ceil-out">100%</output></span><input type="range" class="viz-ceil-dim" min="5" max="100" step="5" value="100"></label>
-          </div>
-          <div class="bulb">
-            <button type="button" class="toggle viz-lamps-on" aria-pressed="false"><span class="viz-lamps-name">Lamps</span><span class="sw" aria-hidden="true"></span></button>
-            <label class="range"><span>Brightness <output class="viz-lamps-out">100%</output></span><input type="range" class="viz-lamps-dim" min="5" max="100" step="5" value="100"></label>
-          </div>
-          <label class="range kelvin"><span>Bulb color <output class="viz-k-out">3000K, warm white</output></span><input type="range" class="viz-k" min="2200" max="6500" step="100" value="3000"><span class="kbar" aria-hidden="true"></span><span class="ends" aria-hidden="true"><i>Warm</i><i>Cool</i></span></label>
-        </div>
-        <button type="button" class="toggle viz-orig" aria-pressed="false">Show bare concrete instead<span class="sw" aria-hidden="true"></span></button>
-      </div>
-
-      <div class="board">
-        <div class="board-group"><h3 id="v-g1">Grays and blues</h3><div class="viz-tiles" data-group="gray" role="group" aria-labelledby="v-g1"></div></div>
-        <div class="board-group"><h3 id="v-g2">Warm grays and stone</h3><div class="viz-tiles" data-group="warm" role="group" aria-labelledby="v-g2"></div></div>
-        <div class="board-group"><h3 id="v-g3">Tans and browns</h3><div class="viz-tiles" data-group="tan" role="group" aria-labelledby="v-g3"></div></div>
-      </div>
+      <div class="rail-btns"><button type="button" data-rail="prev" aria-label="Scroll the samples back"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button><button type="button" data-rail="next" aria-label="Scroll to more samples"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></button></div>
+    </div>
+    <p class="viz-nogl note" hidden>Your browser is showing still pictures, so the floor stays Domino here. The swatch above shows the blend you picked.</p>
+    <div class="rail">
+      <div class="rail-group"><p class="sub" id="v-gray">Grays and blues</p><div class="viz-tiles" data-group="gray" role="group" aria-labelledby="v-gray"><button type="button" class="sample" data-blend="Schist" aria-pressed="false"><span class="face"><img src="img/colors/s/schist.webp" alt="" width="160" height="160" loading="lazy" decoding="async"></span><span class="lab">Schist</span></button><button type="button" class="sample" data-blend="Slate Stone" aria-pressed="false"><span class="face"><img src="img/colors/s/slate-stone.webp" alt="" width="160" height="160" loading="lazy" decoding="async"></span><span class="lab">Slate Stone</span></button><button type="button" class="sample" data-blend="North Oaks" aria-pressed="false"><span class="face"><img src="img/colors/s/north-oaks.webp" alt="" width="160" height="160" loading="lazy" decoding="async"></span><span class="lab">North Oaks</span></button><button type="button" class="sample" data-blend="Denim" aria-pressed="false"><span class="face"><img src="img/colors/s/denim.webp" alt="" width="160" height="160" loading="lazy" decoding="async"></span><span class="lab">Denim</span></button><button type="button" class="sample" data-blend="Husky" aria-pressed="false"><span class="face"><img src="img/colors/s/husky.webp" alt="" width="160" height="160" loading="lazy" decoding="async"></span><span class="lab">Husky</span></button><button type="button" class="sample" data-blend="Smoke" aria-pressed="false"><span class="face"><img src="img/colors/s/smoke.webp" alt="" width="160" height="160" loading="lazy" decoding="async"></span><span class="lab">Smoke</span></button><button type="button" class="sample" data-blend="Domino" aria-pressed="true"><span class="face"><img src="img/colors/s/domino.webp" alt="" width="160" height="160" loading="lazy" decoding="async"></span><span class="lab">Domino</span></button><button type="button" class="sample" data-blend="Basalt" aria-pressed="false"><span class="face"><img src="img/colors/s/basalt.webp" alt="" width="160" height="160" loading="lazy" decoding="async"></span><span class="lab">Basalt</span></button><button type="button" class="sample" data-blend="Tamarack" aria-pressed="false"><span class="face"><img src="img/colors/s/tamarack.webp" alt="" width="160" height="160" loading="lazy" decoding="async"></span><span class="lab">Tamarack</span></button><button type="button" class="sample" data-blend="Wombat Blue" aria-pressed="false"><span class="face"><img src="img/colors/s/wombat-blue.webp" alt="" width="160" height="160" loading="lazy" decoding="async"></span><span class="lab">Wombat Blue</span></button><button type="button" class="sample" data-blend="Lanai Grey" aria-pressed="false"><span class="face"><img src="img/colors/s/lanai-grey.webp" alt="" width="160" height="160" loading="lazy" decoding="async"></span><span class="lab">Lanai Grey</span></button><button type="button" class="sample" data-blend="Silver Creek" aria-pressed="false"><span class="face"><img src="img/colors/s/silver-creek.webp" alt="" width="160" height="160" loading="lazy" decoding="async"></span><span class="lab">Silver Creek</span></button></div></div><div class="rail-group"><p class="sub" id="v-warm">Warm grays and stone</p><div class="viz-tiles" data-group="warm" role="group" aria-labelledby="v-warm"><button type="button" class="sample" data-blend="Pumice" aria-pressed="false"><span class="face"><img src="img/colors/s/pumice.webp" alt="" width="160" height="160" loading="lazy" decoding="async"></span><span class="lab">Pumice</span></button><button type="button" class="sample" data-blend="Dolphin" aria-pressed="false"><span class="face"><img src="img/colors/s/dolphin.webp" alt="" width="160" height="160" loading="lazy" decoding="async"></span><span class="lab">Dolphin</span></button><button type="button" class="sample" data-blend="Armadillo" aria-pressed="false"><span class="face"><img src="img/colors/s/armadillo.webp" alt="" width="160" height="160" loading="lazy" decoding="async"></span><span class="lab">Armadillo</span></button><button type="button" class="sample" data-blend="Oasis" aria-pressed="false"><span class="face"><img src="img/colors/s/oasis.webp" alt="" width="160" height="160" loading="lazy" decoding="async"></span><span class="lab">Oasis</span></button><button type="button" class="sample" data-blend="Claystone" aria-pressed="false"><span class="face"><img src="img/colors/s/claystone.webp" alt="" width="160" height="160" loading="lazy" decoding="async"></span><span class="lab">Claystone</span></button><button type="button" class="sample" data-blend="Tidal Wave" aria-pressed="false"><span class="face"><img src="img/colors/s/tidal-wave.webp" alt="" width="160" height="160" loading="lazy" decoding="async"></span><span class="lab">Tidal Wave</span></button><button type="button" class="sample" data-blend="Shale" aria-pressed="false"><span class="face"><img src="img/colors/s/shale.webp" alt="" width="160" height="160" loading="lazy" decoding="async"></span><span class="lab">Shale</span></button><button type="button" class="sample" data-blend="Obsidian" aria-pressed="false"><span class="face"><img src="img/colors/s/obsidian.webp" alt="" width="160" height="160" loading="lazy" decoding="async"></span><span class="lab">Obsidian</span></button><button type="button" class="sample" data-blend="Turquoise" aria-pressed="false"><span class="face"><img src="img/colors/s/turquoise.webp" alt="" width="160" height="160" loading="lazy" decoding="async"></span><span class="lab">Turquoise</span></button><button type="button" class="sample" data-blend="Slate" aria-pressed="false"><span class="face"><img src="img/colors/s/slate.webp" alt="" width="160" height="160" loading="lazy" decoding="async"></span><span class="lab">Slate</span></button><button type="button" class="sample" data-blend="Leopard" aria-pressed="false"><span class="face"><img src="img/colors/s/leopard.webp" alt="" width="160" height="160" loading="lazy" decoding="async"></span><span class="lab">Leopard</span></button><button type="button" class="sample" data-blend="Gunflint" aria-pressed="false"><span class="face"><img src="img/colors/s/gunflint.webp" alt="" width="160" height="160" loading="lazy" decoding="async"></span><span class="lab">Gunflint</span></button></div></div><div class="rail-group"><p class="sub" id="v-tan">Tans and browns</p><div class="viz-tiles" data-group="tan" role="group" aria-labelledby="v-tan"><button type="button" class="sample" data-blend="Thistle" aria-pressed="false"><span class="face"><img src="img/colors/s/thistle.webp" alt="" width="160" height="160" loading="lazy" decoding="async"></span><span class="lab">Thistle</span></button><button type="button" class="sample" data-blend="Buckskin" aria-pressed="false"><span class="face"><img src="img/colors/s/buckskin.webp" alt="" width="160" height="160" loading="lazy" decoding="async"></span><span class="lab">Buckskin</span></button><button type="button" class="sample" data-blend="Driftwood" aria-pressed="false"><span class="face"><img src="img/colors/s/driftwood.webp" alt="" width="160" height="160" loading="lazy" decoding="async"></span><span class="lab">Driftwood</span></button><button type="button" class="sample" data-blend="Pecan" aria-pressed="false"><span class="face"><img src="img/colors/s/pecan.webp" alt="" width="160" height="160" loading="lazy" decoding="async"></span><span class="lab">Pecan</span></button><button type="button" class="sample" data-blend="Pebble Beach" aria-pressed="false"><span class="face"><img src="img/colors/s/pebble-beach.webp" alt="" width="160" height="160" loading="lazy" decoding="async"></span><span class="lab">Pebble Beach</span></button><button type="button" class="sample" data-blend="Sandstone" aria-pressed="false"><span class="face"><img src="img/colors/s/sandstone.webp" alt="" width="160" height="160" loading="lazy" decoding="async"></span><span class="lab">Sandstone</span></button><button type="button" class="sample" data-blend="Garnet" aria-pressed="false"><span class="face"><img src="img/colors/s/garnet.webp" alt="" width="160" height="160" loading="lazy" decoding="async"></span><span class="lab">Garnet</span></button><button type="button" class="sample" data-blend="Chestnut" aria-pressed="false"><span class="face"><img src="img/colors/s/chestnut.webp" alt="" width="160" height="160" loading="lazy" decoding="async"></span><span class="lab">Chestnut</span></button></div></div>
     </div>
   </div>
-  <p class="viz-cap">These rooms are 3D renders lit the way real light behaves, so you can see a blend in morning sun, at night or under warm or cool bulbs. Chip colors vary a little from batch to batch, so ask to see physical samples at your estimate.</p>
-  <p class="viz-status sr-only" role="status"></p>
-</div>
-
+    <p class="viz-cap">These rooms are 3D renders, lit the way real light behaves. Chip colors vary a little from batch to batch, so ask to see physical samples at your estimate. One more swatch on your current colors page is labeled “Img 2137” with no color name; tell us its name and we will add it.</p>
+    <p class="viz-status sr-only" role="status"></p>
   </div>
 </section>
 
-<section class="band alt" aria-labelledby="sysTitle">
+<section class="band" aria-labelledby="sysTitle">
   <div class="wrap prow">
-    <div class="media" role="img" aria-label="Close-up of a multilayer chip floor" style="background-image:url(img/photos/banner-chip.jpg)"></div>
+    <div class="media"><img src="img/w/banner-chip-1200.webp" srcset="img/w/banner-chip-640.webp 640w, img/w/banner-chip-1200.webp 1200w" sizes="(min-width:900px) 600px, 100vw" alt="Close-up of a multilayer chip floor" width="1024" height="286" decoding="async" loading="lazy"></div>
     <div class="prose">
-      <p class="eyebrow">Good to know</p>
       <h2 id="sysTitle">Chips in any color</h2>
       <p>Every blend on this page works with our multilayer chip system, which gives maximum strength on high-traffic floors with a slip-resistant texture. Prefer a solid color? Our epoxy and polyurea systems come in solid colors too.</p>
-      <p><a class="link-arrow" href="finishes.html">Compare all four finishes <span aria-hidden="true">→</span></a></p>
-      <p class="note">These blends come from the swatch photos on your current colors page. One more swatch there is labeled “Img 2137” with no color name; tell us its name and we will add it.</p>
+      <p><a class="tlink" href="finishes.html">Compare all four finishes</a></p>
     </div>
   </div>
 </section>
 
 <section class="cta" aria-labelledby="ctaTitle">
   <div class="wrap">
-    <div class="stack" style="gap:8px">
+    <div>
       <h2 id="ctaTitle">Ready for a floor you’ll love?</h2>
       <p>Free, no-obligation estimates across the Minneapolis / Saint Paul area.</p>
     </div>
-    <div class="btn-row"><a class="btn btn-dark" href="./#estimate">Get My Price</a><a class="btn btn-outline" href="tel:+16512638557">Call (651) 263-8557</a></div>
+    <div class="btn-row"><a class="btn btn-dark" href="./#estimate">Get My Free Estimate</a><a class="btn btn-outline" href="tel:+16512638557">Call (651) 263-8557</a></div>
   </div>
 </section>
 </main>
 <footer>
   <div class="wrap fgrid">
-    <div class="stack" style="gap:14px">
-      <a class="logo-box" href="./"><img src="img/logo.webp" alt="The Coating Crew home" width="130" height="46"></a>
+    <div class="stack" style="gap:16px">
+      <a class="logo-box" href="./"><img src="img/logo-300.webp" srcset="img/logo-150.webp 150w, img/logo-300.webp 300w, img/logo-450.webp 450w" sizes="136px" alt="The Coating Crew home" width="136" height="48" loading="lazy"></a>
       <p>Family owned and operated since 1999. BBB accredited and a member of the Builders Association of the Twin Cities.</p>
     </div>
     <div>
@@ -211,18 +178,17 @@
         <li><a href="contact-us.html">Contact us</a></li>
         <li><a href="search.html" data-search-open>Search the site</a></li>
         <li><a href="privacy-policy.html">Privacy policy</a></li>
-        <li><a href="./#inbox">Lead inbox (owner view)</a></li>
       </ul>
     </nav>
   </div>
-  <div class="wrap legal">
-    <p>Concept design © 2026, shared with The Coating Crew for review only. Photos are from your current website. The floor visualizer rooms are 3D renders.</p>
+  <div class="wrap"><div class="legal">
+    <p>Concept design © 2026, shared with The Coating Crew for review only. Photos are from your current website. The floor visualizer rooms and sample blocks are 3D renders. See the <a href="owner.html">owner’s lead inbox</a>.</p>
     <p class="builtby">Built by <a href="https://saintpaulagency.com" target="_blank" rel="noopener">saintpaulagency.com</a> and <a href="https://www.aidanbarnard.com" target="_blank" rel="noopener">aidanbarnard.com</a></p>
-  </div>
+  </div></div>
 </footer>
-<div class="mbar">
+<nav class="mbar" aria-label="Call or get a price">
   <div class="in"><a class="btn btn-dark" href="tel:+16512638557">Call Now</a><a class="btn btn-primary" href="./#estimate">Get a Price</a></div>
-</div>
+</nav>
 <div class="toast" id="toast" role="status" aria-live="polite"><b id="toastTitle"></b><span id="toastBody"></span></div>
 <script src="site.js" defer></script>
 <script src="visualizer.js" defer></script>
