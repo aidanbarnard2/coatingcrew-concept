@@ -789,3 +789,5 @@ header.site{view-transition-name:site-header}
 .night>img{object-position:50% 22%}
 .night::before{background:linear-gradient(90deg,rgba(20,24,29,.92) 0,rgba(20,24,29,.7) 38%,rgba(20,24,29,0) 78%)}
 @media (max-width:760px){.night::before{background:linear-gradient(180deg,rgba(20,24,29,.25) 0,rgba(20,24,29,.86) 38%,rgba(20,24,29,.9) 100%)}}
+/* sections below the first screen are laid out when they come near the viewport */
+main>.band,main>.est-sec,main>.night,main>.cta,footer{content-visibility:auto;contain-intrinsic-size:auto 900px}
