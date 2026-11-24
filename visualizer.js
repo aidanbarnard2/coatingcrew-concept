@@ -262,6 +262,7 @@
       else if (t.classList.contains('viz-ceil-on')) self.setLight({ ceilOn: !self.state.ceilOn });
       else if (t.classList.contains('viz-lamps-on')) self.setLight({ lampsOn: !self.state.lampsOn });
       else if (t.classList.contains('viz-orig')) self.setBare(!self.state.bare);
+      else if (t.classList.contains('viz-day')) self.playDay();
       else if (t.classList.contains('viz-compare')) self.setCompare(t.getAttribute('aria-pressed') !== 'true');
     });
     var on = function (sel, fn) { var el = self.q(sel); if (el) el.addEventListener('input', function () { self.touched = true; fn(+el.value); }); };
@@ -583,6 +584,25 @@
     ba.addEventListener('pointermove', function (e) { if (drag) at(e); });
     ['pointerup', 'pointercancel'].forEach(function (ev) { ba.addEventListener(ev, function () { drag = false; }); });
     if (range) range.addEventListener('input', function () { self.moveSplit(+range.value / 100); });
+  };
+
+  /* one press runs the room from morning to night in about five seconds; press again to stop */
+  Viz.prototype.playDay = function () {
+    var self = this, btn = this.q('.viz-day');
+    var stop = function () { clearTimeout(self.dayT); self.dayT = null; if (btn) { btn.setAttribute('aria-pressed', 'false'); btn.querySelector('span').textContent = 'Play a full day'; } };
+    if (this.dayT) return stop();
+    var steps = [
+      { time: 'morning', cloudy: false, ceilOn: false, lampsOn: false },
+      { time: 'midday', ceilOn: false, lampsOn: false },
+      { time: 'golden', ceilOn: true, lampsOn: true, ceil: 60, lamps: 60, k: 2700 },
+      { time: 'dusk', ceilOn: true, lampsOn: true, ceil: 100, lamps: 100, k: 2700 },
+      { time: 'night', ceilOn: true, lampsOn: true, ceil: 100, lamps: 0, k: 5000 }
+    ], i = 0;
+    if (btn) { btn.setAttribute('aria-pressed', 'true'); btn.querySelector('span').textContent = 'Stop'; }
+    (function next() {
+      self.setLight(steps[i]); i++;
+      if (i < steps.length) self.dayT = setTimeout(next, 1050); else self.dayT = setTimeout(stop, 700);
+    })();
   };
 
   Viz.prototype.noGL = function () {

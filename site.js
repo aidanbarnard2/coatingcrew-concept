@@ -136,6 +136,21 @@
     reel.addEventListener('click', function (e) { if (moved) { e.preventDefault(); e.stopPropagation(); moved = false; } }, true);
   });
 
+  /* install-day story: the pinned garage changes as each step scrolls past */
+  var stStage = $('.story-stage'), stSteps = $$('.story .step');
+  if (stStage && stSteps.length && 'IntersectionObserver' in window) {
+    var names = ['Bare concrete', 'Base coat', 'Base coat and chips', 'Clear topcoat'], tag = $('.story-tag', stStage);
+    var setStage = function (li) {
+      stSteps.forEach(function (x) { x.classList.toggle('on', x === li); });
+      stStage.dataset.stage = li.dataset.stage; if (tag) tag.textContent = names[+li.dataset.stage];
+    };
+    setStage(stSteps[0]);
+    var stIO = new IntersectionObserver(function (es) {
+      es.forEach(function (e) { if (e.isIntersecting) setStage(e.target); });
+    }, { rootMargin: '-45% 0px -45% 0px' });
+    stSteps.forEach(function (li) { stIO.observe(li); });
+  }
+
   /* toast, shared */
   var toast = $('#toast'), toastTimer;
   window.ccToast = function (title, body) {

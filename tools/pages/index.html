@@ -68,52 +68,57 @@
   </div>
 </section>
 
-<section class="band" id="install-day" aria-labelledby="installTitle">
+<section class="band story" id="install-day" aria-labelledby="installTitle">
   <div class="wrap">
     <div class="sec-head">
       <div>
         <h2 class="h2" id="installTitle">One day, start to finish</h2>
-        <p class="lede">Most floors go down in a day and are ready to use within 24 hours, and we install year-round. Here’s what our crew does once we pull up.</p>
+        <p class="lede">Most floors go down in a day and are ready to use within 24 hours, and we install year-round. Scroll through the day and watch the floor change.</p>
       </div>
     </div>
-    <ol class="timeline">
-      <li class="stop">
-        <div class="ph">{{PIC img/photos/storage-container.jpg "An on-site storage container in a driveway" "(min-width:1120px) 190px, (min-width:640px) 30vw, 78vw"}}</div>
-        <div class="dot"><b aria-hidden="true">1</b></div>
-        <h3>Clear the space</h3>
-        <p>Ask about an on-site storage container, so your things stay safe and dry in the driveway while we work.</p>
-      </li>
-      <li class="stop">
-        <div class="ph need"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M4 7h3l2-3h6l2 3h3a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="4"/></svg><span>Photo from your crew: prepping the bare concrete</span></div>
-        <div class="dot"><b aria-hidden="true">2</b></div>
-        <h3>Prep the concrete</h3>
-        <p>We properly prep the floor so the coating bonds for good.</p>
-      </li>
-      <li class="stop">
-        <div class="ph need"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M4 7h3l2-3h6l2 3h3a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="4"/></svg><span>Photo from your crew: filling a crack</span></div>
-        <div class="dot"><b aria-hidden="true">3</b></div>
-        <h3>Repair the cracks</h3>
-        <p>Cracks and chips are filled and smoothed before any coating goes down.</p>
-      </li>
-      <li class="stop">
-        <div class="ph">{{PIC img/photos/chip-closeup.jpg "Close-up of colored chips across a fresh base coat" "(min-width:1120px) 190px, (min-width:640px) 30vw, 78vw"}}</div>
-        <div class="dot"><b aria-hidden="true">4</b></div>
-        <h3>Base coat and chips</h3>
-        <p>A base coat goes down, then color chips are spread across it until it’s fully covered.</p>
-      </li>
-      <li class="stop">
-        <div class="ph">{{PIC img/photos/install-roller.jpg "A roller spreading the clear topcoat" "(min-width:1120px) 190px, (min-width:640px) 30vw, 78vw"}}</div>
-        <div class="dot"><b aria-hidden="true">5</b></div>
-        <h3>Clear topcoat</h3>
-        <p>A clear topcoat seals the chips with a glossy, easy-to-clean finish.</p>
-      </li>
-      <li class="stop">
-        <div class="ph">{{PIC img/photos/job-garage-1.jpg "A finished gray chip garage floor" "(min-width:1120px) 190px, (min-width:640px) 30vw, 78vw"}}</div>
-        <div class="dot"><b aria-hidden="true">6</b></div>
-        <h3>Ready to use</h3>
-        <p>Most surfaces are ready for use within 24 hours.</p>
-      </li>
-    </ol>
+    <div class="story-grid">
+      <div class="story-stage" data-stage="0">
+        <div class="story-pic">
+          <img class="st-bare" src="img/studio/garage-bare-1320.webp" srcset="img/studio/garage-bare-660.webp 660w, img/studio/garage-bare-990.webp 990w, img/studio/garage-bare-1320.webp 1320w" sizes="(min-width:1000px) 52vw, 100vw" alt="Empty two-car garage with bare concrete" width="1320" height="880" loading="lazy" decoding="async">
+          <img class="st-base" src="img/studio/garage-base-1320.webp" srcset="img/studio/garage-base-660.webp 660w, img/studio/garage-base-990.webp 990w, img/studio/garage-base-1320.webp 1320w" sizes="(min-width:1000px) 52vw, 100vw" alt="" width="1320" height="880" loading="lazy" decoding="async">
+          <img class="st-chips" src="img/studio/garage-chips-1320.webp" srcset="img/studio/garage-chips-660.webp 660w, img/studio/garage-chips-990.webp 990w, img/studio/garage-chips-1320.webp 1320w" sizes="(min-width:1000px) 52vw, 100vw" alt="" width="1320" height="880" loading="lazy" decoding="async">
+          <img class="st-gloss" src="img/studio/garage-poster-1320.webp" srcset="img/studio/garage-poster-660.webp 660w, img/studio/garage-poster-990.webp 990w, img/studio/garage-poster-1320.webp 1320w" sizes="(min-width:1000px) 52vw, 100vw" alt="" width="1320" height="880" loading="lazy" decoding="async">
+          <span class="story-tag" aria-hidden="true"></span>
+        </div>
+      </div>
+      <ol class="steps">
+        <li class="step" data-stage="0">
+          <b class="num" aria-hidden="true">1</b>
+          <div class="step-tx"><h3>Clear the space</h3><p>Ask about an on-site storage container, so your things stay safe and dry in the driveway while we work.</p></div>
+          <div class="ph">{{PIC img/photos/storage-container.jpg "An on-site storage container in a driveway" "(min-width:1000px) 220px, 40vw"}}</div>
+        </li>
+        <li class="step" data-stage="0">
+          <b class="num" aria-hidden="true">2</b>
+          <div class="step-tx"><h3>Prep the concrete</h3><p>We properly prep the floor so the coating bonds for good.</p></div>
+          <div class="ph need"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M4 7h3l2-3h6l2 3h3a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="4"/></svg><span>Photo from your crew: prepping the bare concrete</span></div>
+        </li>
+        <li class="step" data-stage="0">
+          <b class="num" aria-hidden="true">3</b>
+          <div class="step-tx"><h3>Repair the cracks</h3><p>Cracks and chips are filled and smoothed before any coating goes down.</p></div>
+          <div class="ph need"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M4 7h3l2-3h6l2 3h3a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="4"/></svg><span>Photo from your crew: filling a crack</span></div>
+        </li>
+        <li class="step" data-stage="2">
+          <b class="num" aria-hidden="true">4</b>
+          <div class="step-tx"><h3>Base coat and chips</h3><p>A base coat goes down, then color chips are spread across it until it’s fully covered.</p></div>
+          <div class="ph">{{PIC img/photos/chip-closeup.jpg "Close-up of colored chips across a fresh base coat" "(min-width:1000px) 220px, 40vw"}}</div>
+        </li>
+        <li class="step" data-stage="3">
+          <b class="num" aria-hidden="true">5</b>
+          <div class="step-tx"><h3>Clear topcoat</h3><p>A clear topcoat seals the chips with a glossy, easy-to-clean finish.</p></div>
+          <div class="ph">{{PIC img/photos/install-roller.jpg "A roller spreading the clear topcoat" "(min-width:1000px) 220px, 40vw"}}</div>
+        </li>
+        <li class="step" data-stage="3">
+          <b class="num" aria-hidden="true">6</b>
+          <div class="step-tx"><h3>Ready to use</h3><p>Most surfaces are ready for use within 24 hours.</p></div>
+          <div class="ph">{{PIC img/photos/job-garage-1.jpg "A finished gray chip garage floor" "(min-width:1000px) 220px, 40vw"}}</div>
+        </li>
+      </ol>
+    </div>
   </div>
 </section>
 
@@ -222,6 +227,15 @@
       </dl>
       <a class="btn btn-light" href="about-us.html">More about us</a>
     </aside>
+  </div>
+</section>
+
+<section class="night" aria-labelledby="nightTitle">
+  <img src="img/studio/garage-night-1320.webp" srcset="img/studio/garage-night-660.webp 660w, img/studio/garage-night-990.webp 990w, img/studio/garage-night-1320.webp 1320w" sizes="100vw" alt="" width="1320" height="880" loading="lazy" decoding="async">
+  <div class="wrap">
+    <h2 class="display" id="nightTitle">Ready for a floor you’ll love?</h2>
+    <p>Free, no-obligation estimates across the Minneapolis / Saint Paul area.</p>
+    <div class="btn-row"><a class="btn btn-primary" href="#estimate">Get My Free Estimate</a><a class="btn btn-light" href="tel:+16512638557">Call (651) 263-8557</a></div>
   </div>
 </section>
 

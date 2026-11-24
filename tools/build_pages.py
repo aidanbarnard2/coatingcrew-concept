@@ -35,6 +35,7 @@ NO_SEARCH = {'owner.html'}
 I_PHONE = '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><path d="M5 3h4l2 5-2.5 1.5a11 11 0 0 0 6 6L16 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 5a2 2 0 0 1 2-2z"/></svg>'
 I_MENU = '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>'
 I_SEARCH = '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5L21 21"/></svg>'
+I_PLAY = '<svg viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><path d="M7 4.5v15l13-7.5z"/></svg>'
 I_SPLIT = '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M12 2v20"/></svg>'
 I_ARROWS = '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 7l-5 5 5 5M15 7l5 5-5 5"/></svg>'
 I_LEFT = '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>'
@@ -141,6 +142,7 @@ def viz_stage(open_desk=False, p='v-'):
       <div class="cbar-row">
         <label class="tod"><span>Time of day <output class="viz-time-out">Midday</output></span><input type="range" class="viz-time" min="0" max="4" step="1" value="1" aria-label="Time of day" aria-valuetext="Midday"><span class="tod-ticks" aria-hidden="true"><i>Morning</i><i>Midday</i><i>Golden</i><i>Dusk</i><i>Night</i></span></label>
         <div class="group"><span class="sub" id="{p}bulbLbl">Indoor lights</span><div class="seg seg3" role="group" aria-labelledby="{p}bulbLbl">{bulbs}</div></div>
+        <button type="button" class="viz-day" aria-pressed="false">{I_PLAY}<span>Play a full day</span></button>
         <button type="button" class="more-btn" aria-expanded="{str(open_desk).lower()}" aria-controls="{p}desk">More lighting{chev}</button>
       </div>
     </div>

@@ -722,3 +722,70 @@ header.site{view-transition-name:site-header}
 .nf-floor .after{clip-path:inset(0 100% 0 0);transition:clip-path 1.3s cubic-bezier(.6,0,.2,1)}
 .nf-floor.coated .after{clip-path:inset(0)}
 .nf-coat{position:absolute;right:14px;bottom:14px;z-index:2}
+
+/* ===================== v6: story, time-lapse, closing band ===================== */
+/* reading progress */
+@keyframes ccGrow{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+@supports (animation-timeline:scroll()){
+  header.site::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:3px;background:var(--orange);transform-origin:left center;animation:ccGrow linear both;animation-timeline:scroll(root)}
+}
+/* play a day */
+.cbar-row{grid-template-columns:minmax(0,1.3fr) minmax(0,1fr) auto auto}
+.viz-day{display:inline-flex;align-items:center;gap:8px;min-height:48px;padding:0 16px;border-radius:var(--r);border:2px solid var(--orange);background:var(--orange);color:var(--ink);font-weight:780;font-size:16px;cursor:pointer;white-space:nowrap}
+.viz-day svg{width:16px;height:16px}
+.viz-day:hover{background:var(--orange-hi);border-color:var(--orange-hi)}
+.viz-day[aria-pressed="true"]{background:#FFFFFF;border-color:#FFFFFF}
+.nogl~.cbar .viz-day{display:none}
+@media (max-width:1180px){.cbar-row{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}.tod{grid-column:1/-1}}
+@media (max-width:640px){.cbar-row{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}.cbar-row>.group{grid-column:1/-1}}
+
+/* install-day story */
+.story-grid{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:64px;align-items:start}
+.story-stage{position:sticky;top:112px}
+.story-pic{position:relative;aspect-ratio:3/2;border-radius:var(--r);overflow:hidden;background:#3B3F44;box-shadow:0 30px 60px -28px rgba(20,23,28,.55)}
+.story-pic img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;clip-path:inset(0 0 0 0);transition:clip-path 1.1s cubic-bezier(.65,0,.2,1)}
+.story-pic .st-base,.story-pic .st-chips,.story-pic .st-gloss{clip-path:inset(100% 0 0 0)}
+[data-stage="1"] .st-base,[data-stage="2"] .st-base,[data-stage="3"] .st-base{clip-path:inset(0)}
+[data-stage="2"] .st-chips,[data-stage="3"] .st-chips{clip-path:inset(0);transition-delay:.55s}
+[data-stage="3"] .st-gloss{clip-path:inset(0)}
+[data-stage="3"] .st-chips{transition-delay:0s}
+.story-tag{position:absolute;left:14px;top:14px;background:var(--ink);color:#FFFFFF;font-weight:800;font-stretch:85%;font-size:18px;padding:8px 14px;border-radius:var(--r)}
+.steps{list-style:none;display:flex;flex-direction:column}
+.step{display:grid;grid-template-columns:auto minmax(0,1fr);gap:8px 20px;align-items:start;padding-block:44px;border-top:1px solid var(--rule);min-height:38vh;align-content:center}
+.step:first-child{border-top:4px solid var(--ink)}
+.step .num{display:grid;place-items:center;width:52px;height:52px;border-radius:50%;border:3px solid var(--ink);font-weight:880;font-size:24px;transition:background-color .3s,color .3s,border-color .3s}
+.step.on .num{background:var(--orange);border-color:var(--orange);color:var(--ink)}
+.step h3{font-size:34px;line-height:1.05;font-weight:800;font-stretch:78%;letter-spacing:-.01em}
+.step p{font-size:19px;line-height:1.55;color:var(--ink-2);margin-top:8px;max-width:38ch}
+.step .ph{grid-column:2;margin-top:14px;width:min(100%,240px);aspect-ratio:4/3;border-radius:var(--r);overflow:hidden;background:#D9D5CE}
+.step .ph img{width:100%;height:100%;object-fit:cover}
+.step .ph.need{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:12px;text-align:center;border:2px dashed #6E675C;background:#EFECE7;color:var(--ink);font-weight:650;font-size:14.5px;line-height:1.35}
+.step .ph.need svg{width:26px;height:26px}
+@media (max-width:999px){
+  .story-grid{grid-template-columns:minmax(0,1fr);gap:0}
+  .story-stage{top:68px;z-index:3;margin-inline:-16px;padding:10px 16px 12px;background:var(--paper)}
+  .story-pic{aspect-ratio:16/9}
+  .step{min-height:0;padding-block:30px}.step h3{font-size:28px}
+}
+@media (prefers-reduced-motion:reduce){.story-pic img{transition:none}}
+
+/* closing band: the garage at night */
+.night{position:relative;isolation:isolate;background:var(--garage);color:#FFFFFF;overflow:hidden}
+.night>img{position:absolute;inset:0;z-index:-2;width:100%;height:100%;object-fit:cover;object-position:50% 30%}
+.night::before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,rgba(20,24,29,.94) 0,rgba(20,24,29,.82) 42%,rgba(20,24,29,.25) 100%)}
+.night .wrap{display:flex;flex-direction:column;gap:22px;padding-block:clamp(90px,13vw,180px)}
+.night h2{max-width:11em;font-size:clamp(46px,6.4vw,100px)}
+.night p{font-size:22px;color:#FFFFFF}
+.night :focus-visible{outline-color:#FFFFFF}
+@supports (animation-timeline:view()){@media (prefers-reduced-motion:no-preference){
+  @keyframes ccPan{from{transform:scale(1.12) translateY(-4%)}to{transform:scale(1.12) translateY(4%)}}
+  .night>img{animation:ccPan linear both;animation-timeline:view();animation-range:cover}
+}}
+.cbar-row{grid-template-columns:minmax(0,1fr) auto auto}
+.cbar-row .tod{grid-column:1/-1}
+.viz-day svg,.more-btn svg{flex:none}
+@media (max-width:1180px){.cbar-row{grid-template-columns:minmax(0,1fr) auto auto}}
+@media (max-width:640px){.cbar-row{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}.cbar-row>.group{grid-column:1/-1}}
+.night>img{object-position:50% 22%}
+.night::before{background:linear-gradient(90deg,rgba(20,24,29,.92) 0,rgba(20,24,29,.7) 38%,rgba(20,24,29,0) 78%)}
+@media (max-width:760px){.night::before{background:linear-gradient(180deg,rgba(20,24,29,.25) 0,rgba(20,24,29,.86) 38%,rgba(20,24,29,.9) 100%)}}
