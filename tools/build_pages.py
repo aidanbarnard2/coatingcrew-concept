@@ -21,7 +21,7 @@ SECTION = {'industrial.html': 'commercial.html', 'reviews.html': 'gallery.html',
            'certified-professionals.html': 'about-us.html', 'worry-free-guarantee.html': 'about-us.html',
            'trailers.html': 'about-us.html'}
 EXTRA_JS = {'index.html': ['visualizer.js', 'home.js'], 'colors.html': ['visualizer.js']}
-OG_IMG = {'index.html': 'img/photos/job-garage-5.jpg', 'colors.html': 'img/viz/garage-day.jpg'}
+OG_IMG = {'index.html': 'img/photos/job-garage-5.jpg', 'colors.html': 'img/studio/garage-poster.jpg'}
 
 I_PHONE = '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><path d="M5 3h4l2 5-2.5 1.5a11 11 0 0 0 6 6L16 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 5a2 2 0 0 1 2-2z"/></svg>'
 I_MENU = '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>'
@@ -118,7 +118,7 @@ def footer(page, est):
     </nav>
   </div>
   <div class="wrap legal">
-    <p>Concept design © 2026, shared with The Coating Crew for review only. Photos are from your current website; the floor visualizer re-coats those same job photos.</p>
+    <p>Concept design © 2026, shared with The Coating Crew for review only. Photos are from your current website. The floor visualizer rooms are 3D renders.</p>
     <p class="builtby">Built by <a href="https://saintpaulagency.com" target="_blank" rel="noopener">saintpaulagency.com</a> and <a href="https://www.aidanbarnard.com" target="_blank" rel="noopener">aidanbarnard.com</a></p>
   </div>
 </footer>

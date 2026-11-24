@@ -4,12 +4,12 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Chip Colors and Floor Visualizer | The Coating Crew</title>
-<meta name="description" content="Try any of our chip blends on real floors our crew coated, in daylight or evening light. Garages, basements and patios across the Minneapolis / Saint Paul area.">
+<meta name="description" content="Try any of our 32 chip blends in a garage, basement or sunroom, from morning sun to night, under warm or cool bulbs. Floor coatings across the Minneapolis / Saint Paul area.">
 <meta name="robots" content="noindex, nofollow">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Chip Colors and Floor Visualizer | The Coating Crew">
-<meta property="og:description" content="Try any of our chip blends on real floors our crew coated, in daylight or evening light. Garages, basements and patios across the Minneapolis / Saint Paul area.">
-<meta property="og:image" content="https://aidanbarnard2.github.io/coatingcrew-concept/img/viz/garage-day.jpg">
+<meta property="og:description" content="Try any of our 32 chip blends in a garage, basement or sunroom, from morning sun to night, under warm or cool bulbs. Floor coatings across the Minneapolis / Saint Paul area.">
+<meta property="og:image" content="https://aidanbarnard2.github.io/coatingcrew-concept/img/studio/garage-poster.jpg">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#14171C">
 <link rel="icon" href="img/logo.webp">
@@ -59,8 +59,8 @@
   <div class="bg" style="background-image:url(img/photos/chip-closeup.jpg)" aria-hidden="true"></div>
   <div class="wrap">
     <p class="crumbs"><a href="./">Home</a> / Colors and visualizer</p>
-    <h1 id="pageTitle">Chip colors, on real floors</h1>
-    <p class="intro">Pick from 32 chip blends and see each one laid into real garages, a basement and a patio our crew coated, in daylight or with the lights on at night.</p>
+    <h1 id="pageTitle">Chip colors in any light</h1>
+    <p class="intro">Pick from 32 chip blends and see each one in a garage, a basement and a sunroom, from morning sun to night, under warm or cool bulbs.</p>
     <div class="btn-row"><a class="btn btn-primary" href="./#estimate">Get My Free Estimate</a><a class="btn btn-light" href="tel:+16512638557">Call (651) 263-8557</a></div>
   </div>
 </section>
@@ -71,36 +71,21 @@
       <div class="stack" style="gap:12px">
         <p class="eyebrow">Floor visualizer</p>
         <h2 class="h2" id="vizTitle">Pick a room, then pick a sample</h2>
-        <p class="lede">Each blend is drawn into the photo in perspective, under the room’s own light, shadows and reflections. Use the original-floor switch to compare with what was there.</p>
+        <p class="lede">Every light in these rooms can be changed: the time of day, sun or clouds, and each set of bulbs, from warm to cool and bright to dim. Switch to bare concrete to compare.</p>
       </div>
     </div>
     <div class="viz-app" data-viz data-blend="Domino">
   <div class="viz">
     <div class="viz-stage-col">
       <div class="viz-stage">
-        <img class="viz-photo" src="img/viz/garage-day.jpg" alt="Real job photo: two-car garage" width="1200" height="798" loading="lazy">
-        <canvas role="img" aria-label="Real job photo of a two-car garage re-coated in the Domino blend, daylight"></canvas>
-        <span class="viz-tag" aria-hidden="true"><b class="viz-tag-blend">Domino</b><span class="viz-room-name">Two-car garage</span></span>
+        <img class="viz-photo" src="img/studio/garage-poster.jpg" alt="Two-car garage with a Domino chip floor in afternoon light" width="1320" height="880" loading="lazy">
+        <canvas role="img" aria-label="Two-car garage with a Domino chip floor, bright afternoon"></canvas>
+        <span class="viz-tag" aria-hidden="true"><b class="viz-tag-blend">Domino</b><span class="viz-tag-light">Bright afternoon</span></span>
         <span class="loader" aria-hidden="true">Loading the room…</span>
       </div>
-      <div class="viz-controls">
-        <div class="viz-group">
-          <span class="viz-label" id="v-roomLbl">Room</span>
-          <div class="viz-rooms" role="group" aria-labelledby="v-roomLbl"></div>
-        </div>
-        <div class="viz-row">
-          <div class="viz-group">
-            <span class="viz-label" id="v-lightLbl">Lighting</span>
-            <div class="seg" role="group" aria-labelledby="v-lightLbl">
-              <button type="button" data-light="day" aria-pressed="true"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="4.5"/><path d="M12 1.5v2.5M12 20v2.5M4.6 4.6l1.8 1.8M17.6 17.6l1.8 1.8M1.5 12H4M20 12h2.5M4.6 19.4l1.8-1.8M17.6 6.4l1.8-1.8"/></svg>Daylight</button>
-              <button type="button" data-light="eve" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><path d="M20.5 14.5A8.5 8.5 0 0 1 9.5 3.5a8.5 8.5 0 1 0 11 11z"/></svg>Evening</button>
-            </div>
-          </div>
-          <div class="viz-group">
-            <span class="viz-label" aria-hidden="true">Compare</span>
-            <button type="button" class="toggle viz-orig" aria-pressed="false">Original floor<span class="sw" aria-hidden="true"></span></button>
-          </div>
-        </div>
+      <div class="viz-group">
+        <span class="viz-label" id="v-roomLbl">Room</span>
+        <div class="viz-rooms" role="group" aria-labelledby="v-roomLbl"></div>
       </div>
     </div>
     <div class="viz-panel">
@@ -109,6 +94,52 @@
         <div><span>Selected sample</span><b class="viz-blend-name">Domino</b></div>
       </div>
       <a class="btn btn-primary" href="./#estimate" data-price-floor>Price this floor</a>
+
+      <div class="light-panel">
+        <h3 class="viz-label">Lighting</h3>
+        <div class="viz-group">
+          <span class="viz-sub" id="v-presetLbl">Quick looks</span>
+          <div class="presets" role="group" aria-labelledby="v-presetLbl">
+            <button type="button" data-preset="morning" aria-pressed="false">Sunny morning</button>
+            <button type="button" data-preset="afternoon" aria-pressed="true">Bright afternoon</button>
+            <button type="button" data-preset="cloudy" aria-pressed="false">Cloudy day</button>
+            <button type="button" data-preset="golden" aria-pressed="false">Golden hour</button>
+            <button type="button" data-preset="evening" aria-pressed="false">Evening, warm bulbs</button>
+            <button type="button" data-preset="nightcool" aria-pressed="false">Night, cool LEDs</button>
+            <button type="button" data-preset="dark" aria-pressed="false">Lights off</button>
+          </div>
+        </div>
+        <div class="viz-group">
+          <span class="viz-sub" id="v-timeLbl">Time of day</span>
+          <div class="seg5" role="group" aria-labelledby="v-timeLbl">
+            <button type="button" data-time="morning" aria-pressed="false">Morning</button>
+            <button type="button" data-time="midday" aria-pressed="true">Midday</button>
+            <button type="button" data-time="golden" aria-pressed="false">Golden hour</button>
+            <button type="button" data-time="dusk" aria-pressed="false">Dusk</button>
+            <button type="button" data-time="night" aria-pressed="false">Night</button>
+          </div>
+        </div>
+        <div class="viz-group">
+          <span class="viz-sub" id="v-skyLbl">Weather</span>
+          <div class="seg" role="group" aria-labelledby="v-skyLbl">
+            <button type="button" data-sky="sun" aria-pressed="true"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="4.5"/><path d="M12 1.5v2.5M12 20v2.5M4.6 4.6l1.8 1.8M17.6 17.6l1.8 1.8M1.5 12H4M20 12h2.5M4.6 19.4l1.8-1.8M17.6 6.4l1.8-1.8"/></svg>Sunny</button>
+            <button type="button" data-sky="cloud" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><path d="M7 18h10a4 4 0 0 0 .6-7.95A6 6 0 0 0 6.1 9.2 4.5 4.5 0 0 0 7 18z"/></svg>Cloudy</button>
+          </div>
+        </div>
+        <div class="bulbs">
+          <div class="bulb">
+            <button type="button" class="toggle viz-ceil-on" aria-pressed="false"><span class="viz-ceil-name">Ceiling lights</span><span class="sw" aria-hidden="true"></span></button>
+            <label class="range"><span>Brightness <output class="viz-ceil-out">100%</output></span><input type="range" class="viz-ceil-dim" min="5" max="100" step="5" value="100"></label>
+          </div>
+          <div class="bulb">
+            <button type="button" class="toggle viz-lamps-on" aria-pressed="false"><span class="viz-lamps-name">Lamps</span><span class="sw" aria-hidden="true"></span></button>
+            <label class="range"><span>Brightness <output class="viz-lamps-out">100%</output></span><input type="range" class="viz-lamps-dim" min="5" max="100" step="5" value="100"></label>
+          </div>
+          <label class="range kelvin"><span>Bulb color <output class="viz-k-out">3000K, warm white</output></span><input type="range" class="viz-k" min="2200" max="6500" step="100" value="3000"><span class="kbar" aria-hidden="true"></span><span class="ends" aria-hidden="true"><i>Warm</i><i>Cool</i></span></label>
+        </div>
+        <button type="button" class="toggle viz-orig" aria-pressed="false">Show bare concrete instead<span class="sw" aria-hidden="true"></span></button>
+      </div>
+
       <div class="board">
         <div class="board-group"><h3 id="v-g1">Grays and blues</h3><div class="viz-tiles" data-group="gray" role="group" aria-labelledby="v-g1"></div></div>
         <div class="board-group"><h3 id="v-g2">Warm grays and stone</h3><div class="viz-tiles" data-group="warm" role="group" aria-labelledby="v-g2"></div></div>
@@ -116,7 +147,7 @@
       </div>
     </div>
   </div>
-  <p class="viz-cap">A photo preview to help you choose. Your floor will vary with your concrete, your light and the chip mix on install day, so ask to see physical samples at your estimate.</p>
+  <p class="viz-cap">These rooms are 3D renders lit the way real light behaves, so you can see a blend in morning sun, at night or under warm or cool bulbs. Chip colors vary a little from batch to batch, so ask to see physical samples at your estimate.</p>
   <p class="viz-status sr-only" role="status"></p>
 </div>
 
@@ -185,7 +216,7 @@
     </nav>
   </div>
   <div class="wrap legal">
-    <p>Concept design © 2026, shared with The Coating Crew for review only. Photos are from your current website; the floor visualizer re-coats those same job photos.</p>
+    <p>Concept design © 2026, shared with The Coating Crew for review only. Photos are from your current website. The floor visualizer rooms are 3D renders.</p>
     <p class="builtby">Built by <a href="https://saintpaulagency.com" target="_blank" rel="noopener">saintpaulagency.com</a> and <a href="https://www.aidanbarnard.com" target="_blank" rel="noopener">aidanbarnard.com</a></p>
   </div>
 </footer>

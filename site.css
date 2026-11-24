@@ -139,7 +139,7 @@ header.site.scrolled{box-shadow:0 6px 20px rgba(20,23,28,.08)}
 .viz{display:grid;grid-template-columns:minmax(0,1fr) 420px;gap:28px;align-items:start}
 .viz-stage-col{display:flex;flex-direction:column;gap:18px}
 @media (min-width:1001px) and (min-height:820px){.viz-stage-col{position:sticky;top:100px}}
-.viz-stage{position:relative;border-radius:16px;overflow:hidden;background:#1C2025;aspect-ratio:1200/798;box-shadow:0 20px 50px rgba(20,23,28,.2)}
+.viz-stage{position:relative;border-radius:16px;overflow:hidden;background:#1C2025;aspect-ratio:3/2;box-shadow:0 20px 50px rgba(20,23,28,.2)}
 .viz-stage canvas,.viz-stage .viz-photo{position:absolute;inset:0;width:100%;height:100%;display:block}
 .viz-stage canvas{opacity:0;transition:opacity .4s ease}
 .viz-stage.ready canvas{opacity:1}
@@ -155,9 +155,9 @@ header.site.scrolled{box-shadow:0 6px 20px rgba(20,23,28,.08)}
 .viz-row{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.8fr);gap:16px}
 .viz-group{display:flex;flex-direction:column;gap:8px}
 .viz-label{font-weight:700;font-size:15px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink)}
-.viz-rooms{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.viz-rooms{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
 .room{display:flex;flex-direction:column;gap:6px;padding:5px 5px 9px;border-radius:12px;border:2px solid var(--line);background:#FFFFFF;cursor:pointer;text-align:left;font-weight:600;font-size:15px;line-height:1.25;color:var(--ink)}
-.room img{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:7px}
+.room img{width:100%;aspect-ratio:3/2;object-fit:cover;border-radius:7px}
 .room span{padding-inline:4px}
 .room:hover{border-color:var(--ink)}
 .room[aria-pressed="true"]{border-color:var(--ink);background:var(--concrete);box-shadow:inset 0 0 0 1px var(--ink)}
@@ -184,14 +184,38 @@ header.site.scrolled{box-shadow:0 6px 20px rgba(20,23,28,.08)}
   .viz-controls,.viz-panel,.viz-group{min-width:0}
   .viz-stage-col{display:contents}
   .viz-stage{position:sticky;top:76px;z-index:5;box-shadow:0 10px 24px rgba(20,23,28,.25)}
-  .viz-controls{order:2}.viz-panel{order:3}
+  .viz-stage-col>.viz-group{order:2}.viz-panel{order:3}
 }
 @media (max-width:560px){
   .viz-stage{top:72px;border-radius:12px}
-  .viz-rooms{grid-template-columns:repeat(4,120px);overflow-x:auto;padding-bottom:4px}
+  .viz-rooms{gap:8px}.room{font-size:14px}
   .viz-row{grid-template-columns:minmax(0,1fr)}
   .viz-tag{left:8px;top:8px;padding:6px 10px}.viz-tag b{font-size:16px}
 }
+
+/* lighting controls */
+.light-panel{display:flex;flex-direction:column;gap:16px;padding:18px 16px;border:1px solid var(--line);border-radius:16px;background:#FFFFFF}
+.viz-sub{font-weight:700;font-size:16px;color:var(--ink)}
+.presets{display:flex;flex-wrap:wrap;gap:8px}
+.presets button{min-height:44px;padding:0 14px;border-radius:99px;border:2px solid var(--line);background:#FFFFFF;color:var(--ink);font-weight:600;font-size:15px;cursor:pointer}
+.presets button:hover{border-color:var(--ink)}
+.presets button[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:#FFFFFF}
+.seg5{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));border:2px solid var(--ink);border-radius:12px;overflow:hidden}
+.seg5 button{min-height:48px;padding:4px 2px;border:0;background:#FFFFFF;color:var(--ink);font-weight:700;font-size:14px;line-height:1.15;cursor:pointer}
+.seg5 button+button{border-left:2px solid var(--ink)}
+.seg5 button[aria-pressed="true"]{background:var(--ink);color:#FFFFFF}
+.bulbs{display:flex;flex-direction:column;gap:14px}
+.bulb{display:flex;flex-direction:column;gap:8px}
+.range{display:flex;flex-direction:column;gap:6px;font-weight:600;font-size:15px;color:var(--ink)}
+.range>span:first-child{display:flex;justify-content:space-between;gap:10px}
+.range output{font-weight:700}
+.range input[type=range]{width:100%;height:44px;margin:0;background:transparent;accent-color:var(--ink);cursor:pointer}
+.kelvin input[type=range]{accent-color:var(--ink)}
+.kelvin .kbar{display:block;height:8px;border-radius:99px;margin-top:-6px;background:linear-gradient(90deg,#FFB46B,#FFE2C0 35%,#FFF6EC 55%,#DDEBFF);box-shadow:inset 0 0 0 1px rgba(20,23,28,.15)}
+.kelvin .ends{display:flex;justify-content:space-between}
+.kelvin .ends i{font-style:normal;font-size:14px;font-weight:600;color:var(--ink-2)}
+.viz-tag .viz-tag-light{font-size:14px;font-weight:600}
+@media (max-width:420px){.seg5 button{font-size:13px}}
 
 /* the sample board: chip samples on cards, laid out like a display rack */
 .board{margin-top:6px;padding:18px 16px 20px;border-radius:16px;background:#E9E5DE;border:1px solid var(--line);box-shadow:inset 0 2px 8px rgba(20,23,28,.06)}

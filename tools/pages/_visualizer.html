@@ -2,29 +2,14 @@
   <div class="viz">
     <div class="viz-stage-col">
       <div class="viz-stage">
-        <img class="viz-photo" src="img/viz/garage-day.jpg" alt="Real job photo: two-car garage" width="1200" height="798" loading="lazy">
-        <canvas role="img" aria-label="Real job photo of a two-car garage re-coated in the Domino blend, daylight"></canvas>
-        <span class="viz-tag" aria-hidden="true"><b class="viz-tag-blend">Domino</b><span class="viz-room-name">Two-car garage</span></span>
+        <img class="viz-photo" src="img/studio/garage-poster.jpg" alt="Two-car garage with a Domino chip floor in afternoon light" width="1320" height="880" loading="lazy">
+        <canvas role="img" aria-label="Two-car garage with a Domino chip floor, bright afternoon"></canvas>
+        <span class="viz-tag" aria-hidden="true"><b class="viz-tag-blend">Domino</b><span class="viz-tag-light">Bright afternoon</span></span>
         <span class="loader" aria-hidden="true">Loading the room…</span>
       </div>
-      <div class="viz-controls">
-        <div class="viz-group">
-          <span class="viz-label" id="{p}roomLbl">Room</span>
-          <div class="viz-rooms" role="group" aria-labelledby="{p}roomLbl"></div>
-        </div>
-        <div class="viz-row">
-          <div class="viz-group">
-            <span class="viz-label" id="{p}lightLbl">Lighting</span>
-            <div class="seg" role="group" aria-labelledby="{p}lightLbl">
-              <button type="button" data-light="day" aria-pressed="true"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="4.5"/><path d="M12 1.5v2.5M12 20v2.5M4.6 4.6l1.8 1.8M17.6 17.6l1.8 1.8M1.5 12H4M20 12h2.5M4.6 19.4l1.8-1.8M17.6 6.4l1.8-1.8"/></svg>Daylight</button>
-              <button type="button" data-light="eve" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><path d="M20.5 14.5A8.5 8.5 0 0 1 9.5 3.5a8.5 8.5 0 1 0 11 11z"/></svg>Evening</button>
-            </div>
-          </div>
-          <div class="viz-group">
-            <span class="viz-label" aria-hidden="true">Compare</span>
-            <button type="button" class="toggle viz-orig" aria-pressed="false">Original floor<span class="sw" aria-hidden="true"></span></button>
-          </div>
-        </div>
+      <div class="viz-group">
+        <span class="viz-label" id="{p}roomLbl">Room</span>
+        <div class="viz-rooms" role="group" aria-labelledby="{p}roomLbl"></div>
       </div>
     </div>
     <div class="viz-panel">
@@ -33,6 +18,52 @@
         <div><span>Selected sample</span><b class="viz-blend-name">Domino</b></div>
       </div>
       <a class="btn btn-primary" href="{est}" data-price-floor>Price this floor</a>
+
+      <div class="light-panel">
+        <h3 class="viz-label">Lighting</h3>
+        <div class="viz-group">
+          <span class="viz-sub" id="{p}presetLbl">Quick looks</span>
+          <div class="presets" role="group" aria-labelledby="{p}presetLbl">
+            <button type="button" data-preset="morning" aria-pressed="false">Sunny morning</button>
+            <button type="button" data-preset="afternoon" aria-pressed="true">Bright afternoon</button>
+            <button type="button" data-preset="cloudy" aria-pressed="false">Cloudy day</button>
+            <button type="button" data-preset="golden" aria-pressed="false">Golden hour</button>
+            <button type="button" data-preset="evening" aria-pressed="false">Evening, warm bulbs</button>
+            <button type="button" data-preset="nightcool" aria-pressed="false">Night, cool LEDs</button>
+            <button type="button" data-preset="dark" aria-pressed="false">Lights off</button>
+          </div>
+        </div>
+        <div class="viz-group">
+          <span class="viz-sub" id="{p}timeLbl">Time of day</span>
+          <div class="seg5" role="group" aria-labelledby="{p}timeLbl">
+            <button type="button" data-time="morning" aria-pressed="false">Morning</button>
+            <button type="button" data-time="midday" aria-pressed="true">Midday</button>
+            <button type="button" data-time="golden" aria-pressed="false">Golden hour</button>
+            <button type="button" data-time="dusk" aria-pressed="false">Dusk</button>
+            <button type="button" data-time="night" aria-pressed="false">Night</button>
+          </div>
+        </div>
+        <div class="viz-group">
+          <span class="viz-sub" id="{p}skyLbl">Weather</span>
+          <div class="seg" role="group" aria-labelledby="{p}skyLbl">
+            <button type="button" data-sky="sun" aria-pressed="true"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="4.5"/><path d="M12 1.5v2.5M12 20v2.5M4.6 4.6l1.8 1.8M17.6 17.6l1.8 1.8M1.5 12H4M20 12h2.5M4.6 19.4l1.8-1.8M17.6 6.4l1.8-1.8"/></svg>Sunny</button>
+            <button type="button" data-sky="cloud" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><path d="M7 18h10a4 4 0 0 0 .6-7.95A6 6 0 0 0 6.1 9.2 4.5 4.5 0 0 0 7 18z"/></svg>Cloudy</button>
+          </div>
+        </div>
+        <div class="bulbs">
+          <div class="bulb">
+            <button type="button" class="toggle viz-ceil-on" aria-pressed="false"><span class="viz-ceil-name">Ceiling lights</span><span class="sw" aria-hidden="true"></span></button>
+            <label class="range"><span>Brightness <output class="viz-ceil-out">100%</output></span><input type="range" class="viz-ceil-dim" min="5" max="100" step="5" value="100"></label>
+          </div>
+          <div class="bulb">
+            <button type="button" class="toggle viz-lamps-on" aria-pressed="false"><span class="viz-lamps-name">Lamps</span><span class="sw" aria-hidden="true"></span></button>
+            <label class="range"><span>Brightness <output class="viz-lamps-out">100%</output></span><input type="range" class="viz-lamps-dim" min="5" max="100" step="5" value="100"></label>
+          </div>
+          <label class="range kelvin"><span>Bulb color <output class="viz-k-out">3000K, warm white</output></span><input type="range" class="viz-k" min="2200" max="6500" step="100" value="3000"><span class="kbar" aria-hidden="true"></span><span class="ends" aria-hidden="true"><i>Warm</i><i>Cool</i></span></label>
+        </div>
+        <button type="button" class="toggle viz-orig" aria-pressed="false">Show bare concrete instead<span class="sw" aria-hidden="true"></span></button>
+      </div>
+
       <div class="board">
         <div class="board-group"><h3 id="{p}g1">Grays and blues</h3><div class="viz-tiles" data-group="gray" role="group" aria-labelledby="{p}g1"></div></div>
         <div class="board-group"><h3 id="{p}g2">Warm grays and stone</h3><div class="viz-tiles" data-group="warm" role="group" aria-labelledby="{p}g2"></div></div>
@@ -40,6 +71,6 @@
       </div>
     </div>
   </div>
-  <p class="viz-cap">A photo preview to help you choose. Your floor will vary with your concrete, your light and the chip mix on install day, so ask to see physical samples at your estimate.</p>
+  <p class="viz-cap">These rooms are 3D renders lit the way real light behaves, so you can see a blend in morning sun, at night or under warm or cool bulbs. Chip colors vary a little from batch to batch, so ask to see physical samples at your estimate.</p>
   <p class="viz-status sr-only" role="status"></p>
 </div>
