@@ -289,7 +289,7 @@ def footer(page, est):
     </nav>
   </div>
   <div class="wrap"><div class="legal">
-    <p>Concept design © 2026, shared with The Coating Crew for review only. Photos are from your current website. The floor visualizer rooms and sample blocks are 3D renders. See the <a href="owner.html">owner’s lead inbox</a>.</p>
+    <p>Concept design © 2026, shared with The Coating Crew for review only. All wording and photos come from your current website. The garage, basement and sunroom pictures and the sample blocks are 3D renders, not photos of your jobs. See the <a href="owner.html">owner’s lead inbox</a>.</p>
     <p class="builtby">Built by <a href="https://saintpaulagency.com" target="_blank" rel="noopener">saintpaulagency.com</a> and <a href="https://www.aidanbarnard.com" target="_blank" rel="noopener">aidanbarnard.com</a></p>
   </div></div>
 </footer>

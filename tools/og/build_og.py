@@ -52,7 +52,7 @@ async def main():
                 m = re.search(r'class="pimg[^"]*"><img src="([^"]+)"', s)
                 pic = m.group(1) if m else 'img/studio/garage-poster-1320.webp'
             home = name == 'index.html'
-            foot = ('<span class="pill">Two-stall garage floors from $2,495</span><span>Free estimates: (651) 263-8557</span>' if home
+            foot = ('<span class="pill">Ask about our two-stall garage floor: $2,495*</span><span>Free estimates: (651) 263-8557</span><span style="font-size:15px;font-weight:600">*Based on 400 sq ft of new concrete, no repairs needed. Other costs may apply.</span>' if home
                     else '<span>Free estimates across Minneapolis / Saint Paul</span><span>(651) 263-8557</span>')
             size = 66 if len(title) < 40 else 56 if len(title) < 64 else 48
             out = TPL.format(root=ROOT, pic=pic, logo=LOGO, title=html.escape(title), foot=foot, size=size + (8 if home else 0),
