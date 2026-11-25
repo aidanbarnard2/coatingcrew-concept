@@ -96,6 +96,83 @@ def pic(src, alt='', sizes='(min-width:900px) 600px, calc(100vw - 32px)', eager=
     return f'<img src="{src}" alt="{esc(alt)}" width="{w}" height="{h}" decoding="async"{load}>'
 
 
+# ---------------------------------------------------------------- real jobs and outside ratings
+# Photos, city tags and post links come from The Coating Crew's own Facebook page (tools/photos/fb.py).
+FB = json.load(open(os.path.join(ROOT, 'tools', 'photos', 'fb.json')))
+EXT = '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6M20 4l-9 9M18 13v6a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h6"/></svg>'
+
+
+def fb_url(fbid):
+    return 'https://www.facebook.com/photo/?fbid=' + fbid
+
+
+def post_link(fbid, what):
+    return (f'<a class="post-link" href="{fb_url(fbid)}" target="_blank" rel="noopener" data-fb-post>See the Facebook post'
+            f'<span class="sr-only"> of {esc(what)} (opens in a new tab)</span>{EXT}</a>')
+
+
+def job(slug, sizes='(min-width:700px) 600px, 84vw'):
+    """A real job from the crew's Facebook page: the photo opens up close, the caption links to the post."""
+    j = FB['shots'][slug]
+    what = (j['kind'][0].lower() + j['kind'][1:] if j['kind'] != 'Our Jeep' else 'our Jeep') + (f' in {j["city"]}' if j['city'] else '')
+    head_ = f'<b>{esc(j["city"])}</b> {esc(j["kind"])}' if j['city'] else f'<b>{esc(j["kind"])}</b>'
+    return (f'<figure class="job"><button type="button" class="gitem shot" aria-label="Open photo: {esc(j["kind"])}{", " + esc(j["city"]) if j["city"] else ""}" data-post="{fb_url(j["fbid"])}">'
+            f'{pic(f"img/photos/fb-{slug}.jpg", j["alt"], sizes)}</button>'
+            f'<figcaption><span class="j-what">{head_}</span>{post_link(j["fbid"], "the " + what)}</figcaption></figure>')
+
+
+def pair(slug):
+    """A before and after pair, shown side by side as the crew posted it."""
+    p = FB['pairs'][slug]
+    where = f'{p["kind"].lower()} in {p["city"]}' if p['city'] else p['kind'].lower()
+    def one(state):
+        b = f'img/ba/{slug}-{state}'
+        return (f'<button type="button" class="gitem" aria-label="Open photo: {esc(p["kind"])}{", " + esc(p["city"]) if p["city"] else ""}, {state}" data-post="{fb_url(p["fbid"])}">'
+                f'<img src="{b}-960.webp" srcset="{b}-480.webp 480w, {b}-960.webp 960w" sizes="(min-width:1000px) 230px, 45vw" alt="The {esc(where)}, {state} coating" '
+                f'width="{p["w"]}" height="{p["h"]}" loading="lazy" decoding="async"><span>{state.capitalize()}</span></button>')
+    head_ = f'<b>{esc(p["city"])}</b> {esc(p["kind"])}' if p['city'] else f'<b>{esc(p["kind"])}</b>'
+    return (f'<figure class="pair"><div class="pair-pics">{one("before")}{one("after")}</div>'
+            f'<figcaption><span class="j-what">{head_}</span>{post_link(p["fbid"], "the " + where)}</figcaption></figure>')
+
+
+def compare(slug):
+    """Two photos taken from nearly the same spot, lined up so a visitor can drag between them."""
+    p = FB['pairs'][slug]
+    where = f'{p["kind"].lower()} in {p["city"]}'
+    def im(state, cls, alt):
+        b = f'img/ba/{slug}-{state}'
+        return (f'<img class="{cls}" src="{b}-1200.webp" srcset="{b}-640.webp 640w, {b}-960.webp 960w, {b}-1200.webp 1200w" sizes="(min-width:1000px) 660px, calc(100vw - 32px)" '
+                f'alt="{esc(alt)}" width="{p["w"]}" height="{p["h"]}" loading="lazy" decoding="async">')
+    return (f'<figure class="cmp" style="--pos:50%"><div class="cmp-view">'
+            + im('after', 'cmp-a', f'The {where} after coating, with a gray chip floor')
+            + im('before', 'cmp-b', f'The same garage before coating, with stained bare concrete')
+            + '<span class="cmp-tag b" aria-hidden="true">Before</span><span class="cmp-tag a" aria-hidden="true">After</span>'
+            '<span class="cmp-bar" aria-hidden="true"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l-5 6 5 6M15 6l5 6-5 6"/></svg></i></span>'
+            f'<input class="cmp-range" type="range" min="0" max="100" value="50" step="1" aria-label="Slide between the before and after photo of the {esc(where)}">'
+            f'</div><figcaption><span class="j-what"><b>{esc(p["city"])}</b> {esc(p["kind"])}. Drag to compare.</span>{post_link(p["fbid"], "the " + where)}</figcaption></figure>')
+
+
+# Outside ratings, worded and numbered as each site showed them on RATED. Each one links to its source.
+RATED = 'November 24, 2026'
+RATINGS = [
+    ('4.9', 'Google', '251 reviews', 'https://www.google.com/maps?cid=15792623999213110421', True),
+    ('A+', 'BBB rating', 'Accredited since 2014', 'https://www.bbb.org/us/mn/inver-grove-heights/profile/epoxy-floor-coating/the-coating-crew-0704-96506371', False),
+    ('4.9', 'Angi', '34 reviews', 'https://www.angi.com/companylist/us/mn/hastings/the-coating-crew-reviews-1.htm', True),
+    ('4.9', 'HomeAdvisor', '37 reviews', 'https://www.homeadvisor.com/rated.TheCoatingCrew.52880804.html', True),
+]
+STAR = '<svg viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><path d="M12 2l2.9 6.2 6.6.7-5 4.5 1.4 6.6L12 16.8 6.1 20l1.4-6.6-5-4.5 6.6-.7z"/></svg>'
+
+
+def proof():
+    li = ''.join(
+        f'<li><a href="{u}" target="_blank" rel="noopener" data-rating="{esc(site)}"><b>{val}{STAR if star else ""}</b>'
+        f'<span><strong>{esc(site)}</strong>{esc(note)}<span class="sr-only">{", " + val + " out of 5" if star else ""} (opens in a new tab)</span></span></a></li>'
+        for val, site, note, u, star in RATINGS)
+    return ('<section class="proofbar" aria-label="Ratings and reviews">\n  <div class="wrap">\n    <ul class="ratings">' + li +
+            '</ul>\n'
+            f'    <p class="ratings-note">Ratings as each site showed them on {RATED}. Choose one to read the reviews there.</p>\n  </div>\n</section>')
+
+
 # ---------------------------------------------------------------- visualizer pieces
 def _js_list(name, js):
     return re.findall(r"'([^']+)'", re.search(name + r": \[(.*?)\]", js).group(1))
@@ -505,6 +582,11 @@ def build(path):
         main = main.replace('{{EST_FORM}}', open(os.path.join(SRC, '_estimate_form.html')).read().rstrip())
         main = main.replace('{{LOGO}}', open(os.path.join(SRC, '_logo.svg')).read().strip())
         main = re.sub(r'\{\{PIC (\S+) "([^"]*)" "([^"]*)"( eager)?\}\}', lambda mo: pic(mo.group(1), mo.group(2), mo.group(3), bool(mo.group(4))), main)
+        main = re.sub(r'\{\{JOB ([\w-]+)\}\}', lambda mo: job(mo.group(1)), main)
+        main = re.sub(r'\{\{PAIR ([\w-]+)\}\}', lambda mo: pair(mo.group(1)), main)
+        main = re.sub(r'\{\{SLIDE ([\w-]+)\}\}', lambda mo: compare(mo.group(1)), main)
+        main = re.sub(r'\{\{POST ([\w-]+) "([^"]*)"\}\}', lambda mo: post_link(FB['shots'][mo.group(1)]['fbid'], mo.group(2)), main)
+        main = main.replace('{{PROOF}}', proof())
     else:
         s = open(path).read()
         title = html.unescape(re.search(r'<title>(.*?)</title>', s, flags=re.S).group(1).strip())

@@ -10,6 +10,8 @@ A concept preview built by Saint Paul Agency (saintpaulagency.com) and Aidan Bar
 - `img/systems/`: rendered sample blocks for the four floor systems.
 - The home page opens with The Coating Crew's logo drawn as an SVG (`tools/logo/build_logo.py` traces the ribbon and flags and sets the lettering in Poppins ExtraBold, SIL Open Font License). The flags swing in, wave for a few seconds and settle, then wave again on hover or tap; people who ask for reduced motion see it still.
 - `home.js`: the free-estimate form, and the owner's lead inbox on `owner.html`.
+- Real jobs: photos, city tags and post links come from The Coating Crew's own Facebook page (`tools/photos/fb.py`, data in `tools/photos/fb.json`). Each photo opens up close and links to the post it came from. No color changes are made to these photos. One before and after pair was shot from nearly the same spot, so it is lined up for a drag-to-compare view; the other pairs sit side by side.
+- Outside ratings (Google, BBB, Angi, HomeAdvisor) are listed in `RATINGS` in `tools/build_pages.py`, worded as each site showed them on the date in `RATED`, and each one links to its source. Update the numbers and the date together.
 - `search.js` and `search-index.js`: site search.
 
 ## Going live
@@ -17,6 +19,7 @@ A concept preview built by Saint Paul Agency (saintpaulagency.com) and Aidan Bar
 - `track.js` holds the three launch settings: the Google Tag Manager ID, the Meta pixel ID and the URL that receives each estimate request. Until they are filled in, nothing loads from a third party and the form runs in demo mode.
 - Every lead records how the visitor arrived (ad click IDs, UTM tags, landing page) next to what they picked.
 - `garage-floor-coating.html` and `basement-floor-coating.html` are ad landing pages: no site menu, the form beside the headline.
+- Before launch, the client should confirm the Facebook photos may be used on the site (one shows crew members, one post names four of them), supply the original files in place of the captured copies, and confirm the crew named in the Hastings post.
 
 ## Rebuilding
 

@@ -177,6 +177,12 @@
       var it = list[cur], im = $('img', it);
       img.src = im.dataset.full || im.src; img.alt = im.alt;
       cap.textContent = it.getAttribute('aria-label').replace('Open photo: ', '') + ', photo ' + (cur + 1) + ' of ' + list.length;
+      if (it.dataset.post) {                       /* a real job: offer the post it came from */
+        var a = document.createElement('a'); a.href = it.dataset.post; a.target = '_blank'; a.rel = 'noopener';
+        cap.appendChild(document.createTextNode('.'));
+        a.textContent = 'See the Facebook post'; a.setAttribute('aria-label', 'See the Facebook post (opens in a new tab)');
+        cap.appendChild(a);
+      }
     }
     function open(it) { last = it; list = items.filter(function (x) { return !x.hidden; }); show(list.indexOf(it)); lb.hidden = false; document.body.style.overflow = 'hidden'; $('#lbX').focus(); }
     function close() { lb.hidden = true; document.body.style.overflow = ''; if (last) last.focus(); }
@@ -190,7 +196,7 @@
       else if (e.key === 'ArrowLeft') show(cur - 1);
       else if (e.key === 'ArrowRight') show(cur + 1);
       else if (e.key === 'Tab') {
-        var f = $$('button', lb), first = f[0], lastB = f[f.length - 1];
+        var f = $$('button, a[href]', lb), first = f[0], lastB = f[f.length - 1];
         if (e.shiftKey && document.activeElement === first) { e.preventDefault(); lastB.focus(); }
         else if (!e.shiftKey && document.activeElement === lastB) { e.preventDefault(); first.focus(); }
       }
@@ -201,6 +207,39 @@
     function openFromHash() { if (location.hash.indexOf('#p-') !== 0) return; var it = document.getElementById(location.hash.slice(1)); if (it && it.classList.contains('gitem')) { it.scrollIntoView({ block: 'center' }); open(it); } }
     openFromHash(); addEventListener('hashchange', openFromHash);
   }
+
+  /* before and after: drag, tap or use the arrow keys to move between two photos of the same garage */
+  $$('.cmp').forEach(function (c) {
+    var view = $('.cmp-view', c), r = $('.cmp-range', c), drag = false, used = false;
+    function set(v, byUser) {
+      v = Math.max(0, Math.min(100, v));
+      c.style.setProperty('--pos', v + '%'); r.value = Math.round(v);
+      r.setAttribute('aria-valuetext', Math.round(v) + ' percent before, ' + (100 - Math.round(v)) + ' percent after');
+      if (byUser && !used) { used = true; c.classList.remove('nudge'); if (window.ccTrack) window.ccTrack('before_after_compare', {}); }
+    }
+    function at(e) { var b = view.getBoundingClientRect(); set((e.clientX - b.left) / b.width * 100, true); }
+    view.addEventListener('pointerdown', function (e) { if (e.button) return; drag = true; try { view.setPointerCapture(e.pointerId); } catch (x) {} at(e); });
+    view.addEventListener('pointermove', function (e) { if (drag) at(e); });
+    ['pointerup', 'pointercancel', 'lostpointercapture'].forEach(function (t) { view.addEventListener(t, function () { drag = false; }); });
+    r.addEventListener('input', function () { set(+r.value, true); });
+    set(50);
+    if (motionOK && 'IntersectionObserver' in window) {   /* one small sweep the first time it is seen, to show it moves */
+      var io = new IntersectionObserver(function (en) {
+        if (!en[0].isIntersecting) return; io.disconnect();
+        if (used) return;
+        c.classList.add('nudge');
+        [[300, 28], [1050, 70], [1800, 50]].forEach(function (k) { setTimeout(function () { if (!used) set(k[1]); }, k[0]); });
+        setTimeout(function () { c.classList.remove('nudge'); }, 2600);
+      }, { threshold: .6 });
+      io.observe(view);
+    }
+  });
+
+  /* outside links worth counting: ratings and the crew's own posts */
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest && e.target.closest('a[data-rating],a[data-fb-post]');
+    if (a && window.ccTrack) window.ccTrack(a.dataset.rating ? 'rating_click' : 'post_click', a.dataset.rating ? { site: a.dataset.rating } : {});
+  });
 
   /* contact form (concept: checks the fields, sends nothing) */
   var cf = $('#contactForm');

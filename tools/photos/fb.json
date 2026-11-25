@@ -1,0 +1,166 @@
+{
+ "shots": {
+  "hotrods": {
+   "fbid": "1921174734697548",
+   "city": "",
+   "kind": "Chip floor",
+   "alt": "Two classic cars parked on a glossy gray chip floor",
+   "w": 1259,
+   "h": 952
+  },
+  "jeep": {
+   "fbid": "1921174531364235",
+   "city": "",
+   "kind": "Our Jeep",
+   "alt": "The Coating Crew Jeep parked between two stands of chip floor samples",
+   "w": 1259,
+   "h": 952
+  },
+  "stairs-edina": {
+   "fbid": "1915255298622825",
+   "city": "Edina",
+   "kind": "Stairs",
+   "alt": "A stairway and landing coated in a tan chip finish",
+   "w": 1259,
+   "h": 952
+  },
+  "garage-edina": {
+   "fbid": "1915255291956159",
+   "city": "Edina",
+   "kind": "Garage",
+   "alt": "A garage with a light tan chip floor",
+   "w": 1259,
+   "h": 952
+  },
+  "prep-hastings": {
+   "fbid": "1911272329021122",
+   "city": "Hastings",
+   "kind": "Prep",
+   "alt": "A floor grinder and dust vacuum on bare garage concrete",
+   "w": 1259,
+   "h": 952
+  },
+  "prep-hastings-2": {
+   "fbid": "1911272345687787",
+   "city": "Hastings",
+   "kind": "Prep",
+   "alt": "A floor grinder, vacuums and hoses spread across a large bare garage floor",
+   "w": 1259,
+   "h": 952
+  },
+  "garage-hastings": {
+   "fbid": "1911272342354454",
+   "city": "Hastings",
+   "kind": "Large garage",
+   "alt": "A large garage with a finished gray chip floor",
+   "w": 1259,
+   "h": 952
+  },
+  "garage-cabinets": {
+   "fbid": "1902344353247253",
+   "city": "",
+   "kind": "Garage",
+   "alt": "A garage with white cabinets and a gray chip floor",
+   "w": 1259,
+   "h": 952
+  },
+  "shop-igh": {
+   "fbid": "1888732324608456",
+   "city": "Inver Grove Heights",
+   "kind": "Chip floor",
+   "alt": "A tall room with a wood stair and a gray chip floor",
+   "w": 1259,
+   "h": 952
+  },
+  "basement-wsp": {
+   "fbid": "1867716416710047",
+   "city": "West Saint Paul",
+   "kind": "Basement",
+   "alt": "A basement with white block walls and a gray chip floor",
+   "w": 1259,
+   "h": 952
+  },
+  "basement-wsp-before": {
+   "fbid": "1867716433376712",
+   "city": "West Saint Paul",
+   "kind": "Basement, before",
+   "alt": "The same basement before coating, with bare patched concrete",
+   "w": 1259,
+   "h": 952
+  },
+  "crew-arena": {
+   "fbid": "1863276780487344",
+   "city": "",
+   "kind": "Crew at work",
+   "alt": "Crew members running floor grinders across a large red floor",
+   "w": 1259,
+   "h": 951
+  },
+  "grinder": {
+   "fbid": "1863276760487346",
+   "city": "",
+   "kind": "Prep",
+   "alt": "A floor grinder taking an old red coating off concrete",
+   "w": 1259,
+   "h": 951
+  },
+  "barn-henderson": {
+   "fbid": "1860538344094521",
+   "city": "Henderson",
+   "kind": "Steel building",
+   "alt": "A large steel-sided building with a gray chip floor",
+   "w": 1259,
+   "h": 952
+  },
+  "commercial-eagan": {
+   "fbid": "1845119475636408",
+   "city": "Eagan",
+   "kind": "Commercial floor",
+   "alt": "A large commercial room with a glossy concrete floor",
+   "w": 1259,
+   "h": 952
+  },
+  "steps-lakeelmo": {
+   "fbid": "1823105341171155",
+   "city": "Lake Elmo",
+   "kind": "Steps",
+   "alt": "Garage steps and floor coated in a gray chip finish",
+   "w": 1259,
+   "h": 952
+  }
+ },
+ "pairs": {
+  "cottagegrove": {
+   "fbid": "1851292685019087",
+   "city": "Cottage Grove",
+   "kind": "Garage",
+   "aligned": true,
+   "w": 1196,
+   "h": 897
+  },
+  "forestlake": {
+   "fbid": "1906564492825239",
+   "city": "Forest Lake",
+   "kind": "Garage",
+   "aligned": false,
+   "w": 1390,
+   "h": 1050
+  },
+  "wsp": {
+   "fbid": "1867716416710047",
+   "city": "West Saint Paul",
+   "kind": "Basement",
+   "aligned": false,
+   "w": 1259,
+   "h": 952
+  },
+  "shelf": {
+   "fbid": "1894176897397332",
+   "city": "",
+   "kind": "Garage",
+   "aligned": false,
+   "w": 1259,
+   "h": 952
+  }
+ }
+}
