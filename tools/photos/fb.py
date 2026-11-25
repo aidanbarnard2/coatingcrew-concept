@@ -32,7 +32,7 @@ SHOTS = {
     'basement-wsp':       dict(n=13, fbid='1867716416710047', city='West Saint Paul', kind='Basement', alt='A basement with white block walls and a gray chip floor'),
     'basement-wsp-before': dict(n=12, fbid='1867716433376712', city='West Saint Paul', kind='Basement, before', alt='The same basement before coating, with bare patched concrete'),
     'crew-arena':         dict(n=16, fbid='1863276780487344', city='', kind='Crew at work', alt='Crew members running floor grinders across a large red floor'),
-    'grinder':            dict(n=17, fbid='1863276760487346', city='', kind='Prep', alt='A floor grinder taking an old red coating off concrete'),
+    'grinder':            dict(n=17, fbid='1863276760487346', city='', kind='Floor prep', alt='A floor grinder taking an old red coating off concrete'),
     'barn-henderson':     dict(n=25, fbid='1860538344094521', city='Henderson', kind='Steel building', alt='A large steel-sided building with a gray chip floor'),
     'commercial-eagan':   dict(n=26, fbid='1845119475636408', city='Eagan', kind='Commercial floor', alt='A large commercial room with a glossy concrete floor'),
     'steps-lakeelmo':     dict(n=22, fbid='1823105341171155', city='Lake Elmo', kind='Steps', alt='Garage steps and floor coated in a gray chip finish'),

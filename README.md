@@ -11,6 +11,8 @@ A concept preview built by Saint Paul Agency (saintpaulagency.com) and Aidan Bar
 - The home page opens with The Coating Crew's logo drawn as an SVG (`tools/logo/build_logo.py` traces the ribbon and flags and sets the lettering in Poppins ExtraBold, SIL Open Font License). The flags swing in, wave for a few seconds and settle, then wave again on hover or tap; people who ask for reduced motion see it still.
 - `home.js`: the free-estimate form, and the owner's lead inbox on `owner.html`.
 - Real jobs: photos, city tags and post links come from The Coating Crew's own Facebook page (`tools/photos/fb.py`, data in `tools/photos/fb.json`). Each photo opens up close and links to the post it came from. No color changes are made to these photos. One before and after pair was shot from nearly the same spot, so it is lined up for a drag-to-compare view; the other pairs sit side by side.
+- `tools/colors/add_blend.py` adds a chip blend from the crew's own swatch photo (used for Nightfall): it matches the chip size to the other blends and builds the thumbnail, close-up and floor texture. Colors are not changed.
+- Inner pages get the ratings strip and a block of real work from the page builder (`PROOF_PAGES` and `INNER` in `tools/build_pages.py`); the gallery grid leads with the Facebook jobs.
 - Outside ratings (Google, BBB, Angi, HomeAdvisor) are listed in `RATINGS` in `tools/build_pages.py`, worded as each site showed them on the date in `RATED`, and each one links to its source. Update the numbers and the date together.
 - `search.js` and `search-index.js`: site search.
 
@@ -27,5 +29,7 @@ A concept preview built by Saint Paul Agency (saintpaulagency.com) and Aidan Bar
 - `tools/studio/` builds the visualizer rooms: `final.sh` renders each room's light passes with Blender's Python module (`pip install bpy OpenEXR`), then `python3 encode.py final ../../img/studio garage basement sunroom` packs them for the page. `mix.py` previews any lighting preset as a still.
 
 ## Accessibility and speed
+
+Entrances: blocks arrive once as they are first seen (`site.js` and the v9 section of `site.css`); visitors who ask for reduced motion get none. Sideways scrollers cannot scroll vertically, so they never catch the page scroll. The home page, estimate flow, photo viewer and before/after slider are also run in Firefox and WebKit (Safari's engine) with Playwright.
 
 All text uses solid colors that pass WCAG 2.2 AA contrast. Every page is checked with axe-core at desktop and phone sizes, and the menu, estimate form, photo viewer and visualizer all work from the keyboard. The crew's own job photos get a light correction pass (local contrast, a touch of color, sharpening). Photos are served as WebP in two sizes, and the page's structured data (business, FAQ and breadcrumbs) is in JSON-LD.

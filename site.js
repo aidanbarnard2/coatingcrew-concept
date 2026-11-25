@@ -11,7 +11,7 @@
      The same list lives in site.css, where the starting state is set before the first paint. */
   if (document.documentElement.classList.contains('pop-on')) (function () {
     window.ccPop = true;
-    var LIST = '.sec-head>div:first-child,.sec-head>.tlink,.reel-nav,.ratings-note,.swipe-hint,.compare-scroll,.cmp,.story-stage,.fbpost,.est-side,.est,.jeep,.crew,.prose,.media,.contact-grid>*,.night .wrap>*,.qa-grid>div>h2,.ratings li,.pair,.step,.faq details,.card,.review,.gallery .gitem,.stop,.reel>*';
+    var LIST = '.sec-head>div:first-child,.sec-head>.tlink,.reel-nav,.ratings-note,.swipe-hint,.compare-scroll,.cmp,.story-stage,.fbpost,.est-side,.est,.jeep,.crew,.prose,.media,.contact-grid>*,.night .wrap>*,.qa-grid>div>h2,.ratings li,.pair,.step,.faq details,.card,.review,.gallery .gitem,.jobs-grid>*,.stop,.reel>*';
     var els = $$(LIST).filter(function (el) { var sec = el.closest('main>section'); return sec && !sec.matches('.studio,.phero,.lp-hero'); });
     function show(batch) {
       var n = 0;

@@ -916,8 +916,8 @@ header.site{view-transition-name:site-header}
 @media (prefers-reduced-motion:no-preference){
   html.pop-on main>section:not(.studio,.phero,.lp-hero) :is(.sec-head>div:first-child,.sec-head>.tlink,.reel-nav,.ratings-note,.swipe-hint,.compare-scroll,.cmp,.story-stage,.fbpost,.est-side,.est,.jeep,.crew,.prose,.media,.contact-grid>*,.night .wrap>*,.qa-grid>div>h2):not(.in){opacity:0;transform:translateY(24px)}
   html.pop-on main>section:not(.studio,.phero,.lp-hero) :is(.sec-head>div:first-child,.sec-head>.tlink,.reel-nav,.ratings-note,.swipe-hint,.compare-scroll,.cmp,.story-stage,.fbpost,.est-side,.est,.jeep,.crew,.prose,.media,.contact-grid>*,.night .wrap>*,.qa-grid>div>h2):not(.popped){transition:opacity .5s ease-out var(--pd,0s),transform .8s cubic-bezier(.22,1,.36,1) var(--pd,0s)}
-  html.pop-on main>section:not(.studio,.phero,.lp-hero) :is(.ratings li,.pair,.step,.faq details,.card,.review,.gallery .gitem,.stop):not(.in){opacity:0;transform:translateY(20px) scale(.965)}
-  html.pop-on main>section:not(.studio,.phero,.lp-hero) :is(.ratings li,.pair,.step,.faq details,.card,.review,.gallery .gitem,.stop):not(.popped){transition:opacity .4s ease-out var(--pd,0s),transform .65s cubic-bezier(.3,1.36,.5,1) var(--pd,0s)}
+  html.pop-on main>section:not(.studio,.phero,.lp-hero) :is(.ratings li,.pair,.step,.faq details,.card,.review,.gallery .gitem,.jobs-grid>*,.stop):not(.in){opacity:0;transform:translateY(20px) scale(.965)}
+  html.pop-on main>section:not(.studio,.phero,.lp-hero) :is(.ratings li,.pair,.step,.faq details,.card,.review,.gallery .gitem,.jobs-grid>*,.stop):not(.popped){transition:opacity .4s ease-out var(--pd,0s),transform .65s cubic-bezier(.3,1.36,.5,1) var(--pd,0s)}
   html.pop-on main>section:not(.studio,.phero,.lp-hero) .reel>*:not(.in){opacity:0;transform:scale(.93)}
   html.pop-on main>section:not(.studio,.phero,.lp-hero) .reel>*:not(.popped){transition:opacity .45s ease-out var(--pd,0s),transform .7s cubic-bezier(.22,1,.36,1) var(--pd,0s)}
   html.pop-on main>section:not(.studio,.phero,.lp-hero) .now{transition:none!important}
@@ -926,19 +926,25 @@ header.site{view-transition-name:site-header}
   @keyframes ccRise{from{transform:translateY(26px)}}
   @keyframes ccPop{from{opacity:0;transform:translateY(18px) scale(.95)}}
   @keyframes ccGrowIn{from{opacity:0;transform:scale(.8)}}
-  :is(.studio,.phero,.lp-hero) h1{animation:ccRise .9s cubic-bezier(.22,1,.36,1) backwards}
-  :is(.studio,.phero,.lp-hero) :is(.studio-sub,.intro){animation:ccRise .9s cubic-bezier(.22,1,.36,1) .08s backwards}
+  :is(.studio,.phero,.lp-hero) h1{animation:ccRise .7s cubic-bezier(.22,1,.36,1) backwards}
+  :is(.studio,.phero,.lp-hero) :is(.studio-sub,.intro){animation:ccRise .7s cubic-bezier(.22,1,.36,1) .06s backwards}
   :is(.studio,.phero,.lp-hero) .crumbs{animation:ccPop .5s cubic-bezier(.22,1,.36,1) backwards}
-  :is(.studio,.phero,.lp-hero) .btn-row>*{animation:ccPop .6s cubic-bezier(.3,1.36,.5,1) .3s backwards}
-  :is(.studio,.phero,.lp-hero) .btn-row>*:nth-child(2){animation-delay:.38s}
-  .s-viz,.phero .lineup,.phero .media{animation:ccRise 1s cubic-bezier(.22,1,.36,1) .12s backwards}
-  .s-rail .rail-head{animation:ccPop .6s cubic-bezier(.22,1,.36,1) .45s backwards}
-  .s-rail .sample{animation:ccGrowIn .5s cubic-bezier(.3,1.36,.5,1) backwards;animation-delay:calc(.5s + var(--n,10)*.04s)}
+  :is(.studio,.phero,.lp-hero) .btn-row>*{animation:ccPop .5s cubic-bezier(.3,1.36,.5,1) .2s backwards}
+  :is(.studio,.phero,.lp-hero) .btn-row>*:nth-child(2){animation-delay:.27s}
+  .s-viz,.phero .lineup,.phero .media{animation:ccRise .75s cubic-bezier(.22,1,.36,1) .08s backwards}
+  .s-rail .rail-head{animation:ccPop .5s cubic-bezier(.22,1,.36,1) .3s backwards}
+  .s-rail .sample{animation:ccGrowIn .4s cubic-bezier(.3,1.36,.5,1) backwards;animation-delay:calc(.32s + var(--n,10)*.03s)}
   .s-rail .sample:nth-child(1){--n:0}.s-rail .sample:nth-child(2){--n:1}.s-rail .sample:nth-child(3){--n:2}.s-rail .sample:nth-child(4){--n:3}.s-rail .sample:nth-child(5){--n:4}
   .s-rail .sample:nth-child(6){--n:5}.s-rail .sample:nth-child(7){--n:6}.s-rail .sample:nth-child(8){--n:7}.s-rail .sample:nth-child(9){--n:8}.s-rail .sample:nth-child(10){--n:9}
   .lp-ticks li{animation:ccPop .5s cubic-bezier(.3,1.36,.5,1) backwards;animation-delay:calc(.22s + var(--n,0)*.07s)}
   .lp-ticks li:nth-child(2){--n:1}.lp-ticks li:nth-child(3){--n:2}.lp-ticks li:nth-child(4){--n:3}
-  .lp-hero .ticket{animation:ccPop .65s cubic-bezier(.3,1.36,.5,1) .5s backwards}
-  .lp-hero .lp-form{animation:ccPop .7s cubic-bezier(.22,1,.36,1) .16s backwards}
+  .lp-hero .ticket{animation:ccPop .5s cubic-bezier(.3,1.36,.5,1) .4s backwards}
+  .lp-hero .lp-form{animation:ccPop .55s cubic-bezier(.22,1,.36,1) .12s backwards}
 }
 @media print{html.pop-on main *{opacity:1!important;transform:none!important}}
+
+/* real jobs on inner pages */
+.jobs-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:28px 20px}
+.jobs-grid .job{width:auto}
+.jobs-grid .job figcaption{flex-direction:column;gap:2px}
+@media (max-width:860px){.jobs-grid{grid-template-columns:1fr;gap:30px}}

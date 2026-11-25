@@ -6,11 +6,11 @@
 (function () {
   'use strict';
 
-  var BLENDS = ['Armadillo', 'Basalt', 'Buckskin', 'Chestnut', 'Claystone', 'Denim', 'Dolphin', 'Domino', 'Driftwood', 'Garnet', 'Gunflint', 'Husky', 'Lanai Grey', 'Leopard', 'North Oaks', 'Oasis', 'Obsidian', 'Pebble Beach', 'Pecan', 'Pumice', 'Sandstone', 'Schist', 'Shale', 'Silver Creek', 'Slate', 'Slate Stone', 'Smoke', 'Tamarack', 'Thistle', 'Tidal Wave', 'Turquoise', 'Wombat Blue'];
+  var BLENDS = ['Armadillo', 'Basalt', 'Buckskin', 'Chestnut', 'Claystone', 'Denim', 'Dolphin', 'Domino', 'Driftwood', 'Garnet', 'Gunflint', 'Husky', 'Lanai Grey', 'Leopard', 'Nightfall', 'North Oaks', 'Oasis', 'Obsidian', 'Pebble Beach', 'Pecan', 'Pumice', 'Sandstone', 'Schist', 'Shale', 'Silver Creek', 'Slate', 'Slate Stone', 'Smoke', 'Tamarack', 'Thistle', 'Tidal Wave', 'Turquoise', 'Wombat Blue'];
   /* sample board groups, each ordered light to dark (measured from the real chip photos) */
   var GROUPS = {
     gray: ['Schist', 'Slate Stone', 'North Oaks', 'Denim', 'Husky', 'Smoke', 'Domino', 'Basalt', 'Tamarack', 'Wombat Blue', 'Lanai Grey', 'Silver Creek'],
-    warm: ['Pumice', 'Dolphin', 'Armadillo', 'Oasis', 'Claystone', 'Tidal Wave', 'Shale', 'Obsidian', 'Turquoise', 'Slate', 'Leopard', 'Gunflint'],
+    warm: ['Pumice', 'Dolphin', 'Armadillo', 'Oasis', 'Claystone', 'Tidal Wave', 'Shale', 'Obsidian', 'Turquoise', 'Slate', 'Leopard', 'Gunflint', 'Nightfall'],
     tan: ['Thistle', 'Buckskin', 'Driftwood', 'Pecan', 'Pebble Beach', 'Sandstone', 'Garnet', 'Chestnut']
   };
   var CONCRETE = 'Bare concrete';

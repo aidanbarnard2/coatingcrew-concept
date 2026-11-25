@@ -152,6 +152,54 @@ def compare(slug):
             f'</div><figcaption><span class="j-what"><b>{esc(p["city"])}</b> {esc(p["kind"])}. Drag to compare.</span>{post_link(p["fbid"], "the " + where)}</figcaption></figure>')
 
 
+JOB_NOTE = 'Photos from our Facebook page. City names are the ones tagged on our posts. Tap a photo to see it up close, or open the post it came from.'
+
+
+def ba_section(band='band', hid='baTitle'):
+    """The before and after block: one drag-to-compare pair and three pairs side by side."""
+    return (f'<section class="{band}" id="before-after" aria-labelledby="{hid}" data-gen>\n  <div class="wrap">\n    <div class="sec-head">\n      <div>\n'
+            f'        <h2 class="h2" id="{hid}">Before and after</h2>\n'
+            '        <p class="lede">Our own photos of the same floors, before and after coating, as we posted them on our Facebook page. Drag across the Cottage Grove garage to compare the two.</p>\n'
+            '      </div>\n    </div>\n    <div class="ba-grid">\n      ' + compare('cottagegrove') + '\n      <div class="pairs">\n        '
+            + '\n        '.join(pair(x) for x in ('forestlake', 'wsp', 'shelf')) + '\n      </div>\n    </div>\n  </div>\n</section>')
+
+
+def jobs_section(slugs, band='band', hid='jobsTitle'):
+    """Three real jobs from the crew's Facebook page, for inner pages."""
+    cards = '\n      '.join(job(x, '(min-width:900px) 390px, calc(100vw - 32px)') for x in slugs)
+    return (f'<section class="{band}" id="jobs" aria-labelledby="{hid}" data-gen>\n  <div class="wrap">\n    <div class="sec-head">\n      <div>\n'
+            f'        <h2 class="h2" id="{hid}">From our jobs</h2>\n        <p class="lede">{JOB_NOTE}</p>\n      </div>\n'
+            '      <a class="tlink" href="gallery.html">See all our work</a>\n    </div>\n'
+            f'    <div class="jobs-grid">\n      {cards}\n    </div>\n  </div>\n</section>')
+
+
+def gallery_fb():
+    """Real jobs for the gallery grid. Only photos whose kind of space is clear get a filter; the rest show under All."""
+    cats = {'hotrods': 'Other', 'garage-hastings': 'Garage', 'garage-cabinets': 'Garage', 'basement-wsp': 'Basement', 'garage-edina': 'Garage',
+            'commercial-eagan': 'Commercial', 'steps-lakeelmo': 'Garage', 'shop-igh': 'Other', 'barn-henderson': 'Other'}
+    out = []
+    for i, (slug_, cat) in enumerate(cats.items()):
+        j = FB['shots'][slug_]; b = f'img/w/fb-{slug_}'
+        label = j['kind'] + (', ' + j['city'] if j['city'] else '')
+        out.append(f'<button type="button" class="gitem{" big" if i == 0 else ""}" id="p-fb-{slug_}" data-cat="{cat}" data-gen data-post="{fb_url(j["fbid"])}" aria-label="Open photo: {esc(label)}">'
+                   f'<img data-full="{b}-1200.webp" src="{b}-1200.webp" srcset="{b}-640.webp 640w, {b}-960.webp 960w, {b}-1200.webp 1200w" '
+                   f'sizes="{"(min-width:900px) 50vw, 100vw" if i == 0 else "(min-width:900px) 25vw, 50vw"}" alt="{esc(j["alt"])}" width="{j["w"]}" height="{j["h"]}" decoding="async" loading="lazy">'
+                   f'<span>{esc(label)}</span></button>')
+    return '\n'.join(out)
+
+
+# inner pages: the ratings strip under the page top, and a block of real work before the closing band
+PROOF_PAGES = {'residential.html', 'commercial.html', 'industrial.html', 'gallery.html', 'reviews.html', 'about-us.html',
+               'certified-professionals.html', 'worry-free-guarantee.html', 'trailers.html', 'contact-us.html', 'finishes.html'}
+INNER = {
+    'residential.html': lambda: ba_section('band'),
+    'gallery.html': lambda: ba_section('band'),
+    'commercial.html': lambda: jobs_section(('commercial-eagan', 'crew-arena', 'shop-igh'), 'band'),
+    'industrial.html': lambda: jobs_section(('crew-arena', 'grinder', 'barn-henderson'), 'band'),
+    'about-us.html': lambda: jobs_section(('crew-arena', 'jeep', 'garage-hastings'), 'band alt'),
+}
+
+
 # Outside ratings, worded and numbered as each site showed them on RATED. Each one links to its source.
 RATED = 'November 24, 2026'
 RATINGS = [
@@ -465,6 +513,10 @@ def head(page, title, desc, main):
 
 # ---------------------------------------------------------------- cleanup for pages kept from the old build
 def clean(m, page):
+    # blocks an earlier build generated are rebuilt fresh each time
+    m = re.sub(r'\s*<section class="proofbar".*?</section>', '', m, flags=re.S)
+    m = re.sub(r'\s*<section [^>]*data-gen>.*?</section>', '', m, flags=re.S)
+    m = re.sub(r'\s*<button [^>]*data-gen [^>]*>.*?</button>', '', m, flags=re.S)
     m = re.sub(r'\s*<div class="checker"[^>]*></div>', '', m)
     m = re.sub(r'<span class="gt">(.*?)</span>', r'\1', m, flags=re.S)
 
@@ -539,6 +591,16 @@ def clean(m, page):
     # the photo viewer opens the color-corrected WebP
     m = re.sub(r'data-full="img/photos/([\w-]+)\.jpg"', lambda mo: f'data-full="img/w/{mo.group(1)}-1200.webp"' if os.path.exists(os.path.join(ROOT, f'img/w/{mo.group(1)}-1200.webp')) else mo.group(0), m)
     m = re.sub(r'<section class="(?:cta|night)".*?</section>', '{{CTA}}', m, flags=re.S)
+    if page in PROOF_PAGES:
+        m = re.sub(r'(<section class="phero".*?</section>)', lambda mo: mo.group(1) + '\n{{PROOF}}', m, count=1, flags=re.S)
+    if page in INNER:
+        block = INNER[page]()
+        if page == 'gallery.html' and '<section class="band alt" id="reviews"' in m:
+            m = m.replace('<section class="band alt" id="reviews"', block + '\n<section class="band alt" id="reviews"', 1)
+        else:
+            m = m.replace('{{CTA}}', block + '\n{{CTA}}', 1)
+    if page == 'gallery.html':
+        m = m.replace('<div class="gallery" id="gallery">', '<div class="gallery" id="gallery">\n' + gallery_fb(), 1)
     return m
 
 
@@ -592,7 +654,7 @@ def build(path):
         main = re.sub(r'\{\{PAIR ([\w-]+)\}\}', lambda mo: pair(mo.group(1)), main)
         main = re.sub(r'\{\{SLIDE ([\w-]+)\}\}', lambda mo: compare(mo.group(1)), main)
         main = re.sub(r'\{\{POST ([\w-]+) "([^"]*)"\}\}', lambda mo: post_link(FB['shots'][mo.group(1)]['fbid'], mo.group(2)), main)
-        main = main.replace('{{PROOF}}', proof())
+        main = main.replace('{{BA}}', ba_section('band'))
     else:
         s = open(path).read()
         title = html.unescape(re.search(r'<title>(.*?)</title>', s, flags=re.S).group(1).strip())
@@ -601,6 +663,7 @@ def build(path):
         a = s.index('<main'); a = s.index('>', a) + 1
         main = clean(s[a:s.index('</main>')], page).strip('\n')
     main = main.replace('{{CTA}}', cta(est))
+    main = main.replace('{{PROOF}}', proof())
     js = ['track.js', 'site.js'] + EXTRA_JS.get(page, []) + ([] if page in NO_SEARCH or page in LANDING else ['search-index.js', 'search.js'])
     out = [head(page, title, desc, main), header(page, est), f'<main id="main" tabindex="-1">\n{main.strip()}\n</main>', footer(page, est)]
     if 'class="gitem' in main:

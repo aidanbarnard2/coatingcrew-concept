@@ -12,7 +12,11 @@ from playwright.async_api import async_playwright
 
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 LOGO = open(os.path.join(ROOT, 'tools', 'pages', '_logo.svg')).read()
-PICS = {'index.html': 'img/studio/garage-poster-1320.webp', 'colors.html': 'img/studio/garage-poster-1320.webp',
+# real floors from the crew's own Facebook page lead wherever the page is about finished work
+PICS = {'index.html': 'img/w/fb-hotrods-1200.webp', 'colors.html': 'img/studio/garage-poster-1320.webp',
+        'garage-floor-coating.html': 'img/w/fb-hotrods-1200.webp', 'basement-floor-coating.html': 'img/w/fb-basement-wsp-1200.webp',
+        'gallery.html': 'img/w/fb-garage-hastings-1200.webp', 'residential.html': 'img/w/fb-garage-cabinets-1200.webp',
+        'about-us.html': 'img/w/fb-jeep-1200.webp', 'reviews.html': 'img/w/fb-garage-edina-1200.webp',
         'finishes.html': 'img/systems/lineup-1600.webp', 'owner.html': 'img/studio/garage-poster-1320.webp',
         '404.html': 'img/studio/garage-bare-1320.webp', 'search.html': 'img/w/banner-chip-1200.webp'}
 
