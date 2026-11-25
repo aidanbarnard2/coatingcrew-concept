@@ -170,7 +170,7 @@
         if (es[0].intersectionRatio >= 0.35) { io.disconnect(); setTimeout(go, 150); }
       }, { threshold: [0, 0.35, 0.7] });
       io.observe(self.stage);
-    }, Math.max(250, 1900 - performance.now()));
+    }, Math.max(250, 1100 - performance.now()));
   };
 
   Viz.prototype.adoptRooms = function () {

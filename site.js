@@ -100,7 +100,7 @@
       until = performance.now() + ms;
       if (!running) { running = true; last = performance.now(); requestAnimationFrame(frame); }
     }
-    wave(2600);  // with the ease-out, the flags are still within about four seconds
+    wave(1700);  // with the ease-out, the flags are still within about three seconds
     logo.addEventListener('pointerenter', function () { wave(1800); });
     logo.addEventListener('click', function () { wave(2200); });
   })();
