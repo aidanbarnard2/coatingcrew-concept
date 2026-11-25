@@ -1441,3 +1441,36 @@ main>section.band:not(.alt) .cards3 .card{background:var(--concrete);box-shadow:
 .prow .media.gitem{display:block;width:100%;cursor:zoom-in}
 .prow .media.gitem span{left:0;bottom:14px;background:var(--orange);color:var(--ink);border-radius:0;text-transform:uppercase;font-stretch:76%;font-weight:850;font-size:15px;letter-spacing:.02em;padding:6px 22px 6px 12px;clip-path:polygon(0 0,100% 0,calc(100% - 10px) 50%,100% 100%,0 100%)}
 .prose .c-src{display:flex;flex-wrap:wrap;gap:2px 10px;align-items:baseline;padding-top:12px;border-top:3px solid var(--ink);font-size:16.5px;line-height:1.4;font-weight:620;color:var(--ink)}
+
+/* v21 preview bar. The note keeps its height on desktop and gains a button: "View as a customer" hides the bar, the
+   footer's concept note and every note written to the owner (.only-preview), and shows the few lines only a customer
+   would see (.only-customer). In that view the bar shrinks to one small button that brings the notes back. */
+.preview-note{display:flex;align-items:center;justify-content:center;gap:6px 14px;min-height:35px;padding:4px 16px}
+.preview-note p{margin:0}
+.preview-note p span{white-space:nowrap}
+.pv-btn,.pv-exit{flex:none;display:inline-flex;align-items:center;justify-content:center;min-height:27px;padding:0 12px;border:0;border-radius:4px;font:inherit;font-size:13.5px;font-weight:850;font-stretch:80%;letter-spacing:.03em;text-transform:uppercase;line-height:1.05;cursor:pointer}
+.pv-btn{background:var(--orange);color:var(--ink)}
+.pv-btn:hover{background:#FFFFFF}
+.pv-btn:focus-visible,.pv-exit:focus-visible{outline:3px solid #FFFFFF;outline-offset:2px}
+.pv-exit{display:none;min-width:40px;min-height:40px;padding:0;border-radius:20px;background:var(--ink);color:#FFFFFF;box-shadow:0 0 0 2px #FFFFFF,0 8px 22px rgba(0,0,0,.35)}
+.pv-exit svg{flex:none;width:20px;height:20px;margin:0 10px}
+.pv-exit span{max-width:0;overflow:hidden;white-space:nowrap;transition:max-width .28s ease,padding .28s ease}
+.preview-note.pv-open .pv-exit span,.pv-exit:focus-visible span{max-width:200px;padding-right:16px}
+@media (hover:hover){.pv-exit:hover span{max-width:200px;padding-right:16px}}
+@media (prefers-reduced-motion:reduce){.pv-exit span{transition:none}}
+.pv-exit:hover{background:var(--orange);color:var(--ink)}
+.pv-exit:focus-visible{outline-color:var(--orange);outline-offset:4px}
+@media (max-width:560px){
+  .preview-note{justify-content:space-between;text-align:left;font-size:14px;padding:6px 12px 6px 16px}
+  .preview-note p span{display:block}
+  .pv-btn{min-height:36px;font-size:13px}
+}
+@media (max-width:380px){.pv-btn{max-width:104px;white-space:normal;text-align:center;padding:0 10px}}
+.only-customer{display:none!important}
+html.as-customer .only-customer{display:revert!important}
+html.as-customer .only-preview,html.as-customer .preview-note p,html.as-customer .pv-btn{display:none!important}
+html.as-customer .preview-note{position:fixed;left:10px;bottom:12px;z-index:58;min-height:0;padding:0;background:none}
+html.as-customer .pv-exit{display:inline-flex}
+@media (max-width:900px){html.as-customer .preview-note{left:0;bottom:calc(88px + env(safe-area-inset-bottom,0px))}.pv-exit{min-width:36px;min-height:42px;border-radius:0 21px 21px 0}.pv-exit svg{margin:0 9px 0 7px}}
+@media (orientation:landscape) and (max-height:520px) and (min-width:560px) and (max-width:1000px){html.as-customer .preview-note{left:0;bottom:10px}}
+@media (max-width:1099px){.legal-text>.note.only-customer{order:99;margin-top:10px}}

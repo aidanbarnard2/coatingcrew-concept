@@ -130,7 +130,7 @@
         $('#doneText').textContent = 'Thanks, ' + lead.name.split(' ')[0] + '. The Coating Crew will call ' + lead.phone + ' to schedule your free estimate.';
         $('#doneOffer').hidden = !(data.space === 'Garage' && data.size === '2 stall');
         go(5, true);
-        toast('Request sent', 'It’s waiting in the owner’s lead inbox.');
+        if (!document.documentElement.classList.contains('as-customer')) toast('Request sent', 'It’s waiting in the owner’s lead inbox.');
       }, function () {
         next.disabled = false; next.textContent = 'Get My Free Estimate';
         fail(null, 'That didn’t send. Check your connection and press the button again, or call (651) 263-8557.');

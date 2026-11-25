@@ -290,6 +290,32 @@
     if (a && window.ccTrack) window.ccTrack(a.dataset.rating ? 'rating_click' : 'post_click', a.dataset.rating ? { site: a.dataset.rating } : {});
   });
 
+  /* preview bar: "View as a customer" hides the concept notes. The choice is kept for this tab, so it follows the
+     visitor from page to page; the class itself goes on in the page head, before the first paint. */
+  (function () {
+    var root = document.documentElement, KEY = 'ccView';
+    function stored() { try { return sessionStorage.getItem(KEY) === 'customer'; } catch (x) { return root.classList.contains('as-customer'); } }
+    function set(on) {
+      try { if (on) sessionStorage.setItem(KEY, 'customer'); else sessionStorage.removeItem(KEY); } catch (x) {}
+      root.classList.toggle('as-customer', on);
+      /* a ?view= in the address would undo the choice on reload */
+      try { var u = new URL(location.href); if (u.searchParams.has('view')) { u.searchParams.delete('view'); history.replaceState(history.state, '', u); } } catch (x) {}
+      /* pages the browser loaded ahead of time were drawn in the other view: have it load them again */
+      var sp = $('script[type="speculationrules"]');
+      if (sp) { var fresh = document.createElement('script'); fresh.type = 'speculationrules'; fresh.textContent = sp.textContent; sp.remove(); setTimeout(function () { document.head.appendChild(fresh); }, 0); }
+      /* the small corner button shows its label for a few seconds, then shrinks to its icon */
+      var bar = $('.preview-note'); clearTimeout(set.t);
+      if (bar) { bar.classList.toggle('pv-open', on); if (on) set.t = setTimeout(function () { bar.classList.remove('pv-open'); }, 5000); }
+      var to = $(on ? '.pv-exit' : '.pv-btn'); if (to) to.focus({ preventScroll: true });
+      var st = $('#viewStatus'); if (st) st.textContent = on ? 'Showing the site as a customer sees it. Concept notes are hidden.' : 'Concept notes are showing.';
+      window.dispatchEvent(new Event('resize'));
+    }
+    document.addEventListener('click', function (e) { var b = e.target.closest('[data-view]'); if (b) set(b.dataset.view === 'customer'); });
+    /* a page brought back by the Back button, or one loaded ahead of time, may be in the other view */
+    window.addEventListener('pageshow', function (e) { if (e.persisted) root.classList.toggle('as-customer', stored()); });
+    document.addEventListener('prerenderingchange', function () { root.classList.toggle('as-customer', stored()); });
+  })();
+
   /* contact form (concept: checks the fields, sends nothing) */
   var cf = $('#contactForm');
   if (cf) cf.addEventListener('submit', function (e) {

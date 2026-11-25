@@ -455,6 +455,21 @@ def cta(est):
 </section>'''
 
 
+# The bar across the top of every page says this is a concept. Its button shows the site the way a customer will see
+# it: the bar, the footer's concept note and every note written to the owner are hidden (class "only-preview"), and
+# the few lines only a customer would see are shown (class "only-customer"). A small button brings the notes back.
+PREVIEW = ('<aside class="preview-note" aria-label="About this preview"><p><span>Concept by Aidan Barnard.</span> <span>Not the live website.</span></p>'
+           '<button type="button" class="pv-btn" data-view="customer">View as a customer</button>'
+           '<button type="button" class="pv-exit" data-view="preview" aria-label="Show concept notes">'
+           '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">'
+           '<path d="M5 4h14v10l-5 6H5z"/><path d="M19 14h-5v6"/><path d="M8.5 9h7M8.5 13h3"/></svg><span>Show concept notes</span></button>'
+           '<span class="sr-only" id="viewStatus" role="status"></span></aside>')
+# runs before the first paint so a page opened in customer view never flashes the notes. ?view=customer on any
+# address opens the site that way; the choice then follows the visitor from page to page in that tab.
+VIEW_JS = ("(function(d){try{var q=/[?&]view=(customer|preview)(&|$)/.exec(location.search),s=sessionStorage;"
+           "if(q)s.setItem('ccView',q[1]);if(s.getItem('ccView')==='customer')d.classList.add('as-customer')}catch(e){}})(document.documentElement)")
+
+
 def header(page, est):
     cur = SECTION.get(page, page)
 
@@ -468,7 +483,7 @@ def header(page, est):
     links = '\n        '.join(item(h, l) for h, l in NAV)
     if page in LANDING:
         return f'''<a class="skip" href="#main">Skip to main content</a>
-<aside class="preview-note" aria-label="About this page">Concept by Aidan Barnard. Not the live website.</aside>
+{PREVIEW}
 <header class="site site-lp">
   <div class="wrap hdr">
     <a class="logo" href="./"><img src="img/logo-300.webp" srcset="img/logo-150.webp 150w, img/logo-300.webp 300w, img/logo-450.webp 450w" sizes="147px" alt="The Coating Crew home" width="147" height="52"></a>
@@ -479,7 +494,7 @@ def header(page, est):
   </div>
 </header>'''
     return f'''<a class="skip" href="#main">Skip to main content</a>
-<aside class="preview-note" aria-label="About this page">Concept by Aidan Barnard. Not the live website.</aside>
+{PREVIEW}
 <header class="site">
   <div class="wrap hdr">
     <a class="logo" href="./"><img src="img/logo-300.webp" srcset="img/logo-150.webp 150w, img/logo-300.webp 300w, img/logo-450.webp 450w" sizes="147px" alt="The Coating Crew home" width="147" height="52"></a>
@@ -547,7 +562,8 @@ def footer(page, est):
     </nav>
   </div>
   <div class="wrap"><div class="legal">
-    <p>Concept design © 2026, shared with The Coating Crew for review only. Facts, prices and claims come from your current website. Job photos come from your website and your Facebook page, and each rating links to the site it came from. The garage, basement and sunroom pictures and the sample blocks are 3D renders, not photos of your jobs. See the <a href="owner.html">owner’s lead inbox</a>.</p>
+    <p class="only-preview">Concept design © 2026, shared with The Coating Crew for review only. Facts, prices and claims come from your current website. Job photos come from your website and your Facebook page, and each rating links to the site it came from. The garage, basement and sunroom pictures and the sample blocks are 3D renders, not photos of your jobs. See the <a href="owner.html">owner’s lead inbox</a>.</p>
+    <p class="only-customer">© 2026 The Coating Crew</p>
     <p class="builtby">Built by <a href="https://saintpaulagency.com" target="_blank" rel="noopener">saintpaulagency.com</a> and <a href="https://www.aidanbarnard.com" target="_blank" rel="noopener">aidanbarnard.com</a></p>
   </div></div>
 </footer>
@@ -637,6 +653,7 @@ def head(page, title, desc, main):
 <link rel="icon" href="img/favicon-48.png" sizes="48x48" type="image/png">
 <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
 <link rel="preload" href="fonts/archivo-wdth.woff2" as="font" type="font/woff2" crossorigin>
+<script>{VIEW_JS}</script>
 <script>{POP_JS}</script>
 <link rel="stylesheet" href="site.min.css?v={ver('site.min.css')}">
 <script type="speculationrules">{SPEC}</script>
@@ -681,8 +698,8 @@ def clean(m, page):
                lambda mo: f'<div class="media{mo.group(1) or ""}">{pic(mo.group(3), mo.group(2))}</div>', m)
     m = re.sub(r'<div class="cimg" style="background-image:url\(([^)]+)\)"></div>',
                lambda mo: f'<div class="cimg">{pic(mo.group(1), "", "(min-width:960px) 600px, 100vw")}</div>', m)
-    if page == 'contact-us.html' and '<legend style' in m:
-        m = re.sub(r'<form class="est" id="contactForm" novalidate>.*?</form>', CONTACT_FORM, m, flags=re.S)
+    if page == 'contact-us.html':
+        m = re.sub(r'<form class="est" id="contactForm" novalidate[^>]*>.*?</form>', lambda _: CONTACT_FORM, m, flags=re.S)
     if page == 'commercial.html' and 'industrial.html' not in m:
         m = m.replace('</div></div></section><section class="band alt">',
                       '</div><p class="lede">Running a warehouse, machine shop or food plant? <a class="tlink" href="industrial.html">See industrial floors</a></p></div></section><section class="band alt">', 1)
@@ -765,7 +782,7 @@ CONTACT_FORM = '''<form class="est" id="contactForm" novalidate aria-labelledby=
   </div>
   <p class="err" id="cErr" role="alert" hidden></p>
   <button type="submit" class="btn btn-primary" style="align-self:flex-start">Send Message</button>
-  <p id="cDone" class="ok" tabindex="-1" hidden>Thanks! The Coating Crew will be in touch soon. (Concept demo: nothing was sent.)</p>
+  <p id="cDone" class="ok" tabindex="-1" hidden>Thanks! The Coating Crew will be in touch soon. <span class="only-preview">(Concept demo: nothing was sent.)</span></p>
 </form>'''
 
 

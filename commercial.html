@@ -22,14 +22,15 @@
 <link rel="icon" href="img/favicon-48.png" sizes="48x48" type="image/png">
 <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
 <link rel="preload" href="fonts/archivo-wdth.woff2" as="font" type="font/woff2" crossorigin>
+<script>(function(d){try{var q=/[?&]view=(customer|preview)(&|$)/.exec(location.search),s=sessionStorage;if(q)s.setItem('ccView',q[1]);if(s.getItem('ccView')==='customer')d.classList.add('as-customer')}catch(e){}})(document.documentElement)</script>
 <script>(function(d){try{if('IntersectionObserver' in window&&!matchMedia('(prefers-reduced-motion: reduce)').matches){d.classList.add('pop-on');setTimeout(function(){if(!window.ccPop)d.classList.remove('pop-on')},4000)}}catch(e){}})(document.documentElement)</script>
-<link rel="stylesheet" href="site.min.css?v=dd0fec01">
+<link rel="stylesheet" href="site.min.css?v=c8b2f5ba">
 <script type="speculationrules">{"prerender":[{"where":{"and":[{"selector_matches":"a[href$='.html']"},{"not":{"selector_matches":"a[href^='colors.html'], a[href='index.html'], a[target], a[href='owner.html']"}}]},"eagerness":"moderate"}],"prefetch":[{"where":{"selector_matches":"a[href='./'], a[href^='./#'], a[href^='colors.html']"},"eagerness":"moderate"}]}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://aidanbarnard2.github.io/coatingcrew-concept/"},{"@type":"ListItem","position":2,"name":"Commercial","item":"https://aidanbarnard2.github.io/coatingcrew-concept/commercial.html"}]}]}</script>
 </head>
 <body>
 <a class="skip" href="#main">Skip to main content</a>
-<aside class="preview-note" aria-label="About this page">Concept by Aidan Barnard. Not the live website.</aside>
+<aside class="preview-note" aria-label="About this preview"><p><span>Concept by Aidan Barnard.</span> <span>Not the live website.</span></p><button type="button" class="pv-btn" data-view="customer">View as a customer</button><button type="button" class="pv-exit" data-view="preview" aria-label="Show concept notes"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h14v10l-5 6H5z"/><path d="M19 14h-5v6"/><path d="M8.5 9h7M8.5 13h3"/></svg><span>Show concept notes</span></button><span class="sr-only" id="viewStatus" role="status"></span></aside>
 <header class="site">
   <div class="wrap hdr">
     <a class="logo" href="./"><img src="img/logo-300.webp" srcset="img/logo-150.webp 150w, img/logo-300.webp 300w, img/logo-450.webp 450w" sizes="147px" alt="The Coating Crew home" width="147" height="52"></a>
@@ -156,7 +157,8 @@
     </nav>
   </div>
   <div class="wrap"><div class="legal">
-    <p>Concept design © 2026, shared with The Coating Crew for review only. Facts, prices and claims come from your current website. Job photos come from your website and your Facebook page, and each rating links to the site it came from. The garage, basement and sunroom pictures and the sample blocks are 3D renders, not photos of your jobs. See the <a href="owner.html">owner’s lead inbox</a>.</p>
+    <p class="only-preview">Concept design © 2026, shared with The Coating Crew for review only. Facts, prices and claims come from your current website. Job photos come from your website and your Facebook page, and each rating links to the site it came from. The garage, basement and sunroom pictures and the sample blocks are 3D renders, not photos of your jobs. See the <a href="owner.html">owner’s lead inbox</a>.</p>
+    <p class="only-customer">© 2026 The Coating Crew</p>
     <p class="builtby">Built by <a href="https://saintpaulagency.com" target="_blank" rel="noopener">saintpaulagency.com</a> and <a href="https://www.aidanbarnard.com" target="_blank" rel="noopener">aidanbarnard.com</a></p>
   </div></div>
 </footer>
@@ -171,8 +173,8 @@
 </div>
 <div class="toast" id="toast" role="status" aria-live="polite"><b id="toastTitle"></b><span id="toastBody"></span></div>
 <script src="track.js?v=0b0faffe" defer></script>
-<script src="site.js?v=7bc41dec" defer></script>
-<script src="search-index.js?v=dc081433" defer></script>
+<script src="site.js?v=0877a2de" defer></script>
+<script src="search-index.js?v=dde71336" defer></script>
 <script src="search.js?v=7c520d48" defer></script>
 </body>
 </html>

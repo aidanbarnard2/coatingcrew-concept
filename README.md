@@ -27,6 +27,14 @@ A concept preview built by Saint Paul Agency (saintpaulagency.com) and Aidan Bar
 - `garage-floor-coating.html` and `basement-floor-coating.html` are ad landing pages: no site menu, the form beside the headline.
 - Before launch, the client should confirm the Facebook photos may be used on the site (one shows crew members, one post names four of them), supply the original files in place of the captured copies, and confirm the crew named in the Hastings post.
 
+## Preview bar and customer view
+
+- Every page opens with a bar that says "Concept by Aidan Barnard. Not the live website." Its button, "View as a customer", shows the site the way a customer will see it: the bar goes, the footer's concept note becomes a plain copyright line, and every note written to the owner is hidden (gallery, reviews, privacy policy, the demo lines after a form is sent).
+- In customer view a small round button in the lower left corner brings the notes back. It shows its label, "Show concept notes", for a few seconds after the switch, and on hover or keyboard focus.
+- The choice lasts for the browser tab and follows the visitor from page to page. A new visit always starts as the labelled concept.
+- Add `?view=customer` to any page's address to open it in customer view, for example when sending a link.
+- In the page sources, `only-preview` marks what only the owner should read and `only-customer` marks what only a customer should. The class that switches them goes on in the page head before the first paint (`VIEW_JS` in `tools/build_pages.py`); the buttons are handled in `site.js`.
+
 ## Rebuilding
 
 - `python3 tools/build_pages.py` rewraps every page in the shared head, header and footer. It also writes `site.min.css` from `site.css` (comments and spare spacing removed, nothing else); pages load the small file, so edit `site.css` and rebuild. The home, colors, finishes and owner pages are built from `tools/pages/`. Pages stay out of search engines; build with `CC_INDEX=1` when this becomes the live site (that also opens `robots.txt` and points it at `sitemap.xml`).
