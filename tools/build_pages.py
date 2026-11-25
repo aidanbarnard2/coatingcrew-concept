@@ -194,10 +194,20 @@ PROOF_PAGES = {'residential.html', 'commercial.html', 'industrial.html', 'galler
 INNER = {
     'residential.html': lambda: ba_section('band'),
     'gallery.html': lambda: ba_section('band'),
-    'commercial.html': lambda: jobs_section(('commercial-eagan', 'crew-arena', 'shop-igh'), 'band'),
-    'industrial.html': lambda: jobs_section(('crew-arena', 'grinder', 'barn-henderson'), 'band'),
-    'about-us.html': lambda: jobs_section(('crew-arena', 'jeep', 'garage-hastings'), 'band alt'),
+    'commercial.html': lambda: jobs_section(('crew-arena', 'shop-igh', 'barn-henderson'), 'band'),
+    'industrial.html': lambda: jobs_section(('crew-arena', 'grinder', 'shop-igh'), 'band'),
+    'about-us.html': lambda: jobs_section(('jeep', 'garage-hastings', 'garage-cabinets'), 'band alt'),
 }
+# the photo beside each inner page's headline is a real job, with its city and a link to the post
+HERO_PICS = {'residential.html': 'garage-cabinets', 'commercial.html': 'commercial-eagan', 'industrial.html': 'barn-henderson',
+             'about-us.html': 'crew-arena', 'reviews.html': 'garage-edina'}
+
+
+def hero_fig(slug_):
+    j = FB['shots'][slug_]
+    cap = f'<b>{esc(j["city"])}</b> {esc(j["kind"])}' if j['city'] else f'<b>{esc(j["kind"])}</b>'
+    return (f'<figure class="pfig"><div class="pimg">{pic(f"img/photos/fb-{slug_}.jpg", j["alt"], "(min-width:900px) 560px, calc(100vw - 32px)", True)}</div>'
+            f'<figcaption><span class="j-what">{cap}</span>{post_link(j["fbid"], "this job")}</figcaption></figure>')
 
 
 # Outside ratings, worded and numbered as each site showed them on RATED. Each one links to its source.
@@ -594,6 +604,9 @@ def clean(m, page):
     m = re.sub(r'<section class="(?:cta|night)".*?</section>', '{{CTA}}', m, flags=re.S)
     # the photo beside the headline is the largest thing on screen: load it first, not lazily
     m = re.sub(r'(<div class="pimg">\s*<img [^>]*?) loading="lazy"', r'\1 fetchpriority="high"', m)
+    if page in HERO_PICS:
+        fig = hero_fig(HERO_PICS[page])
+        m = re.sub(r'<figure class="pfig">.*?</figure>|<div class="pimg">.*?</div>', lambda mo: fig, m, count=1, flags=re.S)
     if page in PROOF_PAGES:
         m = re.sub(r'(<section class="phero".*?</section>)', lambda mo: mo.group(1) + '\n{{PROOF}}', m, count=1, flags=re.S)
     if page in INNER:

@@ -1044,3 +1044,29 @@ header.site::before{content:"";position:absolute;left:0;right:0;top:100%;height:
 /* install steps: larger photos */
 .step .ph{width:min(100%,380px);margin-top:16px}
 @media (max-width:640px){.step .ph{width:100%}}
+
+/* ---------- v12: inner pages on the home page's terms ---------- */
+.phero h1{font-stretch:62%;font-weight:850;text-transform:uppercase;letter-spacing:0;line-height:.92;font-size:clamp(44px,5.4vw,84px)}
+.pfig{margin:0;display:flex;flex-direction:column;gap:12px;min-width:0}
+.pfig .pimg{position:relative}
+.pfig .pimg::before{content:"";position:absolute;left:0;right:0;top:0;height:10px;z-index:1;background:conic-gradient(var(--ink) 25%,#FFFFFF 0 50%,var(--ink) 0 75%,#FFFFFF 0) 0 0/10px 10px}
+.pfig figcaption{display:flex;justify-content:space-between;align-items:baseline;gap:4px 18px;flex-wrap:wrap;font-size:16.5px;line-height:1.35;color:#FFFFFF}
+.phero .post-link{color:var(--peach)}
+.phero .lineup,.phero .pfig{animation:ccRise .75s cubic-bezier(.22,1,.36,1) .08s backwards}
+main>section.band .stack.center{align-items:flex-start;text-align:left}
+main>section.band .stack.center .lede{margin-inline:0}
+/* photo cards: three across, photo first, no rule above */
+.cards2{grid-template-columns:repeat(3,minmax(0,1fr));gap:44px 28px}
+@media (max-width:1100px){.cards2{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:700px){.cards2{grid-template-columns:minmax(0,1fr)}}
+.card:has(.cimg){border-top:0;padding-top:0}
+.card:has(.cimg) .cimg{margin:0 0 6px;aspect-ratio:4/3}
+.card:has(.cimg) h3{font-size:25px}
+/* reason cards: the same checkered edge as the price ticket */
+.cards3 .card{position:relative;border-top:0;padding:36px 26px 28px;border-radius:var(--r);background:#FFFFFF;box-shadow:0 16px 30px -24px rgba(20,23,28,.55)}
+.cards3 .card::before{content:"";position:absolute;left:0;right:0;top:0;height:10px;border-radius:var(--r) var(--r) 0 0;background:conic-gradient(var(--ink) 25%,#FFFFFF 0 50%,var(--ink) 0 75%,#FFFFFF 0) 0 0/10px 10px}
+main>section.band:not(.alt) .cards3 .card{background:var(--concrete);box-shadow:none}
+.cards3 .card p{color:var(--ink)}
+/* reviews read like the quotes on the home page */
+.review blockquote{font-size:21px;line-height:1.36;font-weight:660;font-stretch:90%}
+@media (max-width:960px){.rgrid{grid-template-columns:minmax(0,1fr)}}
