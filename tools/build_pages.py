@@ -157,7 +157,7 @@ RATED = 'November 24, 2026'
 RATINGS = [
     ('4.9', 'Google', '251 reviews', 'https://www.google.com/maps?cid=15792623999213110421', True),
     ('A+', 'BBB rating', 'Accredited since 2014', 'https://www.bbb.org/us/mn/inver-grove-heights/profile/epoxy-floor-coating/the-coating-crew-0704-96506371', False),
-    ('4.9', 'Angi', '34 reviews', 'https://www.angi.com/companylist/us/mn/hastings/the-coating-crew-reviews-1.htm', True),
+    ('4.9', 'Angi', '35 reviews', 'https://www.angi.com/companylist/us/mn/hastings/the-coating-crew-reviews-1.htm', True),
     ('4.9', 'HomeAdvisor', '37 reviews', 'https://www.homeadvisor.com/rated.TheCoatingCrew.52880804.html', True),
 ]
 STAR = '<svg viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><path d="M12 2l2.9 6.2 6.6.7-5 4.5 1.4 6.6L12 16.8 6.1 20l1.4-6.6-5-4.5 6.6-.7z"/></svg>'
