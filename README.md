@@ -32,4 +32,11 @@ A concept preview built by Saint Paul Agency (saintpaulagency.com) and Aidan Bar
 
 Entrances: blocks arrive once as they are first seen (`site.js` and the v9 section of `site.css`); visitors who ask for reduced motion get none. Sideways scrollers cannot scroll vertically, so they never catch the page scroll. The home page, estimate flow, photo viewer and before/after slider are also run in Firefox and WebKit (Safari's engine) with Playwright.
 
-All text uses solid colors that pass WCAG 2.2 AA contrast. Every page is checked with axe-core at desktop and phone sizes, and the menu, estimate form, photo viewer and visualizer all work from the keyboard. The crew's own job photos get a light correction pass (local contrast, a touch of color, sharpening). Photos are served as WebP in two sizes, and the page's structured data (business, FAQ and breadcrumbs) is in JSON-LD.
+All text uses solid colors that pass WCAG 2.2 AA contrast. Every page is checked with axe-core at desktop and phone sizes, and the menu, estimate form, photo viewer and visualizer all work from the keyboard. Photos taken from their current website got a light correction pass (local contrast, a touch of color, sharpening); the Facebook job photos are shown as posted. Photos are served as WebP in two sizes, and the page's structured data (business, FAQ and breadcrumbs) is in JSON-LD.
+
+## Layout across screen sizes
+
+- Checked from 320 to 2560 wide. The page widens at 1700 and 2300; small laptops and tablets get tighter versions of the hero buttons and the four-system table, so nothing is cut off or swipes sideways. Phones see one system at a time.
+- Home page header: while the large logo leads in the hero, the header's logo slot shows the Google rating (from `RATINGS`), and the header logo takes over once the hero logo scrolls away. Tablets also show the phone number in words, and the two ad landing pages show the ratings beside the logo.
+- Inner page tops carry the home page's orange: a slab leans in from the right edge and the page's photo sits across its slanted edge (along the bottom on phones and tablets). No words or buttons sit on the orange at any width.
+- The floating sample tag can be closed; picking another sample brings it back.

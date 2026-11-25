@@ -195,7 +195,7 @@
     if (reviews.length) { html += section('Reviews', reviews.length, '<div class="srch-list">' + reviews.slice(0, inline ? 6 : 3).map(function (r) { return resultRow(r, res.marks); }).join('') + '</div>'); n += reviews.length; }
     if (!n && !res.answer) {
       html += '<p class="srch-msg">No matches for <b>“' + escHtml(q) + '”</b>. Try a shorter word, or one of these:</p>' + chips(POPULAR.slice(0, 6)) +
-        '<div class="ans"><p class="big">Ask us directly</p><p>Call ' + PHONE + ' Monday – Friday, 7am – 6pm, or get a free estimate online.</p><div class="acts"><a class="btn btn-orange" data-r href="./#estimate">Get my free estimate</a><a class="btn btn-ink" data-r href="' + TEL + '"><span class="gt">Call ' + PHONE + '</span></a></div></div>';
+        '<div class="ans"><p class="big">Ask us directly</p><p>Call ' + PHONE + ' Monday – Friday, 7am – 6pm, or get a free estimate online.</p><div class="acts"><a class="btn btn-orange" data-r href="./#estimate">Get my free estimate</a><a class="btn btn-light" data-r href="' + TEL + '"><span class="gt">Call ' + PHONE + '</span></a></div></div>';
     } else if (!inline) {
       html += '<a class="sr" data-r data-all href="search.html?q=' + encodeURIComponent(q) + '"><span class="th ic" aria-hidden="true">→</span><span class="tx"><b>See every result for “' + escHtml(q) + '”</b><p>Open the full search page.</p></span></a>';
     }
@@ -205,7 +205,7 @@
   /* ---------- UI ---------- */
   var ICON = '<svg viewBox="0 0 24 24" stroke-linecap="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5 21 21"/></svg>';
   function panelHtml(id, inline) {
-    return '<div class="srch-panel"><div class="srch-top">' + ICON + '<input id="' + id + '" type="search" placeholder="Search floors, colors, prices, answers…" autocomplete="off" spellcheck="false" enterkeyhint="search" aria-label="Search The Coating Crew" aria-controls="' + id + '-res">' +
+    return '<div class="srch-panel"><div class="srch-top">' + ICON + '<input id="' + id + '" type="search" placeholder="' + (window.innerWidth < 560 ? 'Search the site' : 'Search floors, colors, prices, answers…') + '" autocomplete="off" spellcheck="false" enterkeyhint="search" aria-label="Search The Coating Crew" aria-controls="' + id + '-res">' +
       (inline ? '' : '<button type="button" class="srch-x" data-close>Close</button>') + '</div>' +
       '<div class="srch-body" id="' + id + '-res"></div><p id="' + id + '-st" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)" aria-live="polite"></p>' +
       (inline ? '' : '<div class="srch-foot"><span><kbd>↑</kbd> <kbd>↓</kbd> move</span><span><kbd>Enter</kbd> open</span><span><kbd>Esc</kbd> close</span><span>Press <kbd>/</kbd> on any page to search</span></div>') + '</div>';

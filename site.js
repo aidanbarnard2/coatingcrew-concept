@@ -108,11 +108,13 @@
   /* once a visitor has picked a sample, it follows them down the page until the estimate form is in view */
   var follow = $('#follow'), studio = $('.studio');
   if (follow && studio && 'IntersectionObserver' in window) {
-    var past = false, atEst = false, picked = false, est = $('#estimate');
-    try { picked = !!(JSON.parse(sessionStorage.getItem('ccPicks') || 'null') || {}).touched; } catch (e) {}
-    document.addEventListener('viz:change', function (e) { if (e.detail && e.detail.touched) { picked = true; place(); } });
+    var past = false, atEst = false, picked = false, off = false, lastBlend = null, est = $('#estimate'), fx = $('#followX');
+    try { var saved = JSON.parse(sessionStorage.getItem('ccPicks') || 'null') || {}; picked = !!saved.touched; lastBlend = saved.blend || null; off = sessionStorage.getItem('ccFollowOff') === '1'; } catch (e) {}
+    /* the tag floats over the page, so it can be put away; picking another sample brings it back */
+    if (fx) fx.addEventListener('click', function () { off = true; try { sessionStorage.setItem('ccFollowOff', '1'); } catch (e) {} place(); });
+    document.addEventListener('viz:change', function (e) { if (e.detail && e.detail.touched) { picked = true; if (e.detail.blend && e.detail.blend !== lastBlend) { if (off) { off = false; try { sessionStorage.removeItem('ccFollowOff'); } catch (x) {} } lastBlend = e.detail.blend; } place(); } });
     var place = function () {
-      var on = past && !atEst && picked;   /* only once the visitor has picked a sample: before that it is just in the way */
+      var on = past && !atEst && picked && !off;   /* only once the visitor has picked a sample: before that it is just in the way */
       if (on) { follow.hidden = false; requestAnimationFrame(function () { follow.classList.add('show'); }); }
       else { follow.classList.remove('show'); setTimeout(function () { if (!follow.classList.contains('show')) follow.hidden = true; }, 350); }
     };

@@ -1213,11 +1213,11 @@ main>section.band:not(.alt) .cards3 .card{background:var(--concrete);box-shadow:
 /* customer words in the photo reel: larger type, so the card is filled rather than half empty */
 @media (min-width:900px){.reel .quote blockquote{font-size:clamp(30px,2.5vw,38px);line-height:1.14}}
 
-/* reviews page: cards take the height of their own words and pack into columns */
-@media (min-width:961px){
-  .rgrid:has(.review:nth-child(4)){display:block;columns:3;column-gap:20px}
-  .rgrid:has(.review:nth-child(4)) .review{break-inside:avoid;margin:0 0 20px}
-}
+/* reviews page: cards take the height of their own words, in three columns written into the page
+   (browser-balanced columns left the third one empty in Safari) */
+.rcols{grid-template-columns:minmax(0,1fr)}
+.rcol{display:flex;flex-direction:column;gap:20px;min-width:0}
+@media (min-width:961px){.rcols{grid-template-columns:repeat(3,minmax(0,1fr));align-items:start}}
 
 /* contact page: the details card is as tall as the form, with the number set large */
 .contact-grid{align-items:stretch}
@@ -1310,3 +1310,67 @@ main>section.band:not(.alt) .cards3 .card{background:var(--concrete);box-shadow:
 @media (min-width:760px){.hdr-proofs.flow{display:flex}}
 @media (min-width:1000px){.hdr-proofs.flow .hp-wide{display:flex;padding-left:30px;border-left:1px solid var(--rule)}}
 @media (min-width:360px) and (max-width:1200px){.site-lp .phone span{display:inline}.site-lp .phone{padding:0 14px}}
+
+/* v17: inner page tops. The home page's orange and its angled cut, carried onto every inner page:
+   an orange slab leans in from the right edge and the page's photo sits across its slanted edge.
+   On phones and tablets the slab runs along the bottom, behind the lower half of the photo. */
+.phero{position:relative;isolation:isolate;overflow:hidden}
+.phero::before{content:"";position:absolute;z-index:-1;top:0;bottom:0;right:0;width:46%;background:var(--orange);clip-path:polygon(24% 0,100% 0,100% 100%,0 100%)}
+.phero .pfig,.phero>.wrap>.pimg,.phero .lineup{box-shadow:12px 12px 0 var(--ink)}
+/* the caption becomes a dark plate fixed to the photo, so its words never sit on orange */
+.phero .pfig{gap:0;border-radius:var(--r);overflow:hidden;background:var(--ink)}
+.phero .pfig .pimg{border-radius:0}
+.phero .pfig figcaption{padding:11px 16px 12px;background:var(--ink)}
+@media (min-width:901px){.phero>.wrap{padding-block:64px 78px}}
+@media (max-width:900px){
+  .phero::before{top:auto;left:0;width:auto;height:clamp(150px,36vw,300px);clip-path:polygon(0 30px,100% 0,100% 100%,0 100%)}
+  .phero>.wrap{padding-bottom:52px}
+  .phero .pfig,.phero>.wrap>.pimg,.phero .lineup{box-shadow:8px 8px 0 var(--ink);margin-right:8px}
+}
+/* the finishes page shows its sample lineup full width, so the slab runs along the bottom at every size */
+.phero.stacked::before{top:auto;left:0;width:auto;height:clamp(150px,22vw,330px);clip-path:polygon(0 34px,100% 0,100% 100%,0 100%)}
+/* tablets: the stacked photo is a wide banner, not a full-screen-tall block */
+@media (min-width:601px) and (max-width:900px){.phero .pimg{aspect-ratio:16/9}}
+
+/* v18: states the size audit had skipped (menus, search, form, 404, footer, owner and policy pages) */
+/* phone and tablet menu: the two buttons repeat the bar fixed to the bottom of the screen, so they
+   only show where that bar does not (901px and wider); there they match every other button */
+.mobile-menu .btn-row .btn{text-transform:uppercase;font-stretch:76%;font-size:20px}
+@media (max-width:900px){.mobile-menu .btn-row{display:none}.mobile-menu ul{padding-bottom:10px}}
+/* search page: the search box comes first, not a photo */
+.phero:has(+ .srch-page)::before{display:none}
+.phero:has(+ .srch-page)>.wrap{grid-template-columns:minmax(0,1fr);padding-block:44px 6px}
+.phero:has(+ .srch-page) :is(.pimg,.btn-row){display:none}
+.phero:has(+ .srch-page)+.srch-page{padding-top:26px}
+/* the bar fixed to the bottom of phones and tablets no longer leaves a white strip under the footer */
+@media (max-width:900px){body{padding-bottom:0}footer{padding-bottom:calc(84px + env(safe-area-inset-bottom,0px))}.legal{padding-bottom:22px}}
+/* policy page on wide screens: the concept note sits beside the text instead of leaving that side empty */
+.legal-text>.note{padding:16px 18px;border-left:6px solid var(--orange);background:var(--concrete);color:var(--ink);border-radius:0 var(--r) var(--r) 0}
+@media (min-width:1100px){
+  .legal-text:has(h2~h2){display:grid;grid-template-columns:minmax(0,820px) minmax(240px,1fr);column-gap:64px;row-gap:14px}
+  .legal-text:has(h2~h2)>*{grid-column:1}
+  .legal-text:has(h2~h2)>.note{grid-column:2;grid-row:1/span 14;align-self:start;position:sticky;top:132px;font-size:18px}
+}
+
+/* tablets and small laptops (701 to 1099 wide): the four-system table fits the screen, so nothing swipes sideways */
+@media (min-width:701px) and (max-width:1099px){
+  .swipe-hint{display:none}
+  .compare{min-width:0}
+  .compare col.rowh{width:12.5%}
+  .compare th,.compare td{padding:16px 9px}
+  .compare tbody th{font-size:16px;padding-left:0;overflow-wrap:anywhere}
+  .compare td{font-size:16px;line-height:1.5}
+  .compare .sys-name{font-size:24px}
+  .compare .sys-tag{font-size:15px}
+  .compare ul li{padding-left:18px}
+  .compare .layers li{padding-left:0;grid-template-columns:26px minmax(0,1fr);column-gap:9px}
+  .layers b{font-size:15.5px;overflow-wrap:anywhere}
+  .layers span{font-size:14.5px;padding-right:6px;overflow-wrap:anywhere}
+}
+
+/* the floating sample tag can be put away, so it never sits on top of something a visitor wants */
+.follow{padding-right:8px;gap:12px}
+.follow .f-txt span{font-size:14.5px}
+.follow .f-x{flex:none;display:grid;place-items:center;width:44px;height:44px;margin-left:-4px;border:0;border-radius:50%;background:transparent;color:#FFFFFF;cursor:pointer}
+.follow .f-x svg{width:20px;height:20px}
+.follow .f-x:hover{background:var(--garage-3)}
