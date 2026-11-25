@@ -1111,3 +1111,70 @@ main>section.band:not(.alt) .cards3 .card{background:var(--concrete);box-shadow:
 
 /* install steps: race numbers */
 .step .num{width:60px;height:60px;border-width:4px;font-size:30px;font-stretch:70%;font-weight:900}
+
+/* ---------- v14: every screen size. Measured at fifteen sizes from 320 to 2560 wide. ---------- */
+/* Desktop opening: the sample board sits beside the room instead of leaving that column half empty,
+   so the color is chosen right next to the floor it changes. */
+@media (min-width:1001px){
+  .studio-app:not(.no-more){grid-template-areas:"head head" "viz more" "viz rail" "cap cap";grid-template-rows:auto auto 1fr auto;row-gap:26px}
+  .studio-app:not(.no-more) .s-rail{display:flex;flex-direction:column;gap:12px;align-self:start}
+  .studio-app:not(.no-more) .rail-head{padding-top:18px;border-top:1px solid var(--garage-3)}
+  .studio-app:not(.no-more) .rail-btns{display:none}
+  .studio-app:not(.no-more) .rail{flex-direction:column;gap:14px;overflow:visible;scroll-snap-type:none;padding:4px 2px 2px;margin-top:0}
+  .studio-app:not(.no-more) .rail-group{gap:8px}
+  .studio-app:not(.no-more) .viz-tiles{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:8px}
+  .studio-app:not(.no-more) .sample{width:auto;padding:4px;gap:0}
+  .studio-app:not(.no-more) .sample .lab{position:absolute;width:1px;height:1px;min-height:0;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}
+  .studio-app:not(.no-more) .sample:hover{transform:translateY(-2px)}
+  .studio-app:not(.no-more) .sample[aria-pressed="true"]{transform:none;outline-offset:2px}
+  .studio-app:not(.no-more) .sample::after{content:attr(data-blend);position:absolute;left:50%;bottom:calc(100% + 9px);transform:translateX(-50%);white-space:nowrap;background:#FFFFFF;color:var(--ink);font-weight:800;font-size:14.5px;line-height:1;padding:6px 9px;border-radius:4px;box-shadow:0 8px 16px rgba(0,0,0,.45);opacity:0;pointer-events:none;z-index:4}
+  .studio-app:not(.no-more) .sample:hover::after,.studio-app:not(.no-more) .sample:focus-visible::after{opacity:1}
+}
+@media (min-width:1001px) and (max-width:1180px){.studio-app:not(.no-more) .viz-tiles{grid-template-columns:repeat(7,minmax(0,1fr))}}
+
+/* short laptop screens: tighten the top so the whole room shows before scrolling */
+@media (min-width:1001px) and (max-height:820px){
+  .studio{padding-top:22px}
+  .studio-app{row-gap:18px}
+  .studio .display{font-size:clamp(38px,4.4vw,62px)}
+  .s-head.lockup{grid-template-columns:clamp(170px,19vw,270px) minmax(0,1fr);gap:12px 32px}
+  .studio h1:not(.display){font-size:clamp(38px,4vw,56px)}
+  .studio .crumbs{display:none}
+  .studio .studio-sub{font-size:18.5px}
+}
+/* colors page on a phone: the buttons already ride in the bottom bar, so the room moves up into the first screen */
+@media (max-width:640px){.no-more .s-head .btn-row{display:none}}
+
+/* inner page tops: headline sized to its column, photo as tall as the text beside it */
+.phero h1{font-size:clamp(38px,4.5vw,70px)}
+@media (min-width:901px){
+  .phero>.wrap{align-items:stretch}
+  .phero .ptext{align-self:center}
+  .pfig{height:100%}
+  .pfig .pimg{flex:1;aspect-ratio:auto;min-height:300px}
+}
+
+/* large monitors: the page widens instead of leaving half the screen empty */
+@media (min-width:1700px){:root{--wrap:1440px}}
+@media (min-width:2300px){:root{--wrap:1660px}.lede{font-size:23px}.studio-sub{font-size:23px}}
+
+/* nothing under 14.5px, and text links get a finger-sized target on touch screens */
+.viz-tag-light,.tod-ticks,.tod-ticks *{font-size:14.5px}
+.pair .gitem span,.fbpost .gitem span{font-size:15px}
+@media (pointer:coarse){.tlink{display:inline-block;padding-block:10px}}
+/* balance the two columns of the desktop opening: buttons on one line, and the note about the renders
+   sits under the room so the sample board can run the full height beside it */
+@media (min-width:1001px){
+  .studio-app:not(.no-more){grid-template-areas:"head head" "viz more" "viz rail" "cap rail"}
+  .studio-app:not(.no-more) .s-more .btn-row{flex-wrap:nowrap;gap:10px}
+  .studio-app:not(.no-more) .s-more .btn{padding-inline:18px;font-size:18.5px;white-space:nowrap}
+  .studio-app:not(.no-more)>.viz-cap{align-self:start;max-width:none}
+}
+/* the colors page headline speaks in the same voice as every other page */
+.studio h1:not(.display){font-stretch:62%;font-weight:850;text-transform:uppercase;letter-spacing:0;line-height:.92}
+
+@media (max-width:560px){.viz-tag span{font-size:14.5px}}
+/* landing page questions: one column on small screens, two on wide ones, so wide screens are not half empty */
+.lp-faq .faq{max-width:900px}
+@media (min-width:1200px){.lp-faq .faq{max-width:none;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:0 56px;align-items:start}}
+@media (min-width:1001px) and (max-height:820px){.studio:has(.no-more){padding-top:14px}.no-more .s-head{gap:10px}}
