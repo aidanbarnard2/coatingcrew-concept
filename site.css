@@ -1070,3 +1070,44 @@ main>section.band:not(.alt) .cards3 .card{background:var(--concrete);box-shadow:
 /* reviews read like the quotes on the home page */
 .review blockquote{font-size:21px;line-height:1.36;font-weight:660;font-stretch:90%}
 @media (max-width:960px){.rgrid{grid-template-columns:minmax(0,1fr)}}
+
+/* ---------- v13: louder. Their brand is checkered flags, an orange ribbon and hot rods, so the page
+   borrows from a race poster: big condensed capitals, a start line and a finish line, orange as a
+   field, angled cuts and ribbon labels. ---------- */
+.h2{font-stretch:62%;font-weight:850;text-transform:uppercase;letter-spacing:0;line-height:.92;font-size:clamp(46px,6.4vw,100px)}
+.prose h2{font-stretch:66%;font-weight:850;text-transform:uppercase;letter-spacing:0;line-height:.95;font-size:clamp(36px,4.2vw,60px)}
+.sec-head>div:first-child{max-width:980px}
+.btn{text-transform:uppercase;font-stretch:76%;font-weight:850;letter-spacing:.015em;font-size:20px}
+.hdr .btn{font-size:18.5px}
+
+/* start line under the opening, finish line into the estimate form */
+.proofbar{position:relative;padding-top:36px}
+.proofbar::before,.est-sec::before{content:"";position:absolute;left:0;right:0;top:0;height:36px;background:conic-gradient(var(--ink) 25%,#FFFFFF 0 50%,var(--ink) 0 75%,#FFFFFF 0) 0 0/24px 24px}
+.est-sec{position:relative;padding-top:36px}
+
+/* the offer: orange as a field, cut on an angle like a stripe */
+.offer{position:relative;z-index:2;background:var(--orange);color:var(--ink);margin-block:-1px -26px;padding-block:64px 86px;clip-path:polygon(0 0,100% 0,100% calc(100% - 26px),0 100%)}
+.offer .wrap{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,.8fr);gap:28px 56px;align-items:end}
+.offer h2{font-stretch:66%;font-weight:850;text-transform:uppercase;line-height:.95;font-size:clamp(30px,3.4vw,52px)}
+.offer-price{font-stretch:62%;font-weight:900;line-height:.82;font-size:clamp(110px,17vw,270px);letter-spacing:-.01em;margin-top:6px}
+.offer-price span{font-size:.4em;vertical-align:top;margin-left:.04em}
+.offer-side{display:flex;flex-direction:column;gap:18px;align-items:flex-start;padding-bottom:10px}
+.offer .btn{min-height:68px;padding:0 34px;font-size:24px}
+.offer-fine{font-size:16.5px;line-height:1.5;font-weight:620;max-width:44ch}
+.offer :focus-visible{outline-color:var(--ink)}
+.offer+section{padding-top:calc(112px + 26px)}
+@media (max-width:860px){.offer .wrap{grid-template-columns:minmax(0,1fr)}.offer{padding-block:44px 70px}.offer .btn{width:100%}}
+
+/* the closing band rises on the same angle */
+.night{clip-path:polygon(0 26px,100% 0,100% 100%,0 100%);margin-top:-26px}
+
+/* ribbon labels, cut like the banner in the logo */
+.cmp-tag,.pair .gitem span,.fbpost .gitem span,.gallery .gitem span,.story-tag{background:var(--orange);color:var(--ink);border-radius:0;text-transform:uppercase;font-stretch:76%;font-weight:850;letter-spacing:.02em;padding:6px 22px 6px 12px;clip-path:polygon(0 0,100% 0,calc(100% - 10px) 50%,100% 100%,0 100%)}
+.cmp-tag.a{padding:6px 12px 6px 22px;clip-path:polygon(0 0,100% 0,100% 100%,0 100%,10px 50%)}
+.pair .gitem span,.fbpost .gitem span{font-size:14px;padding:5px 18px 5px 9px}
+
+/* gray bands are real concrete, not a flat fill */
+.band.alt,.est-sec{background:var(--concrete) url(img/tex/concrete.webp) 0 0/640px 640px}
+
+/* install steps: race numbers */
+.step .num{width:60px;height:60px;border-width:4px;font-size:30px;font-stretch:70%;font-weight:900}
