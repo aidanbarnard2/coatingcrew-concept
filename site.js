@@ -6,27 +6,30 @@
   document.documentElement.classList.add('js');
   var motionOK = !(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches);
 
-  /* pop-ins: each block rises into place the first time it is seen; blocks that arrive together take turns.
+  /* entrances: each block arrives once, just before it reaches the reading area; blocks that arrive together take
+     turns. One reached by a jump link or a fast fling is already mid-screen, so it simply appears.
      The same list lives in site.css, where the starting state is set before the first paint. */
   if (document.documentElement.classList.contains('pop-on')) (function () {
     window.ccPop = true;
-    var LIST = '.sec-head>div:first-child,.sec-head>.tlink,.reel-nav,.reel>*,.ratings li,.ratings-note,.swipe-hint,.compare-scroll,.cmp,.pair,.story-stage,.step,.fbpost,.est-side,.est,.faq details,.jeep,.crew,.prose,.media,.card,.review,.contact-grid>*,.gallery .gitem,.night .wrap>*,.qa-grid>div>h2,.stop';
+    var LIST = '.sec-head>div:first-child,.sec-head>.tlink,.reel-nav,.ratings-note,.swipe-hint,.compare-scroll,.cmp,.story-stage,.fbpost,.est-side,.est,.jeep,.crew,.prose,.media,.contact-grid>*,.night .wrap>*,.qa-grid>div>h2,.ratings li,.pair,.step,.faq details,.card,.review,.gallery .gitem,.stop,.reel>*';
     var els = $$(LIST).filter(function (el) { var sec = el.closest('main>section'); return sec && !sec.matches('.studio,.phero,.lp-hero'); });
     function show(batch) {
-      batch.sort(function (a, b) { var p = a.getBoundingClientRect(), q = b.getBoundingClientRect(); return (Math.round(p.top / 40) - Math.round(q.top / 40)) || (p.left - q.left); });
-      batch.forEach(function (el, i) {
-        var d = Math.min(i, 7) * 85;
-        el.style.setProperty('--pd', d + 'ms'); el.classList.add('in');
-        setTimeout(function () { el.classList.add('popped'); el.style.removeProperty('--pd'); }, d + 1000);
-      });
+      var n = 0;
+      batch.map(function (el) { return { el: el, r: el.getBoundingClientRect() }; })
+        .sort(function (a, b) { return (Math.round(a.r.top / 40) - Math.round(b.r.top / 40)) || (a.r.left - b.r.left); })
+        .forEach(function (o) {
+          var el = o.el, inReel = el.parentNode.classList.contains('reel');
+          if (!inReel && o.r.top < innerHeight * 0.4) { el.classList.add('now', 'in', 'popped'); return; }   /* already well inside: no animation */
+          var d = Math.min(n++, 5) * 70;
+          el.style.setProperty('--pd', d + 'ms'); el.classList.add('in');
+          setTimeout(function () { el.classList.add('popped'); el.style.removeProperty('--pd'); }, d + 950);
+        });
     }
     var io = new IntersectionObserver(function (en) {
       var batch = [];
-      en.forEach(function (e) {
-        if (e.isIntersecting && (e.intersectionRatio >= .1 || e.intersectionRect.height >= innerHeight * .25)) { io.unobserve(e.target); batch.push(e.target); }
-      });
+      en.forEach(function (e) { if (e.isIntersecting) { io.unobserve(e.target); batch.push(e.target); } });
       if (batch.length) show(batch);
-    }, { threshold: [0, .1, .25, .5], rootMargin: '0px 0px -6% 0px' });
+    }, { rootMargin: '0px 0px -8% 0px' });
     els.forEach(function (el) { io.observe(el); });
   })();
 
