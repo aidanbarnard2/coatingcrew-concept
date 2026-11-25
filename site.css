@@ -996,3 +996,17 @@ header.site::before{content:"";position:absolute;left:0;right:0;top:100%;height:
   html.js .compare tbody th{width:31%}
 }
 @media (max-width:960px){html.pop-on main>section .est-side{opacity:1!important;transform:none!important}}
+
+/* colors page on a phone: the room stays pinned under the header while you browse the full sample board,
+   so every tap shows on the floor */
+@media (max-width:640px) and (min-height:600px){
+  .studio-app.no-more{grid-template-areas:none}
+  .studio-app.no-more>*,.studio-app.no-more .s-viz>*{grid-area:auto}
+  .studio-app.no-more .s-viz{display:contents}
+  .studio-app.no-more .s-head{order:1}
+  .studio-app.no-more .viz-stage{order:2;position:sticky;top:78px;z-index:5;border-radius:var(--r);box-shadow:0 18px 30px -14px rgba(0,0,0,.75)}
+  .studio-app.no-more .cbar{order:3;border-top:1px solid var(--garage-3);border-radius:var(--r)}
+  .studio-app.no-more .desk{order:4}
+  .studio-app.no-more .s-rail{order:5}
+  .studio-app.no-more>.viz-cap{order:6}
+}
