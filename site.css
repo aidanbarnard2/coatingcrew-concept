@@ -948,3 +948,51 @@ header.site{view-transition-name:site-header}
 .jobs-grid .job{width:auto}
 .jobs-grid .job figcaption{flex-direction:column;gap:2px}
 @media (max-width:860px){.jobs-grid{grid-template-columns:1fr;gap:30px}}
+
+/* the header's lower edge is a checkered flag, the same one that tops the price ticket.
+   Where the browser can follow the scroll, the white squares turn orange from left to right as the page is read. */
+header.site{border-bottom:0}
+header.site::before{content:"";position:absolute;left:0;right:0;top:100%;height:10px;pointer-events:none;background:conic-gradient(var(--ink) 25%,#FFFFFF 0 50%,var(--ink) 0 75%,#FFFFFF 0) 0 0/10px 10px}
+@keyframes ccFlagFill{from{clip-path:inset(0 100% 0 0)}to{clip-path:inset(0)}}
+@supports (animation-timeline:scroll()){
+  header.site::after{top:100%;bottom:auto;height:10px;pointer-events:none;transform:none;background:conic-gradient(var(--ink) 25%,var(--orange) 0 50%,var(--ink) 0 75%,var(--orange) 0) 0 0/10px 10px;animation:ccFlagFill linear both;animation-timeline:scroll(root)}
+}
+@media (max-width:640px){
+  header.site::before,header.site::after{height:8px;background-size:8px 8px}
+}
+
+/* visually hidden text is positioned absolutely; inside a sideways scroller it must stay attached to its own
+   link or card, or it widens the whole page */
+.post-link,.ratings a,.reel>*,.rail .sample,.jobs-grid .job,.pair,.cmp,.fbpost,.crew dt{position:relative}
+
+/* ---------- v10: phone flow. The floor and the samples stay together, the lighting opens on request,
+   the form comes before its side notes, and the systems are read one at a time. ---------- */
+.light-btn,.sys-tabs{display:none}
+.picks[hidden]{display:none}
+@media (max-width:1000px){
+  .studio-app{grid-template-areas:"head" "viz" "rail" "more" "cap"}
+}
+@media (max-width:640px){
+  .light-btn{display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;min-height:48px;padding:0 14px;border-radius:var(--r);border:1px solid var(--garage-3);background:var(--garage);color:#FFFFFF;font:inherit;font-weight:740;font-size:17px;cursor:pointer}
+  .light-btn svg{width:20px;height:20px;transition:transform .25s}
+  .light-btn[aria-expanded="true"] svg{transform:rotate(180deg)}
+  .s-viz:not(.lights-open) .cbar-row,.s-viz:not(.lights-open) .desk{display:none}
+}
+@media (max-width:960px){
+  /* the form sits right under the heading; the sample box and the phone note follow it */
+  .est-grid{gap:22px}
+  .est-side{display:contents}
+  .est-side>.h2{order:1}.est-side>.lede{order:2}.est-grid>.est{order:3}.est-side>.picks{order:4}.est-side>.note{order:5}
+}
+@media (max-width:700px){
+  html.js .swipe-hint{display:none}
+  html.js .sys-tabs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin-bottom:14px}
+  .sys-tabs button{min-height:48px;padding:0 4px;border-radius:99px;border:2px solid var(--ink);background:#FFFFFF;color:var(--ink);font:inherit;font-weight:760;font-size:15.5px;cursor:pointer}
+  .sys-tabs button[aria-pressed="true"]{background:var(--ink);color:#FFFFFF}
+  html.js .compare{min-width:0;width:100%;table-layout:auto}
+  html.js .compare col{width:auto}
+  html.js .compare tr>*:nth-child(n+2){display:none}
+  html.js .compare[data-sys="1"] tr>*:nth-child(2),html.js .compare[data-sys="2"] tr>*:nth-child(3),html.js .compare[data-sys="3"] tr>*:nth-child(4),html.js .compare[data-sys="4"] tr>*:nth-child(5){display:table-cell}
+  html.js .compare tbody th{width:31%}
+}
+@media (max-width:960px){html.pop-on main>section .est-side{opacity:1!important;transform:none!important}}

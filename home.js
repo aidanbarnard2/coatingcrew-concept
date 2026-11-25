@@ -43,14 +43,15 @@
         l.appendChild(inp); l.appendChild(sp); box.appendChild(l);
       });
     }
-    // the sample, room and light picked in the showroom, plus the answers so far
+    // the sample picked in the showroom, plus the answers so far (the room and lighting are only viewing aids, so they stay out of the request)
     function renderPicks() {
       var has = picks && picks.touched && picks.blend;
-      if ($('#picksEmpty')) { $('#picksEmpty').hidden = !!has; $('#picksRow').hidden = !has; }
+      if ($('#picksEmpty')) { $('#picksEmpty').hidden = true; $('#picksRow').hidden = !has; }
+      if ($('#picks')) $('#picks').hidden = !(has || data.space || data.size || data.finish);   /* an empty box only sends people away from the form */
       if (has && $('#picksLoupe')) {
         $('#picksLoupe').style.backgroundImage = picks.bare ? 'none' : 'url(img/colors/l/' + slug(picks.blend) + '.webp)';
         var dl = $('#picksList'); dl.innerHTML = '';
-        [['Sample', picks.bare ? 'Bare concrete for now (last picked: ' + picks.blend + ')' : picks.blend], ['Room', picks.room], ['Light', picks.light]].forEach(function (r) {
+        [['Sample', picks.bare ? 'Bare concrete for now (last picked: ' + picks.blend + ')' : picks.blend]].forEach(function (r) {
           if (!r[1]) return;
           var dt = document.createElement('dt'); dt.textContent = r[0];
           var dd = document.createElement('dd'); dd.textContent = r[1];
@@ -117,7 +118,7 @@
         name: name.value.trim().slice(0, 80), phone: phone.value.trim().slice(0, 30),
         email: $('#f-email').value.trim().slice(0, 120), zip: $('#f-zip').value.trim().slice(0, 5),
         source: $('#f-source').value || 'Not given', space: data.space || '', size: data.size || '',
-        finish: data.finish || '', blend: p.blend && !p.bare ? p.blend : '', room: p.room || '', light: p.light || '',
+        finish: data.finish || '', blend: p.blend && !p.bare ? p.blend : '',
         status: 'new', createdAt: Date.now()
       };
       var visit = window.ccVisit ? window.ccVisit() : null;
@@ -169,7 +170,7 @@
         var top = el('div', 'top'); top.appendChild(el('h3', 'who', l.name || 'No name')); top.appendChild(el('span', 'when', ago(l.createdAt || Date.now())));
         var ct = el('p', 'contact', [l.phone, l.zip ? 'ZIP ' + l.zip : '', l.email].filter(Boolean).join(', '));
         var meta = el('div', 'meta');
-        [['src', l.channel ? 'Came from: ' + l.channel : ''], ['', l.campaign ? 'Campaign: ' + l.campaign : ''], ['', l.term ? 'Search: ' + l.term : ''], ['', l.landing ? 'Landed on: ' + l.landing : ''], ['src', l.source ? 'Says: ' + l.source : ''], ['', l.space], ['', l.size], ['', l.finish], ['', l.blend ? l.blend + ' blend' : ''], ['', l.room], ['', l.light], ['', l.status === 'called' ? 'Called' : '']]
+        [['src', l.channel ? 'Came from: ' + l.channel : ''], ['', l.campaign ? 'Campaign: ' + l.campaign : ''], ['', l.term ? 'Search: ' + l.term : ''], ['', l.landing ? 'Landed on: ' + l.landing : ''], ['src', l.source ? 'Says: ' + l.source : ''], ['', l.space], ['', l.size], ['', l.finish], ['', l.blend ? l.blend + ' blend' : ''], ['', l.status === 'called' ? 'Called' : '']]
           .forEach(function (m) { if (m[1]) meta.appendChild(el('span', m[0], m[1])); });
         var act = el('div', 'act');
         var call = el('button', null, l.status === 'called' ? 'Mark as new' : 'Mark called'); call.type = 'button';

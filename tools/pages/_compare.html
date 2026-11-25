@@ -1,6 +1,9 @@
 <p class="swipe-hint">Swipe sideways to see all four systems.</p>
+<div class="sys-tabs" role="group" aria-label="Choose a system to read about">
+  <button type="button" data-sys="1" aria-pressed="true">Chip</button><button type="button" data-sys="2" aria-pressed="false">Epoxy</button><button type="button" data-sys="3" aria-pressed="false">Polyurea</button><button type="button" data-sys="4" aria-pressed="false">Quartz</button>
+</div>
 <div class="compare-scroll" role="region" aria-labelledby="cmpCap" tabindex="0">
-  <table class="compare">
+  <table class="compare" data-sys="1">
     <caption class="sr-only" id="cmpCap">Our four floor systems compared</caption>
     <colgroup><col class="rowh"><col><col><col><col></colgroup>
     <thead>

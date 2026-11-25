@@ -105,12 +105,14 @@
     logo.addEventListener('click', function () { wave(2200); });
   })();
 
-  /* the picked floor follows you down the page, until the estimate form is in view */
+  /* once a visitor has picked a sample, it follows them down the page until the estimate form is in view */
   var follow = $('#follow'), studio = $('.studio');
   if (follow && studio && 'IntersectionObserver' in window) {
-    var past = false, atEst = false, est = $('#estimate');
+    var past = false, atEst = false, picked = false, est = $('#estimate');
+    try { picked = !!(JSON.parse(sessionStorage.getItem('ccPicks') || 'null') || {}).touched; } catch (e) {}
+    document.addEventListener('viz:change', function (e) { if (e.detail && e.detail.touched) { picked = true; place(); } });
     var place = function () {
-      var on = past && !atEst;
+      var on = past && !atEst && picked;   /* only once the visitor has picked a sample: before that it is just in the way */
       if (on) { follow.hidden = false; requestAnimationFrame(function () { follow.classList.add('show'); }); }
       else { follow.classList.remove('show'); setTimeout(function () { if (!follow.classList.contains('show')) follow.hidden = true; }, 350); }
     };
@@ -260,6 +262,23 @@
       }, { threshold: .6 });
       io.observe(view);
     }
+  });
+
+  /* phones: the lighting controls open on request, and the systems table shows one system at a time */
+  $$('.light-btn').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var open = b.getAttribute('aria-expanded') !== 'true';
+      b.setAttribute('aria-expanded', String(open)); b.closest('.s-viz').classList.toggle('lights-open', open);
+    });
+  });
+  $$('.sys-tabs').forEach(function (tabs) {
+    var table = tabs.parentNode.querySelector('table.compare');
+    tabs.addEventListener('click', function (e) {
+      var b = e.target.closest('button'); if (!b || !table) return;
+      table.dataset.sys = b.dataset.sys;
+      $$('button', tabs).forEach(function (x) { x.setAttribute('aria-pressed', String(x === b)); });
+      if (window.ccTrack) window.ccTrack('system_tab', { system: b.textContent });
+    });
   });
 
   /* outside links worth counting: ratings and the crew's own posts */

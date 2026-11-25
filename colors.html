@@ -23,7 +23,7 @@
 <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
 <link rel="preload" href="fonts/archivo-wdth.woff2" as="font" type="font/woff2" crossorigin>
 <script>(function(d){try{if('IntersectionObserver' in window&&!matchMedia('(prefers-reduced-motion: reduce)').matches){d.classList.add('pop-on');setTimeout(function(){if(!window.ccPop)d.classList.remove('pop-on')},4000)}}catch(e){}})(document.documentElement)</script>
-<link rel="stylesheet" href="site.css?v=1b24ffac">
+<link rel="stylesheet" href="site.css?v=3e62be4d">
 <script type="speculationrules">{"prerender":[{"where":{"and":[{"selector_matches":"a[href$='.html']"},{"not":{"selector_matches":"a[href^='colors.html'], a[href='index.html'], a[target], a[href='owner.html']"}}]},"eagerness":"moderate"}],"prefetch":[{"where":{"selector_matches":"a[href='./'], a[href^='./#'], a[href^='colors.html']"},"eagerness":"moderate"}]}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://aidanbarnard2.github.io/coatingcrew-concept/"},{"@type":"ListItem","position":2,"name":"Colors and visualizer","item":"https://aidanbarnard2.github.io/coatingcrew-concept/colors.html"}]}]}</script>
 </head>
@@ -94,7 +94,8 @@
         <button type="button" class="room" data-i="1" aria-pressed="false"><img src="img/studio/basement-thumb.webp" alt="" width="105" height="70" decoding="async"><span>Finished basement</span></button>
         <button type="button" class="room" data-i="2" aria-pressed="false"><img src="img/studio/sunroom-thumb.webp" alt="" width="105" height="70" decoding="async"><span>Sunroom</span></button>
       </div>
-      <div class="cbar-row">
+      <button type="button" class="light-btn" aria-expanded="false" aria-controls="v-lights">Change the lighting<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></button>
+      <div class="cbar-row" id="v-lights">
         <label class="tod"><span>Time of day <output class="viz-time-out">Midday</output></span><input type="range" class="viz-time" min="0" max="4" step="1" value="1" aria-label="Time of day" aria-valuetext="Midday"><span class="tod-ticks" aria-hidden="true"><i>Morning</i><i>Midday</i><i>Golden</i><i>Dusk</i><i>Night</i></span></label>
         <div class="group"><span class="sub" id="v-bulbLbl">Indoor lights</span><div class="seg seg3" role="group" aria-labelledby="v-bulbLbl"><button type="button" data-bulbs="off" aria-pressed="false">Off</button><button type="button" data-bulbs="warm" aria-pressed="false">Warm</button><button type="button" data-bulbs="cool" aria-pressed="true">Cool</button></div></div>
         <button type="button" class="viz-day" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><path d="M7 4.5v15l13-7.5z"/></svg><span>Play a full day</span></button>
@@ -204,7 +205,7 @@
 </nav>
 <div class="toast" id="toast" role="status" aria-live="polite"><b id="toastTitle"></b><span id="toastBody"></span></div>
 <script src="track.js?v=0b0faffe" defer></script>
-<script src="site.js?v=c13470dc" defer></script>
+<script src="site.js?v=57b7e87c" defer></script>
 <script src="visualizer.js?v=90102cb2" defer></script>
 <script src="search-index.js?v=f4945c6d" defer></script>
 <script src="search.js?v=422db142" defer></script>

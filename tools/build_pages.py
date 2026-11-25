@@ -267,7 +267,8 @@ def viz_stage(open_desk=False, p='v-'):
       <div class="viz-rooms" role="group" aria-label="Choose a room">
 {rooms}
       </div>
-      <div class="cbar-row">
+      <button type="button" class="light-btn" aria-expanded="false" aria-controls="{p}lights">Change the lighting{chev}</button>
+      <div class="cbar-row" id="{p}lights">
         <label class="tod"><span>Time of day <output class="viz-time-out">Midday</output></span><input type="range" class="viz-time" min="0" max="4" step="1" value="1" aria-label="Time of day" aria-valuetext="Midday"><span class="tod-ticks" aria-hidden="true"><i>Morning</i><i>Midday</i><i>Golden</i><i>Dusk</i><i>Night</i></span></label>
         <div class="group"><span class="sub" id="{p}bulbLbl">Indoor lights</span><div class="seg seg3" role="group" aria-labelledby="{p}bulbLbl">{bulbs}</div></div>
         <button type="button" class="viz-day" aria-pressed="false">{I_PLAY}<span>Play a full day</span></button>
@@ -591,6 +592,8 @@ def clean(m, page):
     # the photo viewer opens the color-corrected WebP
     m = re.sub(r'data-full="img/photos/([\w-]+)\.jpg"', lambda mo: f'data-full="img/w/{mo.group(1)}-1200.webp"' if os.path.exists(os.path.join(ROOT, f'img/w/{mo.group(1)}-1200.webp')) else mo.group(0), m)
     m = re.sub(r'<section class="(?:cta|night)".*?</section>', '{{CTA}}', m, flags=re.S)
+    # the photo beside the headline is the largest thing on screen: load it first, not lazily
+    m = re.sub(r'(<div class="pimg">\s*<img [^>]*?) loading="lazy"', r'\1 fetchpriority="high"', m)
     if page in PROOF_PAGES:
         m = re.sub(r'(<section class="phero".*?</section>)', lambda mo: mo.group(1) + '\n{{PROOF}}', m, count=1, flags=re.S)
     if page in INNER:

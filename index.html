@@ -23,7 +23,7 @@
 <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
 <link rel="preload" href="fonts/archivo-wdth.woff2" as="font" type="font/woff2" crossorigin>
 <script>(function(d){try{if('IntersectionObserver' in window&&!matchMedia('(prefers-reduced-motion: reduce)').matches){d.classList.add('pop-on');setTimeout(function(){if(!window.ccPop)d.classList.remove('pop-on')},4000)}}catch(e){}})(document.documentElement)</script>
-<link rel="stylesheet" href="site.css?v=1b24ffac">
+<link rel="stylesheet" href="site.css?v=3e62be4d">
 <script type="speculationrules">{"prerender":[{"where":{"and":[{"selector_matches":"a[href$='.html']"},{"not":{"selector_matches":"a[href^='colors.html'], a[href='index.html'], a[target], a[href='owner.html']"}}]},"eagerness":"moderate"}],"prefetch":[{"where":{"selector_matches":"a[href='./'], a[href^='./#'], a[href^='colors.html']"},"eagerness":"moderate"}]}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"HomeAndConstructionBusiness","@id":"https://aidanbarnard2.github.io/coatingcrew-concept/#business","name":"The Coating Crew","url":"https://aidanbarnard2.github.io/coatingcrew-concept/","telephone":"+1-651-263-8557","image":"https://aidanbarnard2.github.io/coatingcrew-concept/img/photos/job-garage-5.jpg","logo":"https://aidanbarnard2.github.io/coatingcrew-concept/img/logo.webp","description":"Family-owned epoxy and polyurea floor coating company serving the Minneapolis / Saint Paul area since 1999.","foundingDate":"1999","address":{"@type":"PostalAddress","streetAddress":"10967 Clark Rd, Ste E","addressLocality":"Inver Grove Heights","addressRegion":"MN","postalCode":"55077","addressCountry":"US"},"openingHoursSpecification":[{"@type":"OpeningHoursSpecification","dayOfWeek":["Monday","Tuesday","Wednesday","Thursday","Friday"],"opens":"07:00","closes":"18:00"}],"areaServed":{"@type":"Place","name":"Minneapolis / Saint Paul metro area"},"makesOffer":{"@type":"Offer","name":"Two-stall garage floor coating","price":"2495","priceCurrency":"USD","description":"Based on 400 square feet of new concrete with no repairs needed. Steps, stemwalls, joint fill, travel and more may add to the cost."}},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How long does a floor coating take?","acceptedAnswer":{"@type":"Answer","text":"In as little as one day, we can get your epoxy or polyurea floor coating installed and ready for full use. Most surfaces are ready for use within 24 hours."}},{"@type":"Question","name":"Can you install in the winter?","acceptedAnswer":{"@type":"Answer","text":"Yes. We install year-round."}},{"@type":"Question","name":"What do I do with everything in my garage?","acceptedAnswer":{"@type":"Answer","text":"Ask about storing your things in an on-site storage container while we coat your garage floor, through our partner Dart Portable Storage, Inc. A drop-off and pick-up fee applies. About on-site storage"}},{"@type":"Question","name":"What warranty comes with my floor?","acceptedAnswer":{"@type":"Answer","text":"Many of our products come with a lifetime guarantee and a 15-year product warranty. Your floor coating specialist will provide warranty details for your specific flooring system. Our worry-free guarantee"}},{"@type":"Question","name":"Do you coat commercial and industrial floors?","acceptedAnswer":{"@type":"Answer","text":"Yes: retail stores, showrooms, commercial kitchens, vet clinics and kennels, locker rooms, restrooms, salons and medical centers, plus warehouses, machine shops, factories and food production facilities. See commercial and industrial floors."}},{"@type":"Question","name":"What’s included in the two-stall price?","acceptedAnswer":{"@type":"Answer","text":"The offer is based on 400 square feet of new concrete and no repair treatments needed. Additional costs may include steps, stemwalls, joint fill, travel and more."}}]}]}</script>
 </head>
@@ -97,7 +97,8 @@
         <button type="button" class="room" data-i="1" aria-pressed="false"><img src="img/studio/basement-thumb.webp" alt="" width="105" height="70" decoding="async"><span>Finished basement</span></button>
         <button type="button" class="room" data-i="2" aria-pressed="false"><img src="img/studio/sunroom-thumb.webp" alt="" width="105" height="70" decoding="async"><span>Sunroom</span></button>
       </div>
-      <div class="cbar-row">
+      <button type="button" class="light-btn" aria-expanded="false" aria-controls="v-lights">Change the lighting<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></button>
+      <div class="cbar-row" id="v-lights">
         <label class="tod"><span>Time of day <output class="viz-time-out">Midday</output></span><input type="range" class="viz-time" min="0" max="4" step="1" value="1" aria-label="Time of day" aria-valuetext="Midday"><span class="tod-ticks" aria-hidden="true"><i>Morning</i><i>Midday</i><i>Golden</i><i>Dusk</i><i>Night</i></span></label>
         <div class="group"><span class="sub" id="v-bulbLbl">Indoor lights</span><div class="seg seg3" role="group" aria-labelledby="v-bulbLbl"><button type="button" data-bulbs="off" aria-pressed="false">Off</button><button type="button" data-bulbs="warm" aria-pressed="false">Warm</button><button type="button" data-bulbs="cool" aria-pressed="true">Cool</button></div></div>
         <button type="button" class="viz-day" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><path d="M7 4.5v15l13-7.5z"/></svg><span>Play a full day</span></button>
@@ -194,8 +195,11 @@
       <a class="tlink" href="finishes.html">More about our finishes</a>
     </div>
     <p class="swipe-hint">Swipe sideways to see all four systems.</p>
+<div class="sys-tabs" role="group" aria-label="Choose a system to read about">
+  <button type="button" data-sys="1" aria-pressed="true">Chip</button><button type="button" data-sys="2" aria-pressed="false">Epoxy</button><button type="button" data-sys="3" aria-pressed="false">Polyurea</button><button type="button" data-sys="4" aria-pressed="false">Quartz</button>
+</div>
 <div class="compare-scroll" role="region" aria-labelledby="cmpCap" tabindex="0">
-  <table class="compare">
+  <table class="compare" data-sys="1">
     <caption class="sr-only" id="cmpCap">Our four floor systems compared</caption>
     <colgroup><col class="rowh"><col><col><col><col></colgroup>
     <thead>
@@ -339,8 +343,8 @@
     <div class="est-side">
       <h2 class="h2" id="estTitle">Get your free estimate</h2>
       <p class="lede">Three quick questions and a phone number. No street address needed. We call to set up your free, no-obligation estimate.</p>
-      <div class="picks" id="picks" aria-live="polite">
-        <h3>Your floor so far</h3>
+      <div class="picks" id="picks" aria-live="polite" hidden>
+        <h3>Your request so far</h3>
         <p class="empty-pick" id="picksEmpty">Pick a chip sample in the <a href="#showroom">showroom</a> at the top of the page and it’s added to your request.</p>
         <div class="picks-row" id="picksRow" hidden>
           <span class="loupe" id="picksLoupe" aria-hidden="true"></span>
@@ -510,9 +514,9 @@
 </div>
 <div class="toast" id="toast" role="status" aria-live="polite"><b id="toastTitle"></b><span id="toastBody"></span></div>
 <script src="track.js?v=0b0faffe" defer></script>
-<script src="site.js?v=c13470dc" defer></script>
+<script src="site.js?v=57b7e87c" defer></script>
 <script src="visualizer.js?v=90102cb2" defer></script>
-<script src="home.js?v=dad7ac4e" defer></script>
+<script src="home.js?v=8d7e6048" defer></script>
 <script src="search-index.js?v=f4945c6d" defer></script>
 <script src="search.js?v=422db142" defer></script>
 </body>
