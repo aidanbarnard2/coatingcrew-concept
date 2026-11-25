@@ -147,13 +147,21 @@ def post_link(fbid, what):
             f'<span class="sr-only"> of {esc(what)} (opens in a new tab)</span>{EXT}</a>')
 
 
+# portrait photos sit in landscape boxes: keep the part of the frame that shows the room, not only the floor
+FOCUS = {'warehouse': '50% 14%', 'retail': '50% 30%'}
+
+
+def focus(slug, tag):
+    return tag.replace('<img ', f'<img style="object-position:{FOCUS[slug]}" ', 1) if slug in FOCUS else tag
+
+
 def job(slug, sizes='(min-width:700px) 600px, 84vw'):
     """A real job from the crew's Facebook page: the photo opens up close, the caption links to the post."""
     j = FB['shots'][slug]
     what = (j['kind'][0].lower() + j['kind'][1:] if j['kind'] != 'Our Jeep' else 'our Jeep') + (f' in {j["city"]}' if j['city'] else '')
     head_ = f'<b>{esc(j["city"])}</b> {esc(j["kind"])}' if j['city'] else f'<b>{esc(j["kind"])}</b>'
     return (f'<figure class="job"><button type="button" class="gitem shot" aria-label="Open photo: {esc(j["kind"])}{", " + esc(j["city"]) if j["city"] else ""}" data-post="{fb_url(j["fbid"])}">'
-            f'{pic(f"img/photos/fb-{slug}.jpg", j["alt"], sizes)}</button>'
+            f'{focus(slug, pic(f"img/photos/fb-{slug}.jpg", j["alt"], sizes))}</button>'
             f'<figcaption><span class="j-what">{head_}</span>{post_link(j["fbid"], "the " + what)}</figcaption></figure>')
 
 
@@ -212,13 +220,15 @@ def jobs_section(slugs, band='band', hid='jobsTitle'):
 def gallery_fb():
     """Real jobs for the gallery grid. Only photos whose kind of space is clear get a filter; the rest show under All."""
     cats = {'hotrods': 'Other', 'garage-hastings': 'Garage', 'garage-cabinets': 'Garage', 'basement-wsp': 'Basement', 'garage-edina': 'Garage',
-            'commercial-eagan': 'Commercial', 'steps-lakeelmo': 'Garage', 'shop-igh': 'Other', 'barn-henderson': 'Other'}
+            'commercial-eagan': 'Commercial', 'store': 'Commercial', 'kitchen': 'Commercial', 'steps-lakeelmo': 'Garage',
+            'retail': 'Commercial', 'warehouse': 'Industrial', 'shop-igh': 'Other', 'barn-henderson': 'Other',
+            'restroom': 'Commercial', 'restroom-stalls': 'Commercial', 'stairs-edina': 'Other', 'crew-arena': 'Other'}
     out = []
     for i, (slug_, cat) in enumerate(cats.items()):
         j = FB['shots'][slug_]; b = f'img/w/fb-{slug_}'
         label = j['kind'] + (', ' + j['city'] if j['city'] else '')
         out.append(f'<button type="button" class="gitem{" big" if i == 0 else ""}" id="p-fb-{slug_}" data-cat="{cat}" data-gen data-post="{fb_url(j["fbid"])}" aria-label="Open photo: {esc(label)}">'
-                   f'<img data-full="{b}-1200.webp" src="{b}-1200.webp" srcset="{b}-640.webp 640w, {b}-960.webp 960w, {b}-1200.webp 1200w" '
+                   f'<img data-full="{b}-1200.webp"{f" style=\"object-position:{FOCUS[slug_]}\"" if slug_ in FOCUS else ""} src="{b}-1200.webp" srcset="{b}-640.webp 640w, {b}-960.webp 960w, {b}-1200.webp 1200w" '
                    f'sizes="{"(min-width:900px) 50vw, 100vw" if i == 0 else "(min-width:900px) 25vw, 50vw"}" alt="{esc(j["alt"])}" width="{j["w"]}" height="{j["h"]}" decoding="async" loading="lazy">'
                    f'<span>{esc(label)}</span></button>')
     return '\n'.join(out)
@@ -230,11 +240,67 @@ PROOF_PAGES = {'residential.html', 'commercial.html', 'industrial.html', 'galler
 INNER = {
     'residential.html': lambda: ba_section('band'),
     'gallery.html': lambda: ba_section('band'),
-    'commercial.html': lambda: jobs_section(('crew-arena', 'shop-igh', 'barn-henderson'), 'band'),
+    'commercial.html': lambda: jobs_section(('retail', 'warehouse', 'crew-arena'), 'band'),
     'industrial.html': lambda: jobs_section(('crew-arena', 'grinder', 'shop-igh'), 'band'),
     'about-us.html': lambda: jobs_section(('jeep', 'garage-hastings', 'garage-cabinets'), 'band alt'),
 }
 # the photo beside each inner page's headline is a real job, with its city and a link to the post
+# commercial page: where the crew posted their own photo of that kind of space, the card shows it in place of the
+# website's picture, says so, and links to the post. Those cards lead the grid.
+REAL_SPACES = {'retail-stores': ('store', 'a convenience store floor we coated'),
+               'kitchens-and-food-prep': ('kitchen', 'a kitchen floor we coated'),
+               'restrooms-salons-and-medical-centers': ('restroom', 'a restroom floor we coated')}
+# website pictures the gallery no longer needs, because a photo of the crew's own job of that kind is there now
+GALLERY_DROP = ('space-retail', 'space-kitchen', 'space-warehouse', 'space-medical')
+# the website's photos follow the Facebook jobs. This order fills every row at four across and at two across:
+# each large photo (*) has four small ones beside or after it.
+GALLERY_SITE = ['job-basement-1*', 'job-garage-1', 'job-garage-5', 'job-garage-2', 'job-basement-2',
+                'job-garage-3', 'space-garage-solid', 'job-patio-1*', 'space-vet-clinic', 'space-locker-room',
+                'space-showroom*', 'space-salon', 'space-factory', 'space-production-line', 'space-food-production']
+
+
+# the same on pages with a photo beside each section: section id -> (the crew's photo, what it shows)
+REAL_MEDIA = {'industrial.html': {'warehouse-floor-coatings-ready-in-24-hours': ('warehouse', 'a warehouse floor we coated')}}
+
+
+def real_media(m, page):
+    for hid, (slug_, what) in REAL_MEDIA[page].items():
+        j = FB['shots'][slug_]
+        media = (f'<button type="button" class="media gitem shot" aria-label="Open photo: Our job, {esc(j["kind"].lower())}" data-post="{fb_url(j["fbid"])}">'
+                 f'{focus(slug_, pic(f"img/photos/fb-{slug_}.jpg", j["alt"]))}<span>Our job</span></button>')
+        note = f'<p class="note c-src">Pictured: {what}. {post_link(j["fbid"], "the " + j["kind"].lower())}</p>'
+        m, n = re.subn(r'(?:<div class="media"><img [^>]*></div>|<button type="button" class="media gitem shot"[^>]*><img [^>]*><span>Our job</span></button>)'
+                       rf'(<div class="prose"><h2 id="{hid}">[^<]*</h2><p>[^<]*</p>)(?:<p class="note c-src">.*?</p>)?(</div>)',
+                       lambda mo: media + mo.group(1) + note + mo.group(2), m, count=1, flags=re.S)
+        assert n == 1, hid
+    return m
+
+
+def gallery_site(m):
+    a = m.index('<div class="gallery" id="gallery">') + len('<div class="gallery" id="gallery">')
+    b = a + re.search(r'\n?</div>', m[a:]).start()
+    items = re.findall(r'<button type="button" class="gitem[^"]*" id="p-([\w-]+)"(.*?</button>)', m[a:b], flags=re.S)
+    order = [x.rstrip('*') for x in GALLERY_SITE]; big = {x.rstrip('*') for x in GALLERY_SITE if x.endswith('*')}
+    items.sort(key=lambda it: order.index(it[0]) if it[0] in order else len(order))
+    return m[:a] + '\n' + '\n'.join(f'<button type="button" class="gitem{" big" if i in big else ""}" id="p-{i}"{rest}' for i, rest in items) + m[b:]
+
+
+
+
+def real_spaces(m):
+    a = m.index('<div class="cards2">') + len('<div class="cards2">'); b = m.index('</div><p class="lede">Running a warehouse')
+    cards = re.findall(r'<div class="card[^"]*">(.*?)(<h3 id="([\w-]+)">.*?</h3><p>.*?</p>)(?:<p class="note c-src">.*?</p>)?</div>', m[a:b], flags=re.S)
+    out = []
+    for media, text, hid in sorted(cards, key=lambda c: list(REAL_SPACES).index(c[2]) if c[2] in REAL_SPACES else len(REAL_SPACES)):
+        if hid in REAL_SPACES:
+            slug_, what = REAL_SPACES[hid]; j = FB['shots'][slug_]
+            media = (f'<button type="button" class="cimg gitem shot" aria-label="Open photo: Our job, {esc(j["kind"].lower())}" data-post="{fb_url(j["fbid"])}">'
+                     f'{pic(f"img/photos/fb-{slug_}.jpg", j["alt"], "(min-width:1100px) 440px, (min-width:700px) 50vw, calc(100vw - 32px)")}<span>Our job</span></button>')
+            text += f'<p class="note c-src">Pictured: {what}. {post_link(j["fbid"], "the " + j["kind"].lower())}</p>'
+        out.append(f'<div class="card">{media}{text}</div>')
+    return m[:a] + '\n' + '\n'.join(out) + '\n' + m[b:]
+
+
 HERO_PICS = {'residential.html': 'garage-cabinets', 'commercial.html': 'commercial-eagan', 'industrial.html': 'barn-henderson',
              'about-us.html': 'crew-arena', 'reviews.html': 'garage-edina',
              # these three had small photos from the current site that were stretched to fill the space
@@ -622,7 +688,14 @@ def clean(m, page):
                       '</div><p class="lede">Running a warehouse, machine shop or food plant? <a class="tlink" href="industrial.html">See industrial floors</a></p></div></section><section class="band alt">', 1)
     if page == 'commercial.html' and 'id="spaces-title"' not in m:
         m = m.replace('<div class="cards2">', '<h2 class="h2" id="spaces-title">Commercial spaces we coat</h2>\n<div class="cards2">', 1)
+    if page == 'commercial.html':
+        m = real_spaces(m)
+    if page in REAL_MEDIA:
+        m = real_media(m, page)
     if page == 'gallery.html':
+        for name in GALLERY_DROP:
+            m = re.sub(rf'\s*<button type="button" class="gitem" id="p-{name}".*?</button>', '', m, flags=re.S)
+        m = gallery_site(m)
         m = re.sub(r'(aria-label|alt)="([^"]*?) · ([^"]*)"', r'\1="\2, \3"', m)
 
         def named(mo):
@@ -753,6 +826,32 @@ def build(path):
     return page
 
 
+def sync_search():
+    """Keep the search index in step with the gallery: the crew's Facebook jobs are listed as photos, website pictures
+    the gallery dropped are taken out, and sections that now show a real job use it as their thumbnail."""
+    path = os.path.join(ROOT, 'search-index.js')
+    src = open(path).read(); a = src.index('{'); b = src.rindex('}') + 1
+    idx = json.loads(src[a:b])
+    gal = open(os.path.join(ROOT, 'gallery.html')).read()
+    words = {'Garage': 'garage garages car', 'Basement': 'basement basements lower level', 'Commercial': 'commercial business',
+             'Industrial': 'industrial', 'Other': ''}
+    docs = [d for d in idx['docs'] if not d['u'].startswith('gallery.html#p-fb-') and d['u'].split('#p-')[-1] not in GALLERY_DROP]
+    at = max(i for i, d in enumerate(docs) if d['t'] == 'photo') + 1
+    new = []
+    for slug_, cat, label in re.findall(r'id="p-fb-([\w-]+)" data-cat="(\w+)"[^>]*aria-label="Open photo: ([^"]*)"', gal):
+        new.append({'t': 'photo', 'u': f'gallery.html#p-fb-{slug_}', 'h': html.unescape(label), 'c': 'Our job', 'x': html.unescape(label),
+                    'k': ' '.join(x for x in (words[cat], 'job our work real facebook') if x), 'img': f'img/w/fb-{slug_}-640.webp'})
+    docs[at:at] = new
+    thumbs = {f'commercial.html#{h}': v[0] for h, v in REAL_SPACES.items()}
+    for pg, secs in REAL_MEDIA.items():
+        thumbs.update({f'{pg}#{h}': v[0] for h, v in secs.items()})
+    for d in docs:
+        if d['u'] in thumbs:
+            d['img'] = f'img/w/fb-{thumbs[d["u"]]}-640.webp'
+    idx['docs'] = docs
+    open(path, 'w').write(src[:a] + json.dumps(idx, ensure_ascii=False, separators=(',', ':')) + src[b:])
+
+
 if __name__ == '__main__':
     REVIEWS = reviews_block()
     for p in sorted(glob.glob(os.path.join(SRC, '*.html'))):
@@ -762,6 +861,11 @@ if __name__ == '__main__':
     pages = sorted(p for p in glob.glob(os.path.join(ROOT, '*.html')) if not os.path.basename(p).startswith('test-'))
     for p in pages:
         print('built', build(p))
+    was = ver('search-index.js')
+    sync_search()
+    if ver('search-index.js') != was:                # pages carry the index's version in its address
+        for p in pages:
+            build(p)
     # sitemap for launch; robots.txt keeps crawlers out until CC_INDEX=1
     public = [os.path.basename(p) for p in pages if os.path.basename(p) not in ('404.html', 'owner.html', 'search.html') and os.path.basename(p) not in LANDING]
     urls = ''.join(f'  <url><loc>{SITE}{"" if n == "index.html" else n}</loc></url>\n' for n in sorted(public, key=lambda n: n != 'index.html'))

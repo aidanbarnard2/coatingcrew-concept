@@ -11,8 +11,12 @@ A concept preview built by Saint Paul Agency (saintpaulagency.com) and Aidan Bar
 - The home page opens with The Coating Crew's logo drawn as an SVG (`tools/logo/build_logo.py` traces the ribbon and flags and sets the lettering in Poppins ExtraBold, SIL Open Font License). The flags swing in, wave for a few seconds and settle, then wave again on hover or tap; people who ask for reduced motion see it still.
 - `home.js`: the free-estimate form, and the owner's lead inbox on `owner.html`.
 - Real jobs: photos, city tags and post links come from The Coating Crew's own Facebook page (`tools/photos/fb.py`, data in `tools/photos/fb.json`). Each photo opens up close and links to the post it came from. No color changes are made to these photos. One before and after pair was shot from nearly the same spot, so it is lined up for a drag-to-compare view; the other pairs sit side by side.
+- Commercial jobs: six photos come from the crew's Facebook post of March 23, 2020, which shows completed commercial projects and names them as a convenience store, restrooms, a warehouse, a kitchen and a retail store. They are a second capture set (`python3 tools/photos/fb.py <folder> commercial`); running one set leaves the other alone. That post has no location tag, so these photos show no city.
 - `tools/colors/add_blend.py` adds a chip blend from the crew's own swatch photo (used for Nightfall): it matches the chip size to the other blends and builds the thumbnail, close-up and floor texture. Colors are not changed.
 - Inner pages get the ratings strip and a block of real work from the page builder (`PROOF_PAGES` and `INNER` in `tools/build_pages.py`); the gallery grid leads with the Facebook jobs.
+- Where the crew posted their own photo of a kind of space, the page shows it in place of the website's picture, tags it "Our job" and links to the post: three cards on the commercial page (`REAL_SPACES`) and the warehouse section on the industrial page (`REAL_MEDIA`). Sections without a real photo keep the website's picture.
+- Gallery: the website's pictures follow the Facebook jobs in an order that fills every row at four across and two across (`GALLERY_SITE`). Four website pictures were taken out (`GALLERY_DROP`): three now have a photo of the crew's own job of that kind, and one showed a floor that is not a coating. Filtering shows every photo at one size.
+- The build keeps `search-index.js` in step with the gallery (`sync_search`), so search finds the Facebook jobs as photos.
 - Outside ratings (Google, BBB, Angi, HomeAdvisor) are listed in `RATINGS` in `tools/build_pages.py`, worded as each site showed them on the date in `RATED`, and each one links to its source. Update the numbers and the date together.
 - `search.js` and `search-index.js`: site search.
 
@@ -41,4 +45,5 @@ All text uses solid colors that pass WCAG 2.2 AA contrast. Every page is checked
 - Inner page tops carry the home page's orange: a slab leans in from the right edge and the page's photo sits across its slanted edge (along the bottom on phones and tablets). No words or buttons sit on the orange at any width.
 - The floating sample tag can be closed; picking another sample brings it back.
 - A phone held sideways gets its own showroom layout: the bottom bar goes, the header slims, and the room is sized to the screen height with every sample beside it.
+- The four-sample picture on the finishes page was rendered again at 2880 wide, so sharp laptop screens get a 2400 file.
 - Photo sharpness: every image was measured against the size it is drawn at. Page-top photos that were small files stretched to fit (contact, certified professionals, guarantee, colors) now use the crew's own job photos, and cropped photos ask for a larger file.

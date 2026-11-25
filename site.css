@@ -1432,3 +1432,12 @@ main>section.band:not(.alt) .cards3 .card{background:var(--concrete);box-shadow:
   .post-link{position:relative}
   .post-link::before{content:"";position:absolute;inset:-10px -6px}
 }
+
+/* v20 commercial spaces with the crew's own photo: the card's picture opens up close, carries an "Our job" tag and names the post it came from */
+.card .cimg.gitem{display:block;width:100%;cursor:zoom-in}
+.card .cimg.gitem span{left:0;bottom:14px;background:var(--orange);color:var(--ink);border-radius:0;text-transform:uppercase;font-stretch:76%;font-weight:850;font-size:15px;letter-spacing:.02em;padding:6px 22px 6px 12px;clip-path:polygon(0 0,100% 0,calc(100% - 10px) 50%,100% 100%,0 100%)}
+.card .c-src{display:flex;flex-wrap:wrap;gap:2px 10px;align-items:baseline;margin-top:auto;padding-top:12px;border-top:3px solid var(--ink);font-size:16.5px;line-height:1.4;font-weight:620;color:var(--ink)}
+.gallery.filtered .gitem.big{grid-column:auto;grid-row:auto}
+.prow .media.gitem{display:block;width:100%;cursor:zoom-in}
+.prow .media.gitem span{left:0;bottom:14px;background:var(--orange);color:var(--ink);border-radius:0;text-transform:uppercase;font-stretch:76%;font-weight:850;font-size:15px;letter-spacing:.02em;padding:6px 22px 6px 12px;clip-path:polygon(0 0,100% 0,calc(100% - 10px) 50%,100% 100%,0 100%)}
+.prose .c-src{display:flex;flex-wrap:wrap;gap:2px 10px;align-items:baseline;padding-top:12px;border-top:3px solid var(--ink);font-size:16.5px;line-height:1.4;font-weight:620;color:var(--ink)}

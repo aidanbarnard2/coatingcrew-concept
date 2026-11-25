@@ -200,6 +200,7 @@
         $$('.fbtn').forEach(function (x) { x.setAttribute('aria-pressed', String(x === b)); });
         var f = b.dataset.f, n = 0;
         items.forEach(function (it) { it.hidden = !(f === 'all' || it.dataset.cat === f); if (!it.hidden) n++; });
+        var g = $('#gallery'); if (g) g.classList.toggle('filtered', f !== 'all');   /* one size while filtered, so no gaps open up */
         var st = $('#galleryStatus'); if (st) st.textContent = 'Showing ' + n + ' photo' + (n === 1 ? '' : 's') + '.';
       });
     });

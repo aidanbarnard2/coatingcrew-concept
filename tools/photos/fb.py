@@ -5,7 +5,10 @@ license plate, and writes the web sizes. No color changes are made: these are sh
 Before and after pairs are lined up to each other (a geometric registration only, so the wall, doors and
 fixtures sit in the same place in both frames) and cropped to the area both photos share.
 
-Usage: python3 tools/photos/fb.py <folder with the captures>
+Usage: python3 tools/photos/fb.py <folder with the captures> [set]
+
+Captures come in sets, because each browsing session numbers its files from zero. The default set is "main".
+Running one set leaves every other photo and its entry in fb.json as they are.
 """
 import json
 import os
@@ -17,6 +20,7 @@ from PIL import Image, ImageFilter
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
 SRC = sys.argv[1] if len(sys.argv) > 1 else ''
+SET = sys.argv[2] if len(sys.argv) > 2 else 'main'
 
 # capture number -> photo. "rot" marks a portrait photo that was captured lying on its side.
 SHOTS = {
@@ -36,6 +40,15 @@ SHOTS = {
     'barn-henderson':     dict(n=25, fbid='1860538344094521', city='Henderson', kind='Steel building', alt='A large steel-sided building with a gray chip floor'),
     'commercial-eagan':   dict(n=26, fbid='1845119475636408', city='Eagan', kind='Commercial floor', alt='A large commercial room with a glossy concrete floor'),
     'steps-lakeelmo':     dict(n=22, fbid='1823105341171155', city='Lake Elmo', kind='Steps', alt='Garage steps and floor coated in a gray chip finish'),
+    # set "commercial": the crew's post of March 23, 2020, "take a minute and look at some of our completed projects.
+    # Convenient Store, Restrooms, Warehouse, Kitchen & Retail Store flooring solutions." The kinds below are the ones
+    # that post names. It carries no location tag, so no city is shown.
+    'store':              dict(set='commercial', n=10, fbid='1582831775198514', city='', kind='Convenience store', alt='A convenience store with a tan chip floor between the shelves and coolers'),
+    'restroom-stalls':    dict(set='commercial', n=11, fbid='1582831841865174', city='', kind='Restroom', alt='A gray chip floor running under a row of restroom stalls'),
+    'restroom':           dict(set='commercial', n=12, fbid='1582831915198500', city='', kind='Restroom', alt='A restroom with white tile walls and a tan chip floor'),
+    'warehouse':          dict(set='commercial', n=13, fbid='1582831968531828', city='', kind='Warehouse', alt='A warehouse with a glossy gray floor and pallets along the walls'),
+    'kitchen':            dict(set='commercial', n=14, fbid='1582831965198495', city='', kind='Kitchen', alt='A commercial kitchen with a red floor and steel prep tables'),
+    'retail':             dict(set='commercial', n=15, fbid='1582832035198488', city='', kind='Retail store', alt='A store aisle with a glossy dark floor between the shelves'),
 }
 # before and after pairs: (before capture, after capture). A tuple is one photo captured in two halves.
 # "slide" pairs were shot from nearly the same spot, so they are lined up for a drag-to-compare view.
@@ -56,6 +69,8 @@ def cap(n):
     import glob
     f = glob.glob(os.path.join(SRC, f'screenshot-*-{n}.png'))
     im = Image.open(f[0]).convert('RGB')
+    if SET != 'main':                                # captured as the photo alone: only a thin dark line at the edges
+        return im.crop((2, 2, im.width - 2, im.height - 2))
     return im.crop((0, 0, im.width - 10, im.height))
 
 
@@ -132,8 +147,11 @@ def common_crop(valid, ratio=4 / 3):
 
 
 def main():
-    man = {'shots': {}, 'pairs': {}}
+    path = os.path.join(ROOT, 'tools/photos/fb.json')
+    man = json.load(open(path)) if SET != 'main' and os.path.exists(path) else {'shots': {}, 'pairs': {}}
     for name, s in SHOTS.items():
+        if s.get('set', 'main') != SET:
+            continue
         im = load(s['n'])
         if s.get('rot'):
             im = im.transpose(Image.ROTATE_270)
@@ -144,6 +162,8 @@ def main():
         man['shots'][name] = dict(fbid=s['fbid'], city=s['city'], kind=s['kind'], alt=s['alt'], w=im.width, h=im.height)
         print('shot', name, im.size)
     for name, p in PAIRS.items():
+        if SET != 'main':
+            break
         before, after = load(p['before']), load(p['after'])
         aligned, inl = False, 0
         if p.get('slide'):
@@ -159,7 +179,10 @@ def main():
         save(before, f'{name}-before', 'img/ba', widths); save(after, f'{name}-after', 'img/ba', widths)
         man['pairs'][name] = dict(fbid=p['fbid'], city=p['city'], kind=p['kind'], aligned=aligned, w=after.width, h=after.height)
         print('pair', name, before.size, after.size, 'aligned' if aligned else 'side by side', inl)
-    json.dump(man, open(os.path.join(ROOT, 'tools/photos/fb.json'), 'w'), indent=1)
+    if SET == 'main':                                # keep the other sets' entries
+        old = json.load(open(path))['shots'] if os.path.exists(path) else {}
+        man['shots'].update({k: v for k, v in old.items() if SHOTS.get(k, {}).get('set', 'main') != 'main'})
+    json.dump(man, open(path, 'w'), indent=1)
 
 
 if __name__ == '__main__':

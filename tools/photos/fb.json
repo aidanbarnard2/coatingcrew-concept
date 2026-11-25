@@ -127,6 +127,54 @@
    "alt": "Garage steps and floor coated in a gray chip finish",
    "w": 1259,
    "h": 952
+  },
+  "store": {
+   "fbid": "1582831775198514",
+   "city": "",
+   "kind": "Convenience store",
+   "alt": "A convenience store with a tan chip floor between the shelves and coolers",
+   "w": 1262,
+   "h": 948
+  },
+  "restroom-stalls": {
+   "fbid": "1582831841865174",
+   "city": "",
+   "kind": "Restroom",
+   "alt": "A gray chip floor running under a row of restroom stalls",
+   "w": 1262,
+   "h": 948
+  },
+  "restroom": {
+   "fbid": "1582831915198500",
+   "city": "",
+   "kind": "Restroom",
+   "alt": "A restroom with white tile walls and a tan chip floor",
+   "w": 1262,
+   "h": 948
+  },
+  "warehouse": {
+   "fbid": "1582831968531828",
+   "city": "",
+   "kind": "Warehouse",
+   "alt": "A warehouse with a glossy gray floor and pallets along the walls",
+   "w": 948,
+   "h": 1267
+  },
+  "kitchen": {
+   "fbid": "1582831965198495",
+   "city": "",
+   "kind": "Kitchen",
+   "alt": "A commercial kitchen with a red floor and steel prep tables",
+   "w": 1262,
+   "h": 948
+  },
+  "retail": {
+   "fbid": "1582832035198488",
+   "city": "",
+   "kind": "Retail store",
+   "alt": "A store aisle with a glossy dark floor between the shelves",
+   "w": 948,
+   "h": 1267
   }
  },
  "pairs": {
