@@ -231,6 +231,22 @@ def proof():
             f'    <p class="ratings-note">Ratings as each site showed them on {RATED}. Choose one to read the reviews there.</p>\n  </div>\n</section>')
 
 
+def hdr_proof(page):
+    """Home page only. While the large logo leads in the hero, the header's logo slot would be empty,
+    so it shows the Google rating (same numbers as the ratings strip) with a link to the reviews.
+    Landscape tablets have room for the BBB rating beside it. The two ad landing pages, which have
+    no menu, show both ratings beside the logo."""
+    if page != 'index.html' and page not in LANDING:
+        return ''
+    out = []
+    for k, (val, site, note, u, star) in enumerate(RATINGS[:2]):
+        out.append(f'<a class="hdr-proof{" hp-wide" if k else ""}" href="{u}" target="_blank" rel="noopener" data-rating="{esc(site)}"><b>{val}{STAR if star else ""}</b>'
+                   f'<span><strong>{esc(site)}</strong><span class="hp-n">{esc(note)}</span>'
+                   f'<span class="sr-only">{", " + val + " out of 5" if star else ""} (opens in a new tab)</span></span></a>')
+    # ad landing pages have no menu, so the ratings sit beside the logo all the time
+    return f'    <div class="hdr-proofs{" flow" if page in LANDING else ""}">' + ''.join(out) + '</div>\n'
+
+
 # ---------------------------------------------------------------- visualizer pieces
 def _js_list(name, js):
     return re.findall(r"'([^']+)'", re.search(name + r": \[(.*?)\]", js).group(1))
@@ -346,22 +362,22 @@ def header(page, est):
     links = '\n        '.join(item(h, l) for h, l in NAV)
     if page in LANDING:
         return f'''<a class="skip" href="#main">Skip to main content</a>
-<aside class="preview-note" aria-label="About this page">Concept preview by Aidan Barnard. Not the live website.</aside>
-<header class="site">
+<aside class="preview-note" aria-label="About this page">Concept by Aidan Barnard. Not the live website.</aside>
+<header class="site site-lp">
   <div class="wrap hdr">
     <a class="logo" href="./"><img src="img/logo-300.webp" srcset="img/logo-150.webp 150w, img/logo-300.webp 300w, img/logo-450.webp 450w" sizes="147px" alt="The Coating Crew home" width="147" height="52"></a>
-    <div class="hdr-cta">
+{hdr_proof(page)}    <div class="hdr-cta">
       <a class="phone" href="{TEL}" aria-label="Call {PHONE}">{I_PHONE}<span>{PHONE}</span></a>
       <a class="btn btn-primary" href="#estimate">Get a Price</a>
     </div>
   </div>
 </header>'''
     return f'''<a class="skip" href="#main">Skip to main content</a>
-<aside class="preview-note" aria-label="About this page">Concept preview by Aidan Barnard. Not the live website.</aside>
+<aside class="preview-note" aria-label="About this page">Concept by Aidan Barnard. Not the live website.</aside>
 <header class="site">
   <div class="wrap hdr">
     <a class="logo" href="./"><img src="img/logo-300.webp" srcset="img/logo-150.webp 150w, img/logo-300.webp 300w, img/logo-450.webp 450w" sizes="147px" alt="The Coating Crew home" width="147" height="52"></a>
-    <nav class="nav" aria-label="Main">
+{hdr_proof(page)}    <nav class="nav" aria-label="Main">
       <ul>
         {links}
       </ul>
