@@ -652,14 +652,12 @@ header.site .logo{transition:opacity .3s,visibility .3s}
 .viz-tag{z-index:3}
 
 /* scroll-driven reveals: built on the browser's own scroll timelines, so they cost nothing on the main thread.
-   Text is revealed with a clip and a lift (never faded), so contrast stays full at every frame. */
+   (The scroll-scrubbed reveal that used to sit here was replaced by the timed pop-ins in v9.) */
 @keyframes ccReveal{from{transform:translateY(28px);clip-path:inset(-30px -30px 100% -30px)}to{transform:none;clip-path:inset(-30px)}}
 @keyframes ccLift{from{transform:translateY(18px) scale(.965)}to{transform:none}}
 @keyframes ccDraw{from{transform:scaleX(0)}to{transform:scaleX(1)}}
 @media (prefers-reduced-motion:no-preference){
   @supports (animation-timeline:view()){
-    .sec-head>div:first-child,.compare-scroll,.est-side,.est,.faq,.crew,.prose,.media,.card,.review,.contact-grid>*,.qa-grid>div>h2,.stop{animation:ccReveal linear both;animation-timeline:view();animation-range:entry 0% entry 70%}
-    .reel>*{animation:ccLift linear both;animation-timeline:view(inline);animation-range:entry 0% entry 80%}
     .timeline{view-timeline:--cc-steps block}
     .stop .dot::after{transform-origin:left center;animation:ccDraw linear both;animation-timeline:--cc-steps}
     .stop:nth-child(1) .dot::after{animation-range:cover 16% cover 26%}
@@ -906,3 +904,29 @@ header.site{view-transition-name:site-header}
 @media (max-width:640px){
   .job figcaption{font-size:16px}
 }
+
+/* ---------- v9: entrances. Blocks pop into place the first time they are seen, and the top of each page
+   arrives in sequence on load. Movement carries it; the fade is only the first fifth of a second. ---------- */
+@media (prefers-reduced-motion:no-preference){
+  html.pop-on main>section:not(.studio,.phero,.lp-hero) :is(.sec-head>div:first-child,.sec-head>.tlink,.reel-nav,.reel>*,.ratings li,.ratings-note,.swipe-hint,.compare-scroll,.cmp,.pair,.story-stage,.step,.fbpost,.est-side,.est,.faq details,.jeep,.crew,.prose,.media,.card,.review,.contact-grid>*,.gallery .gitem,.night .wrap>*,.qa-grid>div>h2,.stop):not(.in){opacity:0;transform:translateY(38px) scale(.955)}
+  html.pop-on main>section:not(.studio,.phero,.lp-hero) :is(.sec-head>div:first-child,.sec-head>.tlink,.reel-nav,.reel>*,.ratings li,.ratings-note,.swipe-hint,.compare-scroll,.cmp,.pair,.story-stage,.step,.fbpost,.est-side,.est,.faq details,.jeep,.crew,.prose,.media,.card,.review,.contact-grid>*,.gallery .gitem,.night .wrap>*,.qa-grid>div>h2,.stop):not(.popped){transition:opacity .3s linear var(--pd,0s),transform .75s cubic-bezier(.34,1.5,.64,1) var(--pd,0s)}
+
+  /* page tops: headline and stage move but are never hidden (they are the largest paint); the rest pops */
+  @keyframes ccRise{from{transform:translateY(30px)}}
+  @keyframes ccPop{from{opacity:0;transform:translateY(26px) scale(.94)}}
+  :is(.studio,.phero,.lp-hero) h1{animation:ccRise .9s cubic-bezier(.2,1.3,.3,1) backwards}
+  :is(.studio,.phero,.lp-hero) :is(.studio-sub,.intro){animation:ccRise .9s cubic-bezier(.2,1.3,.3,1) .08s backwards}
+  :is(.studio,.phero,.lp-hero) .crumbs{animation:ccPop .5s cubic-bezier(.2,1.3,.3,1) backwards}
+  :is(.studio,.phero,.lp-hero) .btn-row>*{animation:ccPop .6s cubic-bezier(.2,1.4,.3,1) .3s backwards}
+  :is(.studio,.phero,.lp-hero) .btn-row>*:nth-child(2){animation-delay:.39s}
+  .s-viz,.phero .lineup,.phero .media{animation:ccRise 1s cubic-bezier(.2,1.2,.3,1) .12s backwards}
+  .s-rail .rail-head{animation:ccPop .6s cubic-bezier(.2,1.3,.3,1) .45s backwards}
+  .s-rail .sample{animation:ccPop .5s cubic-bezier(.2,1.5,.3,1) backwards;animation-delay:calc(.5s + var(--n,10)*.04s)}
+  .s-rail .sample:nth-child(1){--n:0}.s-rail .sample:nth-child(2){--n:1}.s-rail .sample:nth-child(3){--n:2}.s-rail .sample:nth-child(4){--n:3}.s-rail .sample:nth-child(5){--n:4}
+  .s-rail .sample:nth-child(6){--n:5}.s-rail .sample:nth-child(7){--n:6}.s-rail .sample:nth-child(8){--n:7}.s-rail .sample:nth-child(9){--n:8}.s-rail .sample:nth-child(10){--n:9}
+  .lp-ticks li{animation:ccPop .5s cubic-bezier(.2,1.4,.3,1) backwards;animation-delay:calc(.22s + var(--n,0)*.07s)}
+  .lp-ticks li:nth-child(2){--n:1}.lp-ticks li:nth-child(3){--n:2}.lp-ticks li:nth-child(4){--n:3}
+  .lp-hero .ticket{animation:ccPop .65s cubic-bezier(.2,1.4,.3,1) .5s backwards}
+  .lp-hero .lp-form{animation:ccPop .7s cubic-bezier(.2,1.25,.3,1) .16s backwards}
+}
+@media print{html.pop-on main *{opacity:1!important;transform:none!important}}

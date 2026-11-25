@@ -6,6 +6,30 @@
   document.documentElement.classList.add('js');
   var motionOK = !(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches);
 
+  /* pop-ins: each block rises into place the first time it is seen; blocks that arrive together take turns.
+     The same list lives in site.css, where the starting state is set before the first paint. */
+  if (document.documentElement.classList.contains('pop-on')) (function () {
+    window.ccPop = true;
+    var LIST = '.sec-head>div:first-child,.sec-head>.tlink,.reel-nav,.reel>*,.ratings li,.ratings-note,.swipe-hint,.compare-scroll,.cmp,.pair,.story-stage,.step,.fbpost,.est-side,.est,.faq details,.jeep,.crew,.prose,.media,.card,.review,.contact-grid>*,.gallery .gitem,.night .wrap>*,.qa-grid>div>h2,.stop';
+    var els = $$(LIST).filter(function (el) { var sec = el.closest('main>section'); return sec && !sec.matches('.studio,.phero,.lp-hero'); });
+    function show(batch) {
+      batch.sort(function (a, b) { var p = a.getBoundingClientRect(), q = b.getBoundingClientRect(); return (Math.round(p.top / 40) - Math.round(q.top / 40)) || (p.left - q.left); });
+      batch.forEach(function (el, i) {
+        var d = Math.min(i, 7) * 85;
+        el.style.setProperty('--pd', d + 'ms'); el.classList.add('in');
+        setTimeout(function () { el.classList.add('popped'); el.style.removeProperty('--pd'); }, d + 1000);
+      });
+    }
+    var io = new IntersectionObserver(function (en) {
+      var batch = [];
+      en.forEach(function (e) {
+        if (e.isIntersecting && (e.intersectionRatio >= .1 || e.intersectionRect.height >= innerHeight * .25)) { io.unobserve(e.target); batch.push(e.target); }
+      });
+      if (batch.length) show(batch);
+    }, { threshold: [0, .1, .25, .5], rootMargin: '0px 0px -6% 0px' });
+    els.forEach(function (el) { io.observe(el); });
+  })();
+
   /* header shadow once the page scrolls */
   var header = $('header.site'), ticking = false;
   function onScroll() { if (ticking) return; ticking = true; requestAnimationFrame(function () { ticking = false; if (header) header.classList.toggle('scrolled', (scrollY || 0) > 20); }); }

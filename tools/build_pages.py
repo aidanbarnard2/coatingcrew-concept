@@ -383,6 +383,11 @@ LIGHTBOX = '''<div class="lb" id="lb" role="dialog" aria-modal="true" aria-label
 </div>'''
 
 
+# Blocks pop into place the first time they are seen. The class goes on before the first paint so nothing
+# flashes; if site.js never arrives, the class comes off again and everything simply shows.
+POP_JS = ("(function(d){try{if('IntersectionObserver' in window&&!matchMedia('(prefers-reduced-motion: reduce)').matches)"
+          "{d.classList.add('pop-on');setTimeout(function(){if(!window.ccPop)d.classList.remove('pop-on')},4000)}}catch(e){}})(document.documentElement)")
+
 # the next page starts loading when a visitor hovers a link; pages with the 3D room are only fetched,
 # so their opening animation plays when the visitor actually arrives
 SPEC = json.dumps({
@@ -451,6 +456,7 @@ def head(page, title, desc, main):
 <link rel="icon" href="img/favicon-48.png" sizes="48x48" type="image/png">
 <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
 <link rel="preload" href="fonts/archivo-wdth.woff2" as="font" type="font/woff2" crossorigin>
+<script>{POP_JS}</script>
 <link rel="stylesheet" href="site.css?v={ver('site.css')}">
 <script type="speculationrules">{SPEC}</script>
 {ld(page, title, main)}</head>
