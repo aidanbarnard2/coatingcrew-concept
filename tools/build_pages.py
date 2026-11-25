@@ -81,6 +81,42 @@ def dims(path):
     return _dims[path]
 
 
+def minify_css(css):
+    """site.css is written to be read; site.min.css is what the pages load. Only comments and spare
+    spacing are removed (text inside quotes is left alone), so the two files mean exactly the same."""
+    out, i, n = [], 0, len(css)
+    while i < n:
+        c = css[i]
+        if c in '"\'':                                   # a quoted string: copy as written
+            j = i + 1
+            while j < n and css[j] != c:
+                j += 2 if css[j] == '\\' else 1
+            out.append(css[i:j + 1]); i = j + 1
+        elif css.startswith('/*', i):                     # a comment: drop it
+            j = css.find('*/', i + 2); i = n if j < 0 else j + 2
+            out.append(' ')
+        elif c in ' \t\r\n':
+            j = i
+            while j < n and css[j] in ' \t\r\n':
+                j += 1
+            out.append(' '); i = j
+        else:
+            out.append(c); i += 1
+    parts = ''.join(out)
+    # put the quoted strings aside, tidy the rest, then put them back
+    keep = []
+    def stash(mo):
+        keep.append(mo.group(0)); return f'\x00{len(keep) - 1}\x00'
+    t = re.sub(r'"(?:[^"\\]|\\.)*"|\'(?:[^\'\\]|\\.)*\'', stash, parts)
+    t = re.sub(r' *([{};,]) *', r'\1', t)               # spaces around braces, semicolons and commas
+    t = t.replace(';}', '}').strip()
+    return re.sub(r'\x00(\d+)\x00', lambda mo: keep[int(mo.group(1))], t) + '\n'
+
+
+with open(os.path.join(ROOT, 'site.min.css'), 'w') as _f:        # rebuilt on every run, before any page links to it
+    _f.write(minify_css(open(os.path.join(ROOT, 'site.css')).read()))
+
+
 def pic(src, alt='', sizes='(min-width:900px) 600px, calc(100vw - 32px)', eager=False):
     """An <img> with WebP sizes (640, 960, 1200) for any photo from img/photos/."""
     m = re.match(r'img/photos/(?:t/)?([\w-]+)\.jpg$', src)
@@ -200,7 +236,11 @@ INNER = {
 }
 # the photo beside each inner page's headline is a real job, with its city and a link to the post
 HERO_PICS = {'residential.html': 'garage-cabinets', 'commercial.html': 'commercial-eagan', 'industrial.html': 'barn-henderson',
-             'about-us.html': 'crew-arena', 'reviews.html': 'garage-edina'}
+             'about-us.html': 'crew-arena', 'reviews.html': 'garage-edina',
+             # these three had small photos from the current site that were stretched to fill the space
+             'contact-us.html': 'hotrods', 'certified-professionals.html': 'prep-hastings-2', 'worry-free-guarantee.html': 'garage-hastings'}
+# pages whose job is words or a search box: no photo beside the headline
+NO_HERO_PIC = {'search.html', 'privacy-policy.html'}
 
 
 def hero_fig(slug_):
@@ -532,7 +572,7 @@ def head(page, title, desc, main):
 <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
 <link rel="preload" href="fonts/archivo-wdth.woff2" as="font" type="font/woff2" crossorigin>
 <script>{POP_JS}</script>
-<link rel="stylesheet" href="site.css?v={ver('site.css')}">
+<link rel="stylesheet" href="site.min.css?v={ver('site.min.css')}">
 <script type="speculationrules">{SPEC}</script>
 {ld(page, title, main)}</head>
 <body>'''
@@ -615,11 +655,17 @@ def clean(m, page):
                lambda mo: f'srcset="img/w/{mo.group(1)}-640.webp 640w, img/w/{mo.group(1)}-960.webp 960w, img/w/{mo.group(1)}-1200.webp 1200w"', m)
     m = m.replace('sizes="(min-width:900px) 560px, 100vw"', 'sizes="(min-width:900px) 560px, calc(100vw - 32px)"')
     m = m.replace('sizes="(min-width:900px) 600px, 100vw"', 'sizes="(min-width:900px) 600px, calc(100vw - 32px)"')
+    # photos beside text fill a 4:3 box and most are wider than that, so they are cropped: ask for more pixels than the box is wide
+    m = re.sub(r'(<div class="media">\s*<img [^>]*?sizes=")\(min-width:900px\) (?:560|600)px, calc\(100vw - 32px\)"', r'\1(min-width:900px) 820px, 130vw"', m)
     # the photo viewer opens the color-corrected WebP
     m = re.sub(r'data-full="img/photos/([\w-]+)\.jpg"', lambda mo: f'data-full="img/w/{mo.group(1)}-1200.webp"' if os.path.exists(os.path.join(ROOT, f'img/w/{mo.group(1)}-1200.webp')) else mo.group(0), m)
     m = re.sub(r'<section class="(?:cta|night)".*?</section>', '{{CTA}}', m, flags=re.S)
     # the photo beside the headline is the largest thing on screen: load it first, not lazily
     m = re.sub(r'(<div class="pimg">\s*<img [^>]*?) loading="lazy"', r'\1 fetchpriority="high"', m)
+    # a photo beside the headline fills a box that is squarer than most of these photos, so ask for a wider file
+    m = re.sub(r'(<div class="pimg">\s*<img [^>]*?sizes=")\(min-width:900px\) 560px, calc\(100vw - 32px\)"', r'\1(min-width:900px) 720px, 130vw"', m)
+    if page in NO_HERO_PIC:
+        m = re.sub(r'\s*<div class="pimg">.*?</div>', '', m, count=1, flags=re.S)
     if page in HERO_PICS:
         fig = hero_fig(HERO_PICS[page])
         m = re.sub(r'<figure class="pfig">.*?</figure>|<div class="pimg">.*?</div>', lambda mo: fig, m, count=1, flags=re.S)

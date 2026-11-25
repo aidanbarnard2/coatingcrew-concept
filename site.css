@@ -1382,3 +1382,53 @@ main>section.band:not(.alt) .cards3 .card{background:var(--concrete);box-shadow:
   .no-more .s-head .crumbs{display:none}
   .no-more .s-head .studio-sub{font-size:17px;line-height:1.45}
 }
+
+/* inner page tops without a photo (policy page): on phones and tablets there is nothing for the slab
+   to sit behind, so it is left out there; no words ever sit on orange */
+@media (max-width:900px){.phero:not(:has(.pimg,.pfig,.lineup))::before{display:none}}
+
+/* v19: a phone held sideways. The header and the bar fixed to the bottom used to leave about 210px
+   of screen, and the room was over 400px tall, so the room and the samples could never be seen
+   together. Here the bottom bar goes (the header keeps Call and Get a price), the header slims,
+   and the room is sized to the screen height with every sample beside it. */
+@media (orientation:landscape) and (max-height:520px) and (min-width:560px) and (max-width:1000px){
+  .mbar{display:none}
+  footer{padding-bottom:0}
+  .hdr{height:54px}
+  .logo img{height:36px}
+  .hdr .btn,.phone,.menu-btn,.srch-btn{min-height:42px}
+  .hdr .btn-primary{display:inline-flex}
+  .hdr-proof b{font-size:28px}
+  .studio{padding-top:12px}
+  .studio .crumbs{display:none}
+  .s-head.lockup{grid-template-columns:118px minmax(0,1fr);justify-items:start;text-align:left;align-items:center;gap:6px 18px}
+  .s-head.lockup .cc-logo{width:118px}
+  .studio .display,.studio h1:not(.display){font-size:30px}
+  .studio-app,.studio-app.no-more{display:grid;grid-template-columns:minmax(0,min(calc((100vh - 84px)*1.5),56vw)) minmax(0,1fr);grid-template-areas:"head head" "viz rail" "more more" "cap cap";grid-template-rows:auto;gap:12px 16px;align-items:start}
+  .studio-app.no-more{grid-template-areas:"head head" "viz rail" "cap cap"}
+  .studio-app .s-head,.studio-app.no-more .s-head{grid-area:head;order:0}
+  .studio-app .s-viz,.studio-app.no-more .s-viz{display:block;grid-area:viz;min-width:0;order:0}
+  .studio-app .viz-stage,.studio-app.no-more .viz-stage{position:relative;top:auto;order:0}
+  .studio-app .s-rail,.studio-app.no-more .s-rail{grid-area:rail;display:flex;flex-direction:column;gap:8px;min-width:0;order:0;margin:0}
+  .studio-app .s-more{grid-area:more;order:0}
+  .studio-app>.viz-cap{grid-area:cap}
+  .studio-app .rail-head{padding:0;border:0;gap:8px}
+  .studio-app .rail-head .btn{min-height:42px;padding:0 12px;font-size:16px}
+  .studio-app .rail-btns{display:none}
+  .studio-app .rail{display:grid;grid-template-columns:repeat(auto-fill,minmax(34px,1fr));gap:5px;overflow:visible;scroll-snap-type:none;padding:2px;margin:0}
+  .studio-app .rail-group,.studio-app .viz-tiles{display:contents}
+  .studio-app .rail-group .sub{display:none}
+  .studio-app .sample{width:auto;padding:3px;gap:0;scroll-snap-align:none}
+  .studio-app .sample .lab{position:absolute;width:1px;height:1px;min-height:0;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}
+  .no-more .s-head .btn-row{display:none}
+  .no-more .s-head{gap:4px}
+  .no-more .s-head .studio-sub{font-size:16px;line-height:1.4;max-width:none}
+}
+
+/* touch screens: small text links (breadcrumbs, "See the Facebook post", links inside notes) get a
+   taller touch area without moving anything on the page */
+@media (pointer:coarse){
+  .crumbs a,.legal a,.note a,.ratings-note a,.viz-cap a,.fbpost a{padding-block:9px}
+  .post-link{position:relative}
+  .post-link::before{content:"";position:absolute;inset:-10px -6px}
+}
