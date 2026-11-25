@@ -1374,3 +1374,11 @@ main>section.band:not(.alt) .cards3 .card{background:var(--concrete);box-shadow:
 .follow .f-x{flex:none;display:grid;place-items:center;width:44px;height:44px;margin-left:-4px;border:0;border-radius:50%;background:transparent;color:#FFFFFF;cursor:pointer}
 .follow .f-x svg{width:20px;height:20px}
 .follow .f-x:hover{background:var(--garage-3)}
+
+/* the smallest phones (320 wide): a slightly smaller logo on the home page and a shorter intro on the
+   colors page, so the room still shows on the first screen */
+@media (max-width:340px){
+  .s-head.lockup .cc-logo{width:76vw}
+  .no-more .s-head .crumbs{display:none}
+  .no-more .s-head .studio-sub{font-size:17px;line-height:1.45}
+}
