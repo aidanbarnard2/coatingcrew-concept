@@ -426,9 +426,9 @@ def footer(page, est):
 
 LIGHTBOX = '''<div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="Photo viewer" hidden>
   <figure><img id="lbImg" src="data:," alt=""><figcaption id="lbCap"></figcaption></figure>
-  <button type="button" class="x" id="lbX" aria-label="Close photo viewer">✕</button>
-  <button type="button" class="pv" id="lbPv" aria-label="Previous photo">‹</button>
-  <button type="button" class="nx" id="lbNx" aria-label="Next photo">›</button>
+  <button type="button" class="x" id="lbX" aria-label="Close photo viewer"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+  <button type="button" class="pv" id="lbPv" aria-label="Previous photo"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button>
+  <button type="button" class="nx" id="lbNx" aria-label="Next photo"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></button>
 </div>'''
 
 

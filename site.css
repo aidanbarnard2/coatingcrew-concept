@@ -1010,3 +1010,37 @@ header.site::before{content:"";position:absolute;left:0;right:0;top:100%;height:
   .studio-app.no-more .s-rail{order:5}
   .studio-app.no-more>.viz-cap{order:6}
 }
+
+/* ---------- v11: element polish ---------- */
+/* layers: a cross-section drawing instead of a text list. The left column is the floor cut through, top to bottom. */
+.layers{border-left:0;border-radius:var(--r);overflow:hidden;outline:1px solid var(--rule);outline-offset:-1px;background:#FFFFFF}
+.layers li{display:grid;grid-template-columns:46px minmax(0,1fr);column-gap:14px;padding:0;align-content:center;min-height:54px;border-top:1px solid var(--rule)}
+.layers li:first-child{border-top:0}
+.layers li::before{content:"";grid-row:1/span 2;align-self:stretch;min-height:54px;background:#9AA1A9 center/cover;box-shadow:inset -1px 0 0 rgba(26,30,35,.28)}
+.layers b{grid-column:2;align-self:end;padding-top:8px}
+.layers span{grid-column:2;align-self:start;padding:0 10px 9px 0}
+.layers b:only-child{align-self:center;grid-row:1/span 2;padding:0}
+.layers li.slab{padding-bottom:0}
+.layers .l-top::before{background:linear-gradient(180deg,#FFFFFF 0,#E9EEF3 38%,#C9D2DB 100%)}
+.layers .l-tint::before{background:linear-gradient(180deg,#6A737D 0,#474F58 45%,#3A4149 100%)}
+.layers .l-flake::before{background-image:url(img/colors/s/domino.webp)}
+.layers .l-quartz::before{background-image:url(img/systems/quartz-close-640.webp)}
+.layers .l-sand::before{background:#CDBE9C radial-gradient(#8E7F5E 1px,transparent 1.4px) 0 0/5px 5px}
+.layers .l-base::before{background:#8A9198}
+.layers .l-solid::before{background:#C3C8CD}
+.layers .l-primer::before{background:#6B737C}
+.layers .slab::before{background-image:url(img/colors/s/bare-concrete.webp)}
+.tag-note{margin-top:12px}
+
+/* the "play a full day" control is a quiet tool, so orange stays reserved for the estimate buttons */
+.viz-day{background:transparent;border-color:#FFFFFF;color:#FFFFFF}
+.viz-day:hover{background:#FFFFFF;border-color:#FFFFFF;color:var(--ink)}
+.viz-day[aria-pressed="true"]{background:#FFFFFF;border-color:#FFFFFF;color:var(--ink)}
+
+/* photo viewer buttons */
+.lb button svg{width:24px;height:24px}
+.lb button:hover{background:#FFFFFF;color:var(--ink)}
+
+/* install steps: larger photos */
+.step .ph{width:min(100%,380px);margin-top:16px}
+@media (max-width:640px){.step .ph{width:100%}}
